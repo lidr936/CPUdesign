@@ -1,0 +1,30 @@
+﻿miniRV single_cycle source package
+Generated: 2026-07-14 22:41:13
+Source project: C:\Users\Lidr\Desktop\CPUdesign\CPUdesign\lab1\miniRV_basic_ego1\miniRV_basic
+
+RTL files:
+  rtl/ALU.v
+  rtl/Controller.v
+  rtl/cpu_core.v
+  rtl/cpu_top.v
+  rtl/Data_RAM.v
+  rtl/defines.vh
+  rtl/divider.v
+  rtl/Inst_ROM.v
+  rtl/MEXT.v
+  rtl/miniRV_SoC.v
+  rtl/MREQ.v
+  rtl/multiplier.v
+  rtl/NPC.v
+  rtl/PC.v
+  rtl/RF.v
+  rtl/SEXT.v
+
+COE/ASM files:
+  coe/lw.coe
+  coe/mul_div_test.asm
+  coe/mul_div_test.coe
+
+Excluded by design:
+  src/rtl/ip
+  Vivado generated directories such as .cache/.runs/.sim/.hw/ip_user_files

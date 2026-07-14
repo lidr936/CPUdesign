@@ -146,7 +146,7 @@ Trace 相关约束也一并作为模块边界：不改动 `RUN_TRACE` 宏相关�
 |---|---|---|---|---|
 | 普通单周期指令 | `ifetch_valid=1` 且非访存/乘除 | 不等待 | 同拍 `inst_finished=1` | `rf_wR=inst[11:7]`，`rf_wD` 来自 ALU/PC4/EXT |
 | Load | `is_ld_st=1`，缓存 `rd/alu_c/ram_rop` | `ld_st_flag=1`，下一次取指不发起 | `daccess_rvalid=1` | `rf_wR=rf_wR_r`，`rf_wD=ram_ext` |
-| Store | `is_ld_st=1`，缓存访存状态 | `ld_st_flag=1`，下一次取指不发起 | `daccess_wresp=1` | 不写 RF，`debug_mem_*` 来自 `daccess_*` |
+| Store | `is_ld_st=1`，缓存访存状态和原始 `rs2` 写数据 | `ld_st_flag=1`，下一次取指不发起 | `daccess_wresp=1` | 不写 RF，`debug_mem_we/waddr` 来自 `daccess_*`，`debug_mem_wdata` 使用原始 store 数据；实际 RAM 写入仍使用按字节/半字移位后的 `daccess_wdata` |
 | Mul/Div | `is_mul_div=1`，ALU 内部 `start` 一拍，缓存 `rd` | `mul_div_flag=1`，等待 `busy` 解除，禁止重复启动 | `!mul_div_busy` | `rf_wR=rf_wR_r`，`rf_wD=alu_c`，`debug_wb_pc` 沿用当前 `pc` |
 
 PC 更新与取指也沿用模板：`PC.fetch=inst_finished`，`ifetch_req=first_req | inst_finished_r`。因此多周期期间 PC 不应前进，下一条指令也不应进入提交。实现时不得破坏 `inst_finished/rf_we1/rf_wR/rf_wD/debug_*` 这条提交链。
@@ -210,7 +210,7 @@ PC 更新与取指也沿用模板：`PC.fetch=inst_finished`，`ifetch_req=first
 ### 7.2 Basic Trace 观测项
 
 - `debug_wb_pc/debug_wb_rf_we/debug_wb_rf_wR/debug_wb_rf_wD`：所有写回指令；
-- `debug_mem_we/debug_mem_waddr/debug_mem_wdata`：`sb/sh/sw`；
+- `debug_mem_we/debug_mem_waddr/debug_mem_wdata`：`sb/sh/sw`；其中 `debug_mem_wdata` 按 Trace/golden model 对比语义记录原始 store 寄存器值，实际写 RAM 的 `daccess_wdata` 仍按字节使能位置移位；
 - 访存响应到来时才完成 load/store，乘除 `busy` 解除时才完成写回；
 - 原有 8 条示例指令必须作为回归测试，防止新增编码破坏既有路径。
 
