@@ -1,0 +1,86 @@
+# Progress Log
+
+## Session: 2026-07-14
+
+### Phase 1-5：需求、方案、实现、验证准备与交付整理
+- **Status:** RTL 已落地；本机可执行验证已通过；Vivado/Basic Trace 待用户本机工具链执行
+- **Started:** 2026-07-14
+- Actions taken:
+  - 确认实验指导书 ZIP 与作业材料整理文件存在。
+  - 阅读实验步骤章节，确认共有 7 个主步骤。
+  - 建立持续任务计划、发现记录与进度记录。
+  - 读取 A/B 作业材料、B 组模板和 miniRV EGO1 的核心 RTL。
+  - 确认 A/B 组合计 36 条目标指令，且基础工程中有明确待完成的访存和乘除法模块。
+  - 阅读指导书的多周期、乘除法和除法器章节，确认乘除法不得使用运算符/IP，并应先单测除法器。
+  - 阅读指导书 Verilog 代码规范和宏定义章节，并把要求纳入落地方案。
+  - 通读指导书 ZIP 内 `docs/` 下 Markdown 章节，补充 Trace、提交、常见问题、下板调试等要求。
+  - 新增中文通读记录 `lab1/指导书通读要点记录.md`，作为后续 HDL 落地约束清单。
+  - 按用户要求同步更新 `lab1/A_B组模块化Verilog实现落地方案.md`，补入指导书通读后的 Trace、提交、风险和非当前范围约束。
+  - 按用户要求启动 subagent review 落地文档；review 返回结论：方向正确，但需先补多周期提交、未对齐访存、控制矩阵、ALU/乘除边界和 Vivado 用户操作清单。
+  - 按用户“优先对齐指导书要求”的方向修订落地文档：补控制矩阵、访存编码、地址语义、多周期提交协议、ALU/乘除边界、Vivado 用户操作清单，并清理文末残留备注。
+  - 创建 `tools/check_minirv_static.py`，先观察模板 RED 失败，再完成 RTL 后观察 GREEN：`STATIC CHECK PASSED`。
+  - 创建 `tools/verify_minirv_algorithms.py`，用 Python 参考语义对照 RTL 同构算法模型，最终 `ALGORITHM CHECK PASSED (16 cases)`。
+  - 复审并修复 R 型 `or` 控制器映射，以及 Booth 乘法器未锁存被乘数的问题。
+  - 新增 `tools/vivado_lab1_check.tcl`，方便用户在 Vivado Tcl Console 里打开工程并运行行为仿真。
+  - 新增 `tools/check_vivado_env.ps1`，用于检查 Vivado/Verilog 命令行工具可用性；当前环境未发现可用工具。
+  - 修正 `multiplier.v` 端口宽度对内部 `localparam` 的前向引用，降低 Vivado 语法兼容风险。
+  - 增强 `tools/check_minirv_static.py`，加入模块实例具名端口匹配检查；增强后仍 `STATIC CHECK PASSED`。
+  - 完成 A/B 组 36 条指令相关 RTL 落地：控制器、立即数、NPC、访存、ALU、乘法器、除法器和 cpu_core 接线。
+  - 更新落地文档状态为“已按本文方案完成 RTL 落地与静态检查；Vivado/Trace 待用户本机执行”。
+  - 修正落地文档中 `divider #(33)` 的早期表述，使其与当前 RTL 中两路 `divider #(32)` 保持一致。
+  - 新增 `tools/prepare_single_cycle_sources.ps1`，按指导书交付边界生成单周期源码包，排除 IP 与 Vivado 生成物。
+  - 运行交付包脚本，生成 `dist/single_cycle_20260714_114311`，内容为 `rtl/*.v/.vh`、`coe/*.asm/.coe` 和 `manifest.txt`。
+  - 继续审计 RTL 与落地文档要求的证据链，发现 `NPC.v`、`SEXT.v` 使用宏但缺少 ``include "defines.vh"`，已补齐。
+  - 增强 `tools/check_minirv_static.py`：新增宏 include 检查、乘除 NOP 抑制/完成链检查、子模块 busy 时忽略重复 start 检查。
+  - 重新运行静态检查，结果仍为 `STATIC CHECK PASSED`。
+  - 重新生成最新单周期源码包 `dist/single_cycle_20260714_120705`，包含修复后的 RTL。
+  - 生成 `dist/single_cycle_20260714_120705.zip`，并检查 zip 内部仅含 `rtl/`、`coe/`、`manifest.txt`，大小 14,042 字节。
+- Files created/modified:
+  - `task_plan.md`（创建）
+  - `findings.md`（创建）
+  - `progress.md`（创建）
+  - `lab1/指导书通读要点记录.md`（创建）
+  - `lab1/A_B组模块化Verilog实现落地方案.md`（更新）
+  - `tools/check_minirv_static.py`（创建）
+  - `tools/verify_minirv_algorithms.py`（创建）
+  - `tools/vivado_lab1_check.tcl`（创建）
+  - `tools/check_vivado_env.ps1`（创建）
+  - `tools/prepare_single_cycle_sources.ps1`（创建）
+  - `dist/single_cycle_20260714_120705/`（最新生成的交付包目录）
+  - `dist/single_cycle_20260714_120705.zip`（最新单周期源码 zip 包）
+  - `docs/superpowers/plans/2026-07-14-minirv-ab-implementation.md`（创建）
+  - `lab1/miniRV_basic_ego1/miniRV_basic/src/rtl/*.v/.vh`（实现修改）
+
+## Test Results
+| Test | Input | Expected | Actual | Status |
+|------|-------|----------|--------|--------|
+| 指导书步骤读取 | ZIP 内 `docs/lab1/12-step.md` | 可读到实验步骤 | 成功读到 7 步 | ✓ |
+| B 组模板读取 | B 组 `.xlsx` 的两张工作表 | 得到指令和控制字段 | 成功读到 18 条和字段 | ✓ |
+| EGO1 核心 RTL 阅读 | `Controller/ALU/SEXT/MREQ/MEXT/cpu_core` | 确定接口与缺口 | 成功定位 | ✓ |
+| 乘除法指导书阅读 | 第 6、7、8 节 | 确认算法与时序要求 | 已确认硬性限制及集成顺序 | ✓ |
+| 代码规范阅读 | `codingstyle.md`、`A-macro.md` | 形成 RTL 约束清单 | 已写入落地方案第 9 节 | ✓ |
+| 指导书通读 | ZIP 内 `docs/**/*.md` | 形成中文要点记录 | 已写入 `lab1/指导书通读要点记录.md` | ✓ |
+| 静态 RTL 检查 | `python tools\check_minirv_static.py` | 覆盖关键宏、译码、接线、访存、乘除禁用运算符 | `STATIC CHECK PASSED` | ✓ |
+| 算法边界检查 | `python tools\verify_minirv_algorithms.py` | 覆盖乘除特殊值和边界样例 | `ALGORITHM CHECK PASSED (16 cases)` | ✓ |
+| Vivado 环境检查 | `powershell -ExecutionPolicy Bypass -File tools\check_vivado_env.ps1` | 找到 Vivado/Verilog 命令行或给出用户侧验证路径 | 工具缺失；工程和 Tcl 脚本存在 | ⚠ |
+| 单周期源码包准备 | `powershell -ExecutionPolicy Bypass -File tools\prepare_single_cycle_sources.ps1` | 生成不含 IP/生成物的源码包 | `dist/single_cycle_20260714_114311`，含 RTL/COE/manifest | ✓ |
+| 补强静态检查 | `python tools\check_minirv_static.py` | 覆盖宏 include、多周期乘除完成链与 busy 抑制 | `STATIC CHECK PASSED` | ✓ |
+| 最新单周期源码包准备 | `powershell -ExecutionPolicy Bypass -File tools\prepare_single_cycle_sources.ps1` | 生成包含最新 RTL 的源码包 | `dist/single_cycle_20260714_120705`，含 RTL/COE/manifest | ✓ |
+| 单周期源码 zip | `Compress-Archive -Path dist\single_cycle_20260714_120705\* -DestinationPath dist\single_cycle_20260714_120705.zip -Force` | 生成小于 100MB 且不含 IP/生成物的 zip | 14,042 字节，仅含 `rtl/`、`coe/`、`manifest.txt` | ✓ |
+
+## Error Log
+| Timestamp | Error | Attempt | Resolution |
+|-----------|-------|---------|------------|
+| 2026-07-14 | 默认 session-catchup.py 路径不存在 | 1 | 改用实际安装目录，恢复检查成功 |
+| 2026-07-14 | `git log/status` 失败：工作区不是 Git 仓库 | 1 | 不依赖版本记录，按磁盘现有材料探索 |
+| 2026-07-14 | Windows 沙箱读文件/列目录报 1312 | 1 | 对必要只读操作使用授权方式重跑并成功 |
+| 2026-07-14 | `vivado/xvlog/iverilog/verilator` 不在 PATH | 多次检查 | 保留 Vivado Tcl 与环境检查脚本，等待用户本机 Vivado/Trace 执行 |
+
+## 5-Question Reboot Check
+| Question | Answer |
+|----------|--------|
+| Where am I? | RTL 已落地，本机静态/算法/交付包验证已完成 |
+| Where am I going? | 等待 Vivado/Basic Trace 工具链执行最终仿真、综合/实现和截图 |
+| What's the goal? | 完成实验一单周期 CPU 的设计、实现、验证和交付整理 |
+| What have I learned? | 见 findings.md |
+| What have I done? | 已定位并阅读实验步骤，建立计划文件 |
