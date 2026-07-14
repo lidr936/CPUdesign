@@ -1,0 +1,40 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/cpu-design/lab1/miniRV_basic_ego1/miniRV_basic/src/rtl/ip/DRAM/sim/DRAM.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module DRAM
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/cpu-design/lab1/miniRV_basic_ego1/miniRV_basic/src/rtl/ip/IROM/sim/IROM.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module IROM
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/cpu-design/lab1/miniRV_basic_ego1/miniRV_basic/miniRV.gen/sources_1/ip/clk_wiz_0/clk_wiz_0_clk_wiz.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module clk_wiz_0_clk_wiz
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/cpu-design/lab1/miniRV_basic_ego1/miniRV_basic/miniRV.gen/sources_1/ip/clk_wiz_0/clk_wiz_0.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module clk_wiz_0
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/cpu-design/lab1/miniRV_basic_ego1/miniRV_basic/src/rtl/ALU.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ALU
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/cpu-design/lab1/miniRV_basic_ego1/miniRV_basic/src/rtl/Controller.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module Controller
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/cpu-design/lab1/miniRV_basic_ego1/miniRV_basic/src/rtl/Data_RAM.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module Data_RAM
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/cpu-design/lab1/miniRV_basic_ego1/miniRV_basic/src/rtl/Inst_ROM.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module Inst_ROM
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/cpu-design/lab1/miniRV_basic_ego1/miniRV_basic/src/rtl/MEXT.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module MEXT
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/cpu-design/lab1/miniRV_basic_ego1/miniRV_basic/src/rtl/MREQ.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module MREQ
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/cpu-design/lab1/miniRV_basic_ego1/miniRV_basic/src/rtl/NPC.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module NPC
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/cpu-design/lab1/miniRV_basic_ego1/miniRV_basic/src/rtl/PC.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module PC
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/cpu-design/lab1/miniRV_basic_ego1/miniRV_basic/src/rtl/RF.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module RF
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/cpu-design/lab1/miniRV_basic_ego1/miniRV_basic/src/rtl/SEXT.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module SEXT
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/cpu-design/lab1/miniRV_basic_ego1/miniRV_basic/src/rtl/cpu_core.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cpu_core
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/cpu-design/lab1/miniRV_basic_ego1/miniRV_basic/src/rtl/cpu_top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cpu_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/cpu-design/lab1/miniRV_basic_ego1/miniRV_basic/src/rtl/divider.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module divider
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/cpu-design/lab1/miniRV_basic_ego1/miniRV_basic/src/rtl/miniRV_SoC.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module miniRV_SoC
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/cpu-design/lab1/miniRV_basic_ego1/miniRV_basic/src/rtl/multiplier.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module multiplier
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/cpu-design/lab1/miniRV_basic_ego1/miniRV_basic/src/sim/soc_simple_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module soc_simple_tb

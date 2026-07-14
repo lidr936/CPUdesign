@@ -1,6 +1,6 @@
 # miniRV 单周期 CPU：A/B 组模块化 Verilog 实现落地方案
 
-> 状态：**已按本文方案完成 RTL 落地与静态检查**。当前机器未安装可用的 Vivado/iverilog/verilator 命令行环境，Basic Trace、Vivado 仿真、综合、实现和报告截图仍按第 7.4 节由用户在本机 Vivado/Trace 环境执行。
+> 状态：**已按本文方案完成 RTL 落地、静态检查、算法边界检查，并已通过用户侧 Vivado 行为仿真**。Basic Trace、综合、实现和报告截图仍按第 7.4 节由用户在本机 Vivado/Trace 环境继续执行。
 
 ## 1. 目标与范围
 
@@ -227,6 +227,20 @@ PC 更新与取指也沿用模板：`PC.fetch=inst_finished`，`ifetch_req=first
 
 Basic Trace 只验证 CPU 内核主存访问，不覆盖外设访问；若后续下板表现和仿真不一致，再按指导书建议排查 bit 文件、Timing Summary、Warning、RTL 规范和在线调试信号。
 
+当前工作区未发现 `cdp-tests`/`mySoC` Trace 框架目录。等 Trace 框架放到工作区后，可用辅助脚本同步 RTL：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools\prepare_basic_trace_sources.ps1 -TraceRoot cdp-tests
+```
+
+如果转到 Linux 环境，可用：
+
+```bash
+bash tools/prepare_basic_trace_sources.sh cdp-tests
+```
+
+如果 Trace 框架在其他位置，把 `cdp-tests` 改成实际路径。脚本只复制 `src/rtl` 顶层 `.v/.vh` 到 `mySoC`，不会复制 `src/rtl/ip` 或 Vivado 生成物。
+
 ### 7.4 需要用户在 Vivado 中执行的操作
 
 当前本机 Vivado 环境仍在安装中，我可以先修改源码、整理文档、做静态检查和可用的文本级/Trace 准备；Vivado GUI 相关操作需要你在本机执行：
@@ -245,7 +259,18 @@ cd F:/cpu-design
 source tools/vivado_lab1_check.tcl
 ```
 
-该脚本会打开工程、更新编译顺序并启动行为仿真；最终仍需你根据 Vivado transcript、波形和测试输出判断是否通过。
+该脚本会打开工程、更新编译顺序、启动行为仿真并执行 `run all`；最终仍需你根据 Vivado transcript、波形和测试输出判断是否通过。Vivado Tcl Console 不是 PowerShell/CMD，`ls` 会被 Tcl 解释成不唯一的命令前缀并报 `ambiguous command name "ls": lsearch lset lsort`；如果只是想列目录，可用 `glob *`，或在系统终端里使用 `dir/ls`。
+
+当前用户侧 Vivado 日志已确认：
+
+- `open_project` 成功打开 `miniRV.xpr`；
+- `update_compile_order` 成功执行；
+- `xvlog` 已分析 `ALU/Controller/MREQ/MEXT/NPC/SEXT/cpu_core/multiplier/divider` 等核心 RTL，没有在粘贴日志中出现 Verilog 语法或宏未定义错误；
+- `xelab` 已完成 elaborate，生成 `soc_simple_tb_behav` snapshot；
+- XSim 已进入 simulate，`run all` 后 testbench 输出 `Test Passed!`；
+- `$finish` 时间为 `11480100 ps`，位置为 `src/sim/soc_simple_tb.v` 第 22 行。
+
+因此当前 Vivado 行为仿真可记录为 **通过**。日志中的 `VRFC 10-3091` 位宽 warning、Block Memory Generator 行为模型 warning、地址越界 warning 未阻止仿真通过；若后续 Basic Trace 或下板出现相关异常，再按 warning 逐项复查。
 
 若不确定本机命令行环境是否配置好，可先在 PowerShell 执行：
 
@@ -296,6 +321,8 @@ dist/single_cycle_20260714_120705.zip
 | `src/rtl/divider.v` | 已完成多周期恢复除法器，不使用 `/` 除法运算 |
 | `src/rtl/cpu_core.v` | 已完成 store 数据、`jalr` 基址与写回整合 |
 | `tools/prepare_single_cycle_sources.ps1` | 已新增单周期源码交付包准备脚本，默认排除 IP 与 Vivado 生成物 |
+| `tools/prepare_basic_trace_sources.ps1` | 已新增 Basic Trace 源码同步脚本，等待 `cdp-tests/mySoC` 框架后使用 |
+| `tools/prepare_basic_trace_sources.sh` | 已新增 Linux Basic Trace 源码同步脚本，转 Linux 后使用 |
 | `dist/single_cycle_20260714_120705.zip` | 已生成单周期源码 zip 包，内容仅含 `rtl/`、`coe/`、`manifest.txt` |
 
 未新增独立的“总控模块”，未改动顶层端口或 IP 文件；Vivado 工程可直接沿用。
@@ -309,6 +336,15 @@ python tools\check_minirv_static.py
 ```
 
 结果：`STATIC CHECK PASSED`。
+
+用户侧 Vivado 行为仿真：
+
+```tcl
+cd F:/cpu-design
+source tools/vivado_lab1_check.tcl
+```
+
+结果：`Test Passed!`，`$finish called at time : 11480100 ps`。
 
 该脚本覆盖：
 
@@ -386,4 +422,5 @@ python tools\verify_minirv_algorithms.py
 - [x] 已补充环境检查脚本 `tools/check_vivado_env.ps1`；
 - [x] 已补充单周期源码交付包脚本 `tools/prepare_single_cycle_sources.ps1`；
 - [x] 已生成单周期源码 zip 包 `dist/single_cycle_20260714_120705.zip`；
-- [ ] Vivado GUI 中的仿真、综合、实现、报告截图由用户在本机执行，我负责给出源码和检查清单。
+- [x] 用户侧 Vivado 行为仿真已通过，transcript 输出 `Test Passed!`；
+- [ ] Basic Trace、综合、实现、报告截图由用户在本机继续执行，我负责给出源码和检查清单。

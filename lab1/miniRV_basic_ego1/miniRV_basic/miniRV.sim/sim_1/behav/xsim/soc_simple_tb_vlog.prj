@@ -1,0 +1,28 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  --include "../../../../src/rtl" --include "../../../../src/sim" --include "../../../../miniRV.gen/sources_1/ip/clk_wiz_0" \
+"../../../../src/rtl/ip/DRAM/sim/DRAM.v" \
+"../../../../src/rtl/ip/IROM/sim/IROM.v" \
+"../../../../miniRV.gen/sources_1/ip/clk_wiz_0/clk_wiz_0_clk_wiz.v" \
+"../../../../miniRV.gen/sources_1/ip/clk_wiz_0/clk_wiz_0.v" \
+"../../../../src/rtl/ALU.v" \
+"../../../../src/rtl/Controller.v" \
+"../../../../src/rtl/Data_RAM.v" \
+"../../../../src/rtl/Inst_ROM.v" \
+"../../../../src/rtl/MEXT.v" \
+"../../../../src/rtl/MREQ.v" \
+"../../../../src/rtl/NPC.v" \
+"../../../../src/rtl/PC.v" \
+"../../../../src/rtl/RF.v" \
+"../../../../src/rtl/SEXT.v" \
+"../../../../src/rtl/cpu_core.v" \
+"../../../../src/rtl/cpu_top.v" \
+"../../../../src/rtl/divider.v" \
+"../../../../src/rtl/miniRV_SoC.v" \
+"../../../../src/rtl/multiplier.v" \
+"../../../../src/sim/soc_simple_tb.v" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

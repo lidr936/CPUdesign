@@ -40,6 +40,12 @@
 - 落地文档已修正乘除模块边界：实际 RTL 为 `multiplier #(32)`、`multiplier #(33)` 和两路 `divider #(32)`；有符号除余语义由 ALU 外围做绝对值与符号恢复。
 - RTL 审计发现并修复：`NPC.v`、`SEXT.v` 使用了 ``NPC_*`/``EXT_*` 宏但未显式 ``include "defines.vh"`；已补齐 include，并在 `tools/check_minirv_static.py` 中加入宏 include 检查。
 - 静态检查已增强乘除协议检查：确认 `cpu_core` 在无有效取指时保持 NOP，乘除写回/完成受 `mul_div_flag & !mul_div_busy` 控制，`multiplier/divider` 在 busy 时忽略重复 start。
+- 用户侧 Vivado Tcl 日志显示：`ls` 报 `ambiguous command name` 的根因是 Tcl Console 不支持 PowerShell/CMD 风格 `ls`；这不影响后续 `source tools/vivado_lab1_check.tcl`。
+- 用户侧 Vivado Tcl 日志显示：`open_project`、`update_compile_order` 成功，`xvlog` 编译/分析阶段已处理核心 RTL 与 testbench，未见 Verilog 语法/宏未定义错误。
+- 用户侧 Vivado 行为仿真已通过：`xelab` 完成生成 `soc_simple_tb_behav`，XSim simulate 后执行 `run all`，testbench 输出 `Test Passed!`，`$finish` 时间为 `11480100 ps`。
+- 当前工作区未发现 `cdp-tests`、`mySoC` 或 Trace 框架目录；Basic Trace 运行需要先放置/下载 Trace 框架。
+- 已新增 `tools/prepare_basic_trace_sources.ps1`，用于 Trace 框架就位后将当前 RTL 顶层 `.v/.vh` 同步到 `cdp-tests/mySoC`，不复制 IP 或 Vivado 生成物。
+- 用户计划后续转 Linux 跑 Basic Trace；已新增 `tools/prepare_basic_trace_sources.sh` 作为 Linux 版同步脚本。
 
 ## Technical Decisions
 | Decision | Rationale |
@@ -51,6 +57,7 @@
 | 当前不声称 Vivado/Trace 已通过 | 本机无可用 Vivado/iverilog/verilator 命令行环境，已在文档中列为用户侧验证门 |
 | 乘法器使用 Booth 迭代结构 | 与指导书对 Booth 补码乘法器的方向一致，`mulhu` 通过 33 位补 0 复用 |
 | 单周期交付包使用脚本生成的时间戳目录 | 避免清理/覆盖目录导致误删，同时规避 stale 文件混入；后续按 manifest 压缩 |
+| 用户侧 Vivado 行为仿真作为模板工程仿真证据 | 它证明 Vivado 能打开工程、编译/展开/运行 `soc_simple_tb` 并得到 `Test Passed!`；不替代 Basic Trace 证据 |
 
 ## Issues Encountered
 | Issue | Resolution |

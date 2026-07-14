@@ -4,7 +4,7 @@
 依据实验一指导书，完成需求梳理、实现、Basic Trace 验证与交付材料整理。
 
 ## Current Phase
-Phase 4：调试与验证（本机静态/算法检查已通过；Vivado/Basic Trace 受工具链缺失阻塞）
+Phase 4：调试与验证（本机静态/算法检查已通过；用户侧 Vivado 行为仿真已通过；Basic Trace 待执行）
 
 ## Phases
 
@@ -28,9 +28,10 @@ Phase 4：调试与验证（本机静态/算法检查已通过；Vivado/Basic Tr
 ### Phase 4：调试与验证
 - [x] 完成本机静态检查
 - [x] 完成本机乘除算法边界检查
+- [x] 完成用户侧 Vivado 行为仿真
 - [ ] 使用 Vivado/Basic Trace 调试目标指令
 - [ ] 完成完整 CPU 的 Vivado/Trace 测试与问题修复
-- **Status:** blocked_by_missing_toolchain
+- **Status:** in_progress
 
 ### Phase 5：交付整理
 - [x] 核对源码、工程和实验材料
@@ -58,4 +59,4 @@ Phase 4：调试与验证（本机静态/算法检查已通过；Vivado/Basic Tr
 | 默认恢复脚本路径不存在 | 1 | 改用实际安装目录 `C:\\Users\\CCCaiBoYu\\.codex\\skills\\skills\\planning-with-files` |
 | `git` 记录不可用 | 1 | `F:\\cpu-design` 不是 Git 仓库；改为直接基于现有文件结构规划 |
 | Windows 沙箱读文件/列目录报 1312 | 1 | 对必要只读操作使用已授权的 escalated 方式重跑 |
-| Vivado/Verilog 命令行工具缺失 | 多次检查 | 新增 `tools/check_vivado_env.ps1` 和 `tools/vivado_lab1_check.tcl`，将 Vivado/Basic Trace 列为用户侧验证门 |
+| Codex 环境 Vivado/Verilog 命令行工具缺失 | 多次检查 | 新增 `tools/check_vivado_env.ps1` 和 `tools/vivado_lab1_check.tcl`；用户侧 Vivado 已完成行为仿真，Basic Trace 仍待用户环境继续执行 |

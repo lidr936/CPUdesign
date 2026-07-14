@@ -4,7 +4,7 @@
 <!-- Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.                   -->
 <!-- Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.   -->
 
-<Project Product="Vivado" Version="7" Minor="65" Path="C:/Workspace/miniRV_basic/miniRV.xpr">
+<Project Product="Vivado" Version="7" Minor="65" Path="F:/cpu-design/lab1/miniRV_basic_ego1/miniRV_basic/miniRV.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="8068a6fb3a134c46b6c8a18bdff0f3f6"/>
@@ -59,20 +59,20 @@
     <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
     <Option Name="FeatureSet" Val="FeatureSet_Classic"/>
-    <Option Name="WTXSimLaunchSim" Val="1606"/>
+    <Option Name="WTXSimLaunchSim" Val="1608"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
     <Option Name="WTVcsLaunchSim" Val="0"/>
     <Option Name="WTRivieraLaunchSim" Val="0"/>
     <Option Name="WTActivehdlLaunchSim" Val="0"/>
-    <Option Name="WTXSimExportSim" Val="267"/>
-    <Option Name="WTModelSimExportSim" Val="267"/>
-    <Option Name="WTQuestaExportSim" Val="267"/>
+    <Option Name="WTXSimExportSim" Val="268"/>
+    <Option Name="WTModelSimExportSim" Val="268"/>
+    <Option Name="WTQuestaExportSim" Val="268"/>
     <Option Name="WTIesExportSim" Val="91"/>
-    <Option Name="WTVcsExportSim" Val="266"/>
-    <Option Name="WTRivieraExportSim" Val="266"/>
-    <Option Name="WTActivehdlExportSim" Val="266"/>
+    <Option Name="WTVcsExportSim" Val="267"/>
+    <Option Name="WTRivieraExportSim" Val="267"/>
+    <Option Name="WTActivehdlExportSim" Val="267"/>
     <Option Name="GenerateIPUpgradeLog" Val="TRUE"/>
     <Option Name="XSimRadix" Val="hex"/>
     <Option Name="XSimTimeUnit" Val="ns"/>

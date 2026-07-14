@@ -3,7 +3,7 @@
 ## Session: 2026-07-14
 
 ### Phase 1-5：需求、方案、实现、验证准备与交付整理
-- **Status:** RTL 已落地；本机可执行验证已通过；Vivado/Basic Trace 待用户本机工具链执行
+- **Status:** RTL 已落地；本机静态/算法/交付包验证已完成；用户侧 Vivado 行为仿真已通过；Basic Trace 待执行
 - **Started:** 2026-07-14
 - Actions taken:
   - 确认实验指导书 ZIP 与作业材料整理文件存在。
@@ -35,6 +35,14 @@
   - 重新运行静态检查，结果仍为 `STATIC CHECK PASSED`。
   - 重新生成最新单周期源码包 `dist/single_cycle_20260714_120705`，包含修复后的 RTL。
   - 生成 `dist/single_cycle_20260714_120705.zip`，并检查 zip 内部仅含 `rtl/`、`coe/`、`manifest.txt`，大小 14,042 字节。
+  - 读取用户贴出的 Vivado Tcl 日志：确认 `ls` 报错只是 Tcl Console 命令前缀歧义，不是工程/RTL 错误；`source tools/vivado_lab1_check.tcl` 已打开工程并完成 `xvlog` 源码分析阶段。
+  - 将用户侧 Vivado 部分验证证据同步到落地文档：目前证明“Vivado 编译分析阶段未见 RTL 语法/宏错误”，但尚未证明 `xelab/run all/Test Passed`。
+  - 根据用户再次运行脚本的日志修复 `tools/vivado_lab1_check.tcl`：当目标 `miniRV.xpr` 已经打开时复用当前工程，避免 `ERROR: [Coretcl 2-101] Project ... is already open` 阻断后续仿真流程。
+  - 读取用户最新 Vivado transcript：`xvlog` compile、`xelab` elaborate、XSim simulate 均完成，`run all` 后输出 `Test Passed!`，`$finish` 时间为 `11480100 ps`。
+  - 更新落地文档、发现记录和进度记录：Vivado 行为仿真状态改为已通过；Basic Trace、综合/实现/报告截图仍保留为后续门。
+  - 检查当前工作区，未发现 `cdp-tests`、`mySoC` 或 Trace 框架目录。
+  - 新增 `tools/prepare_basic_trace_sources.ps1`，用于 Trace 框架就位后把 `src/rtl` 顶层 `.v/.vh` 同步到 `cdp-tests/mySoC`，并排除 IP/生成物。
+  - 用户确认后续转 Linux 跑 Basic Trace；新增 `tools/prepare_basic_trace_sources.sh`，提供 Linux 版 RTL 同步脚本。
 - Files created/modified:
   - `task_plan.md`（创建）
   - `findings.md`（创建）
@@ -46,6 +54,8 @@
   - `tools/vivado_lab1_check.tcl`（创建）
   - `tools/check_vivado_env.ps1`（创建）
   - `tools/prepare_single_cycle_sources.ps1`（创建）
+  - `tools/prepare_basic_trace_sources.ps1`（创建）
+  - `tools/prepare_basic_trace_sources.sh`（创建）
   - `dist/single_cycle_20260714_120705/`（最新生成的交付包目录）
   - `dist/single_cycle_20260714_120705.zip`（最新单周期源码 zip 包）
   - `docs/superpowers/plans/2026-07-14-minirv-ab-implementation.md`（创建）
@@ -62,11 +72,12 @@
 | 指导书通读 | ZIP 内 `docs/**/*.md` | 形成中文要点记录 | 已写入 `lab1/指导书通读要点记录.md` | ✓ |
 | 静态 RTL 检查 | `python tools\check_minirv_static.py` | 覆盖关键宏、译码、接线、访存、乘除禁用运算符 | `STATIC CHECK PASSED` | ✓ |
 | 算法边界检查 | `python tools\verify_minirv_algorithms.py` | 覆盖乘除特殊值和边界样例 | `ALGORITHM CHECK PASSED (16 cases)` | ✓ |
-| Vivado 环境检查 | `powershell -ExecutionPolicy Bypass -File tools\check_vivado_env.ps1` | 找到 Vivado/Verilog 命令行或给出用户侧验证路径 | 工具缺失；工程和 Tcl 脚本存在 | ⚠ |
+| Vivado 环境检查 | `powershell -ExecutionPolicy Bypass -File tools\check_vivado_env.ps1` | 找到 Vivado/Verilog 命令行或给出用户侧验证路径 | Codex 环境工具缺失；用户侧 Vivado 可用 | ⚠ |
 | 单周期源码包准备 | `powershell -ExecutionPolicy Bypass -File tools\prepare_single_cycle_sources.ps1` | 生成不含 IP/生成物的源码包 | `dist/single_cycle_20260714_114311`，含 RTL/COE/manifest | ✓ |
 | 补强静态检查 | `python tools\check_minirv_static.py` | 覆盖宏 include、多周期乘除完成链与 busy 抑制 | `STATIC CHECK PASSED` | ✓ |
 | 最新单周期源码包准备 | `powershell -ExecutionPolicy Bypass -File tools\prepare_single_cycle_sources.ps1` | 生成包含最新 RTL 的源码包 | `dist/single_cycle_20260714_120705`，含 RTL/COE/manifest | ✓ |
 | 单周期源码 zip | `Compress-Archive -Path dist\single_cycle_20260714_120705\* -DestinationPath dist\single_cycle_20260714_120705.zip -Force` | 生成小于 100MB 且不含 IP/生成物的 zip | 14,042 字节，仅含 `rtl/`、`coe/`、`manifest.txt` | ✓ |
+| 用户侧 Vivado 行为仿真 | `source tools/vivado_lab1_check.tcl` | Vivado 打开工程、编译、展开并运行 testbench | `xvlog`/`xelab`/XSim 完成，`run all` 输出 `Test Passed!`，`$finish` at `11480100 ps` | ✓ |
 
 ## Error Log
 | Timestamp | Error | Attempt | Resolution |
@@ -75,12 +86,14 @@
 | 2026-07-14 | `git log/status` 失败：工作区不是 Git 仓库 | 1 | 不依赖版本记录，按磁盘现有材料探索 |
 | 2026-07-14 | Windows 沙箱读文件/列目录报 1312 | 1 | 对必要只读操作使用授权方式重跑并成功 |
 | 2026-07-14 | `vivado/xvlog/iverilog/verilator` 不在 PATH | 多次检查 | 保留 Vivado Tcl 与环境检查脚本，等待用户本机 Vivado/Trace 执行 |
+| 2026-07-14 | Vivado Tcl Console 输入 `ls` 报 `ambiguous command name "ls": lsearch lset lsort` | 用户侧日志 | 根因是 Tcl 命令前缀歧义；Vivado Tcl 中列目录用 `glob *`，或在系统终端使用 `dir/ls` |
+| 2026-07-14 | `source tools/vivado_lab1_check.tcl` 报 `Project ... is already open` | 用户侧日志 | 修复 Tcl 脚本：若当前已打开目标工程则复用；若打开的是其他工程则先 `close_project` 再打开目标工程 |
 
 ## 5-Question Reboot Check
 | Question | Answer |
 |----------|--------|
-| Where am I? | RTL 已落地，本机静态/算法/交付包验证已完成 |
-| Where am I going? | 等待 Vivado/Basic Trace 工具链执行最终仿真、综合/实现和截图 |
+| Where am I? | RTL 已落地，本机静态/算法/交付包验证已完成，用户侧 Vivado 行为仿真已通过 |
+| Where am I going? | 继续 Basic Trace、综合/实现和截图 |
 | What's the goal? | 完成实验一单周期 CPU 的设计、实现、验证和交付整理 |
 | What have I learned? | 见 findings.md |
 | What have I done? | 已定位并阅读实验步骤，建立计划文件 |
