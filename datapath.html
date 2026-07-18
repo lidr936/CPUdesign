@@ -229,6 +229,8 @@
     .node.active polygon,
     .node:hover polygon,
     .node:focus polygon,
+    [data-pinned="true"] rect,
+    [data-pinned="true"] polygon,
     .mux.active polygon,
     .mux:hover polygon,
     .mux:focus polygon {
@@ -240,15 +242,19 @@
     .flow.active,
     .flow:hover,
     .flow:focus,
+    .flow[data-pinned="true"],
     .control-flow.active,
     .control-flow:hover,
     .control-flow:focus,
+    .control-flow[data-pinned="true"],
     .mem-flow.active,
     .mem-flow:hover,
     .mem-flow:focus,
+    .mem-flow[data-pinned="true"],
     .state-flow.active,
     .state-flow:hover,
-    .state-flow:focus {
+    .state-flow:focus,
+    .state-flow[data-pinned="true"] {
       stroke: var(--active);
       stroke-width: 5;
       opacity: 1;
@@ -573,21 +579,21 @@
         <circle class="pin" cx="560" cy="200" r="4"></circle>
         <circle class="pin" cx="560" cy="390" r="4"></circle>
 
-        <path class="control-flow thin" data-key="sig_decode_fields" tabindex="0" d="M560 112 H720 M560 146 H720 M560 180 H720"></path>
-        <text class="label" x="655" y="102">6:0</text>
-        <text class="label" x="650" y="136">14:12</text>
-        <text class="label" x="650" y="170">31:25</text>
+        <path class="control-flow thin" data-key="sig_decode_fields" tabindex="0" d="M560 102 H720 M560 136 H720 M560 170 H720"></path>
+        <text class="label" x="655" y="92">6:0</text>
+        <text class="label" x="650" y="126">14:12</text>
+        <text class="label" x="650" y="160">31:25</text>
 
-        <path class="flow" data-key="sig_inst_to_rf" tabindex="0" d="M590 390 H820 M590 428 H820 M590 466 H820"></path>
-        <text class="label" x="742" y="379">19:15</text>
-        <text class="label" x="742" y="417">24:20</text>
-        <text class="label" x="742" y="455">11:7</text>
+        <path class="flow" data-key="sig_inst_to_rf" tabindex="0" d="M590 368 H820 M590 406 H820 M590 444 H820"></path>
+        <text class="label" x="742" y="357">19:15</text>
+        <text class="label" x="742" y="395">24:20</text>
+        <text class="label" x="742" y="433">11:7</text>
 
-        <path class="flow" data-key="sig_inst_to_sext" tabindex="0" d="M560 560 H610"></path>
-        <text class="label" x="560" y="548">31:7</text>
+        <path class="flow" data-key="sig_inst_to_sext" tabindex="0" d="M560 573 H610"></path>
+        <text class="label" x="560" y="562">31:7</text>
 
-        <path class="control-flow" data-key="sig_control_bus" tabindex="0" d="M930 140 H1510 M930 175 H1510 M930 208 H1510 M930 236 H1130 M930 256 H1130 M930 238 V400 H755"></path>
-        <text class="label" x="1095" y="128">ram_rop / ram_wop</text>
+        <path class="control-flow" data-key="sig_control_bus" tabindex="0" d="M930 144 H1488 V185 H1510 M930 176 H1470 V220 H1510 M930 208 H1212 V405 H1225 M930 236 H1130 M930 256 H1130 M930 238 V400 H755 M930 176 H1490 V538 H1545"></path>
+        <text class="label" x="1095" y="132">ram_rop / ram_wop</text>
         <text class="label" x="1040" y="228">alu_op / alua_sel / alub_sel</text>
         <text class="label" x="725" y="389">rf_wsel / rf_we</text>
 
@@ -602,18 +608,18 @@
         <text class="label" x="1035" y="455">rf_rd2</text>
         <text class="label" x="1390" y="260">ram_wdata</text>
 
-        <path class="flow" data-key="sig_ext" tabindex="0" d="M740 592 H1128 M740 592 V670 H206 V462 H210 M740 592 V680 H755"></path>
+        <path class="flow" data-key="sig_ext" tabindex="0" d="M740 618 V548 H1128 M740 618 V670 H206 V462 H210 M740 618 V680 H755"></path>
         <text class="label" x="785" y="580">ext</text>
         <text class="label" x="255" y="650">offset</text>
 
         <path class="flow thin" data-key="sig_pc_to_alu" tabindex="0" d="M445 390 H1088 V416 H1130"></path>
         <text class="label" x="720" y="378">PC for AUIPC</text>
 
-        <path class="flow" data-key="sig_alu_inputs" tabindex="0" d="M1164 410 H1225 M1164 540 H1225"></path>
+        <path class="flow" data-key="sig_alu_inputs" tabindex="0" d="M1164 410 H1205 V442 H1225 M1164 540 H1205 V500 H1225"></path>
         <text class="label" x="1175" y="400">A</text>
         <text class="label" x="1175" y="530">B</text>
 
-        <path class="flow" data-key="sig_alu_c" tabindex="0" d="M1330 462 H1465 V313 H1510 M1330 462 V705 H755"></path>
+        <path class="flow" data-key="sig_alu_c" tabindex="0" d="M1330 462 H1465 V313 H1510 M1330 462 V705 H755 M1330 462 H1458 V582 H1545"></path>
         <text class="label" x="1370" y="450">alu_c</text>
         <text class="label" x="1375" y="302">ram_addr</text>
 
@@ -630,7 +636,7 @@
         <path class="mem-flow" data-key="sig_dram_to_mext" tabindex="0" d="M1810 405 H1695 V540 H1660"></path>
         <text class="label" x="1702" y="527">daccess_rdata / valid</text>
 
-        <path class="flow" data-key="sig_mext_to_wb" tabindex="0" d="M1545 605 H1480 V725 H755 V508"></path>
+        <path class="flow" data-key="sig_mext_to_wb" tabindex="0" d="M1660 604 H1480 V725 H755 V508"></path>
         <text class="label" x="1420" y="714">ram_ext</text>
 
         <path class="flow" data-key="sig_alu_to_wb" tabindex="0" d="M1330 462 V690 H755 V424"></path>
@@ -642,10 +648,10 @@
         <path class="flow" data-key="sig_ext_to_wb" tabindex="0" d="M740 592 V650 H755 V482"></path>
         <text class="label" x="760" y="640">WB_EXT</text>
 
-        <path class="flow" data-key="sig_wb_to_rf" tabindex="0" d="M793 468 H820"></path>
+        <path class="flow" data-key="sig_wb_to_rf" tabindex="0" d="M793 468 H805 V508 H820"></path>
         <text class="label" x="725" y="558">rf_wD / rf_we1 / rf_wR</text>
 
-        <path class="flow" data-key="sig_npc_to_pc" tabindex="0" d="M330 382 H365"></path>
+        <path class="flow" data-key="sig_npc_to_pc" tabindex="0" d="M330 384 H350 V406 H365"></path>
         <text class="label" x="336" y="373">npc</text>
 
         <path class="state-flow" data-key="sig_inst_finished" tabindex="0" d="M990 672 H405 V448"></path>
@@ -656,7 +662,7 @@
     </section>
 
     <aside class="detail-panel" aria-live="polite">
-      <div class="detail-kicker">组件/连线详情</div>
+      <div class="detail-kicker" id="detail-kicker">组件/连线详情</div>
       <h2 id="detail-title">miniRV 单周期 CPU 数据通路</h2>
       <span id="detail-type" class="detail-type">总览</span>
       <p id="detail-text">这张图按当前 RTL 的 `cpu_top.v` 和 `cpu_core.v` 绘制：取指接口连接 `Inst_ROM`，数据访存接口连接 `Data_RAM`，核心内部按 IF、ID、EX、MEM、WB 组织。普通指令在 `ifetch_valid` 同拍完成，load/store 和乘除法通过状态标志等待响应或 `busy` 解除。</p>
@@ -998,13 +1004,16 @@
     const textEl = document.getElementById("detail-text");
     const sourceEl = document.getElementById("detail-source");
     const signalsEl = document.getElementById("detail-signals");
+    const kickerEl = document.getElementById("detail-kicker");
     let activeEl = null;
+    let pinnedEl = null;
 
     function codeList(items) {
       return items.map((item) => `<code>${item}</code>`).join(" ");
     }
 
-    function renderDetail(detail) {
+    function renderDetail(detail, pinned = false) {
+      kickerEl.textContent = pinned ? "组件/连线详情 - 已固定" : "组件/连线详情";
       titleEl.textContent = detail.title;
       typeEl.textContent = detail.type;
       textEl.textContent = detail.text;
@@ -1012,24 +1021,51 @@
       signalsEl.innerHTML = codeList(detail.signals);
     }
 
-    function setActive(el) {
+    function setActive(el, pinned = false) {
       if (activeEl) activeEl.classList.remove("active");
       activeEl = el;
       if (activeEl) activeEl.classList.add("active");
       const key = el && el.dataset.key;
-      renderDetail(details[key] || defaultDetail);
+      renderDetail(details[key] || defaultDetail, pinned);
+    }
+
+    function clearPinned() {
+      if (pinnedEl) pinnedEl.removeAttribute("data-pinned");
+      pinnedEl = null;
+      setActive(null);
+    }
+
+    function togglePinned(el) {
+      if (pinnedEl === el) {
+        clearPinned();
+        return;
+      }
+
+      if (pinnedEl) pinnedEl.removeAttribute("data-pinned");
+      pinnedEl = el;
+      pinnedEl.setAttribute("data-pinned", "true");
+      setActive(el, true);
     }
 
     document.querySelectorAll("[data-key]").forEach((el) => {
-      el.addEventListener("mouseenter", () => setActive(el));
-      el.addEventListener("focus", () => setActive(el));
+      el.addEventListener("mouseenter", () => {
+        if (!pinnedEl) setActive(el);
+      });
+      el.addEventListener("focus", () => {
+        if (!pinnedEl) setActive(el);
+      });
+      el.addEventListener("click", () => togglePinned(el));
       el.addEventListener("mouseleave", () => {
-        if (activeEl === el) {
+        if (!pinnedEl && activeEl === el) {
           activeEl.classList.remove("active");
           activeEl = null;
           renderDetail(defaultDetail);
         }
       });
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") clearPinned();
     });
 
     renderDetail(defaultDetail);
