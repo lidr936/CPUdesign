@@ -1,0 +1,1038 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>miniRV 数据通路图</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --panel: #ffffff;
+      --ink: #17202a;
+      --muted: #607085;
+      --line: #56687c;
+      --data: #246bfe;
+      --control: #b45309;
+      --memory: #0f8b6f;
+      --state: #7c3aed;
+      --warn: #c2410c;
+      --border: #d7dee8;
+      --soft: #edf2f7;
+      --active: #ffb020;
+      --shadow: 0 14px 34px rgba(17, 24, 39, 0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.55;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      padding: 16px;
+    }
+
+    .diagram-shell,
+    .detail-panel,
+    .source-notes {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .diagram-shell {
+      overflow: auto;
+      min-height: 670px;
+    }
+
+    .diagram-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 18px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .swatch {
+      width: 18px;
+      height: 0;
+      border-top: 3px solid #242424;
+      border-radius: 0;
+      display: inline-block;
+      background: none;
+    }
+
+    .swatch.data { border-top-style: solid; }
+    .swatch.control { border-top-style: dashed; }
+    .swatch.memory { border-top-style: double; }
+    .swatch.state { border-top-style: dotted; }
+
+    svg {
+      width: 100%;
+      min-width: 1280px;
+      height: auto;
+      aspect-ratio: 1900 / 760;
+      display: block;
+    }
+
+    .stage-band {
+      fill: #f8fafc;
+      stroke: #e2e8f0;
+      stroke-width: 1;
+    }
+
+    .stage-title {
+      fill: #475569;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .node rect,
+    .node polygon,
+    .mux polygon {
+      fill: #ffffff;
+      stroke: #202020;
+      stroke-width: 2;
+      transition: fill 150ms ease, stroke 150ms ease, filter 150ms ease;
+    }
+
+    .node.memory rect,
+    .node.control rect,
+    .node.state rect { stroke: #202020; }
+
+    .node.external rect {
+      fill: #fbfbfb;
+      stroke-dasharray: 8 7;
+    }
+    .node text,
+    .mux text {
+      pointer-events: none;
+      fill: #16202f;
+      font-size: 14px;
+      font-weight: 700;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      letter-spacing: 0;
+    }
+
+    .node .sub,
+    .mux .sub {
+      fill: #4b5563;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .flow,
+    .control-flow,
+    .mem-flow,
+    .state-flow {
+      fill: none;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      cursor: pointer;
+      transition: stroke 150ms ease, stroke-width 150ms ease, opacity 150ms ease;
+    }
+
+    .flow { stroke: #242424; marker-end: url(#arrowData); }
+    .control-flow {
+      stroke: #242424;
+      stroke-dasharray: 8 6;
+      marker-end: url(#arrowControl);
+    }
+    .mem-flow { stroke: #242424; marker-end: url(#arrowMemory); }
+    .state-flow {
+      stroke: #242424;
+      stroke-dasharray: 3 7;
+      marker-end: url(#arrowState);
+    }
+
+    .thin {
+      stroke-width: 2;
+    }
+
+    .label {
+      fill: #202020;
+      font-size: 13px;
+      font-weight: 650;
+      paint-order: stroke;
+      stroke: #ffffff;
+      stroke-width: 5px;
+      stroke-linejoin: round;
+      letter-spacing: 0;
+    }
+
+    .port {
+      fill: #202020;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    .pin {
+      fill: #202020;
+      stroke: none;
+    }
+
+    .diagram-note {
+      fill: #9ca3af;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .node[data-key],
+    .mux[data-key] {
+      cursor: pointer;
+      outline: none;
+    }
+
+    .node.active rect,
+    .node:hover rect,
+    .node:focus rect,
+    .node.active polygon,
+    .node:hover polygon,
+    .node:focus polygon,
+    .mux.active polygon,
+    .mux:hover polygon,
+    .mux:focus polygon {
+      fill: #fff7e8;
+      stroke: var(--active);
+      filter: drop-shadow(0 8px 14px rgba(255, 176, 32, 0.24));
+    }
+
+    .flow.active,
+    .flow:hover,
+    .flow:focus,
+    .control-flow.active,
+    .control-flow:hover,
+    .control-flow:focus,
+    .mem-flow.active,
+    .mem-flow:hover,
+    .mem-flow:focus,
+    .state-flow.active,
+    .state-flow:hover,
+    .state-flow:focus {
+      stroke: var(--active);
+      stroke-width: 5;
+      opacity: 1;
+      marker-end: url(#arrowActive);
+      outline: none;
+    }
+
+    .detail-panel {
+      min-height: 220px;
+      padding: 18px;
+    }
+
+    .detail-kicker {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .detail-panel h2 {
+      margin: 6px 0 8px;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .detail-type {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 2px 9px;
+      border-radius: 999px;
+      background: #eef6ff;
+      color: #1d4ed8;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .detail-panel p {
+      color: #27364a;
+      margin: 14px 0;
+    }
+
+    .detail-panel dl {
+      margin: 14px 0 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .detail-panel dt {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .detail-panel dd {
+      margin: 3px 0 0;
+      color: #1f2937;
+      font-size: 14px;
+    }
+
+    code {
+      padding: 1px 5px;
+      border-radius: 5px;
+      background: #eef2f7;
+      color: #111827;
+      font-family: "JetBrains Mono", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .source-notes {
+      grid-column: 1 / -1;
+      padding: 22px;
+    }
+
+    .source-notes h2 {
+      margin: 0 0 14px;
+      font-size: 22px;
+    }
+
+    .note-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .note {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      background: #fbfdff;
+    }
+
+    .note h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+
+    .note p {
+      margin: 0;
+      color: #344256;
+      font-size: 14px;
+    }
+
+    @media (max-width: 1120px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-panel {
+        position: static;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .app {
+        padding: 10px;
+      }
+
+      .diagram-shell {
+        min-height: 540px;
+      }
+
+      .diagram-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .legend {
+        justify-content: flex-start;
+      }
+
+      .note-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="diagram-shell" aria-labelledby="page-title">
+      <div class="diagram-header">
+        <h1 id="page-title">miniRV 单周期 CPU 数据通路图</h1>
+        <div class="legend" aria-label="图例">
+          <span><i class="swatch data"></i>数据路径</span>
+          <span><i class="swatch control"></i>控制路径</span>
+          <span><i class="swatch memory"></i>访存握手</span>
+          <span><i class="swatch state"></i>多周期状态</span>
+        </div>
+      </div>
+
+      <svg viewBox="0 0 1900 760" role="img" aria-labelledby="svg-title svg-desc">
+        <title id="svg-title">miniRV 数据通路</title>
+        <desc id="svg-desc">根据 cpu_core.v 和 cpu_top.v 绘制的 PC、取指、译码、执行、访存、写回数据通路。</desc>
+        <defs>
+          <marker id="arrowData" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#242424"></path>
+          </marker>
+          <marker id="arrowControl" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#242424"></path>
+          </marker>
+          <marker id="arrowMemory" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#242424"></path>
+          </marker>
+          <marker id="arrowState" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#242424"></path>
+          </marker>
+          <marker id="arrowActive" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#ffb020"></path>
+          </marker>
+        </defs>
+
+        <text class="stage-title" x="70" y="45">IF</text>
+        <text class="stage-title" x="610" y="45">ID</text>
+        <text class="stage-title" x="1125" y="45">EX</text>
+        <text class="stage-title" x="1515" y="45">MEM</text>
+        <text class="stage-title" x="790" y="715">WB / commit</text>
+
+        <g class="node external memory" data-key="irom" tabindex="0" transform="translate(25 125)">
+          <text x="70" y="-22">Inst_ROM</text>
+          <rect width="140" height="205" rx="0"></rect>
+          <text x="70" y="74">指令</text>
+          <text class="sub" x="70" y="146">取指地址</text>
+        </g>
+
+        <g class="node" data-key="npc" tabindex="0" transform="translate(210 290)">
+          <rect width="120" height="180" rx="0"></rect>
+          <text x="60" y="-18">NPC</text>
+          <text class="sub" x="60" y="161">pc4 / npc</text>
+          <text class="port" x="10" y="36">pc</text>
+          <text class="port" x="10" y="70">op</text>
+          <text class="port" x="10" y="104">base</text>
+          <text class="port" x="10" y="138">br</text>
+          <text class="port" x="10" y="172">offset</text>
+          <text class="port" x="85" y="94">npc</text>
+          <text class="port" x="86" y="151">pc4</text>
+        </g>
+
+        <g class="node state" data-key="pc" tabindex="0" transform="translate(365 330)">
+          <rect width="80" height="118" rx="0"></rect>
+          <text x="40" y="-16">PC</text>
+          <text class="sub" x="40" y="103">PC.v</text>
+          <text class="port" x="12" y="36">rst</text>
+          <text class="port" x="10" y="76">npc</text>
+          <text class="port" x="56" y="62">pc</text>
+        </g>
+
+        <g class="node control" data-key="controller" tabindex="0" transform="translate(720 40)">
+          <text x="105" y="-16">Controller</text>
+          <rect width="210" height="220" rx="0"></rect>
+          <text class="port" x="18" y="62">opcode</text>
+          <text class="port" x="18" y="96">funct3</text>
+          <text class="port" x="18" y="130">funct7</text>
+          <text class="port" x="144" y="40">sext_op</text>
+          <text class="port" x="148" y="72">npc_op</text>
+          <text class="port" x="143" y="104">ram_r_op</text>
+          <text class="port" x="143" y="136">ram_w_op</text>
+          <text class="port" x="151" y="168">alu_op</text>
+          <text class="port" x="139" y="196">alua_sel</text>
+          <text class="port" x="139" y="216">alub_sel</text>
+          <text class="port" x="54" y="199">rf_wsel</text>
+          <text class="port" x="112" y="199">rf_we</text>
+        </g>
+
+        <g class="node" data-key="sext" tabindex="0" transform="translate(610 535)">
+          <text x="65" y="-16">SEXT</text>
+          <rect width="130" height="105" rx="0"></rect>
+          <text class="port" x="12" y="38">imm</text>
+          <text class="port" x="12" y="83">op</text>
+          <text class="port" x="92" y="83">ext</text>
+        </g>
+
+        <g class="mux" data-key="wb_mux" tabindex="0" transform="translate(755 400)">
+          <polygon points="0,0 38,20 38,118 0,138"></polygon>
+          <text class="sub" x="18" y="22">0</text>
+          <text class="sub" x="18" y="52">1</text>
+          <text class="sub" x="18" y="82">2</text>
+          <text class="sub" x="18" y="112">3</text>
+          <text x="19" y="148">WB</text>
+        </g>
+
+        <g class="node" data-key="rf" tabindex="0" transform="translate(820 330)">
+          <text x="80" y="-18">RF</text>
+          <rect width="160" height="190" rx="0"></rect>
+          <text class="port" x="14" y="38">rR1</text>
+          <text class="port" x="14" y="76">rR2</text>
+          <text class="port" x="14" y="114">wR</text>
+          <text class="port" x="14" y="152">we</text>
+          <text class="port" x="14" y="178">wD</text>
+          <text class="port" x="118" y="70">rD1</text>
+          <text class="port" x="118" y="134">rD2</text>
+          <text class="sub" x="80" y="166">clk</text>
+        </g>
+
+        <g class="mux" data-key="alu_mux" tabindex="0" transform="translate(1130 360)">
+          <polygon points="0,0 34,18 34,80 0,100"></polygon>
+          <text class="sub" x="14" y="32">0</text>
+          <text class="sub" x="14" y="74">1</text>
+          <polygon points="0,130 34,148 34,210 0,230"></polygon>
+          <text class="sub" x="14" y="162">0</text>
+          <text class="sub" x="14" y="204">1</text>
+          <text x="18" y="118">ALU</text>
+          <text class="sub" x="18" y="246">MUX</text>
+        </g>
+
+        <g class="node" data-key="alu" tabindex="0" transform="translate(1225 350)">
+          <polygon points="0,0 105,42 105,160 0,202 22,145 22,57"></polygon>
+          <text x="52" y="-17">ALU</text>
+          <text class="port" x="22" y="55">op</text>
+          <text class="port" x="27" y="92">A</text>
+          <text class="port" x="27" y="150">B</text>
+          <text class="port" x="75" y="112">C</text>
+          <text class="port" x="73" y="150">br</text>
+        </g>
+
+        <g class="node memory" data-key="mreq" tabindex="0" transform="translate(1510 145)">
+          <text x="88" y="-18">MREQ</text>
+          <rect width="175" height="230" rx="0"></rect>
+          <text class="port" x="14" y="40">ram_rop</text>
+          <text class="port" x="14" y="75">ram_wop</text>
+          <text class="port" x="14" y="128">ram_wdata</text>
+          <text class="port" x="14" y="168">ram_addr</text>
+          <text class="port" x="116" y="40">da_ren</text>
+          <text class="port" x="116" y="75">da_addr</text>
+          <text class="port" x="116" y="128">da_wen</text>
+          <text class="port" x="116" y="168">da_wdata</text>
+        </g>
+
+        <g class="node external memory" data-key="dram" tabindex="0" transform="translate(1810 120)">
+          <text x="60" y="-18">Data_RAM</text>
+          <rect width="110" height="315" rx="0"></rect>
+          <text x="55" y="45">读使能</text>
+          <text x="55" y="82">访问地址</text>
+          <text x="55" y="135">写使能</text>
+          <text x="55" y="172">写数据</text>
+          <text x="55" y="286">读数据</text>
+        </g>
+
+        <g class="node memory" data-key="mext" tabindex="0" transform="translate(1545 500)">
+          <text x="58" y="-18">MEXT</text>
+          <rect width="115" height="130" rx="0"></rect>
+          <text class="port" x="12" y="38">op</text>
+          <text class="port" x="12" y="82">byte_offs</text>
+          <text class="port" x="75" y="38">din</text>
+          <text class="port" x="75" y="104">ext</text>
+        </g>
+
+        <g class="node state" data-key="flags" tabindex="0" transform="translate(990 630)">
+          <rect width="180" height="82" rx="0"></rect>
+          <text x="90" y="28">状态寄存</text>
+          <text class="sub" x="90" y="53">ld_st_flag / mul_div_flag</text>
+        </g>
+
+        <path class="flow" data-key="sig_pc_to_irom" tabindex="0" d="M445 390 H520 V290 H165"></path>
+        <text class="label" x="255" y="277">ifetch_addr = pc</text>
+
+        <path class="mem-flow thin" data-key="sig_ifetch_req" tabindex="0" d="M445 350 V108 H95 V125"></path>
+        <text class="label" x="270" y="96">ifetch_req</text>
+
+        <path class="flow" data-key="sig_inst" tabindex="0" d="M165 200 H560 M560 200 V112 H720 M560 200 V390 H820 M560 200 V560 H610"></path>
+        <text class="label" x="300" y="188">ifetch_inst / inst</text>
+        <circle class="pin" cx="560" cy="200" r="4"></circle>
+        <circle class="pin" cx="560" cy="390" r="4"></circle>
+
+        <path class="control-flow thin" data-key="sig_decode_fields" tabindex="0" d="M560 112 H720 M560 146 H720 M560 180 H720"></path>
+        <text class="label" x="655" y="102">6:0</text>
+        <text class="label" x="650" y="136">14:12</text>
+        <text class="label" x="650" y="170">31:25</text>
+
+        <path class="flow" data-key="sig_inst_to_rf" tabindex="0" d="M590 390 H820 M590 428 H820 M590 466 H820"></path>
+        <text class="label" x="742" y="379">19:15</text>
+        <text class="label" x="742" y="417">24:20</text>
+        <text class="label" x="742" y="455">11:7</text>
+
+        <path class="flow" data-key="sig_inst_to_sext" tabindex="0" d="M560 560 H610"></path>
+        <text class="label" x="560" y="548">31:7</text>
+
+        <path class="control-flow" data-key="sig_control_bus" tabindex="0" d="M930 140 H1510 M930 175 H1510 M930 208 H1510 M930 236 H1130 M930 256 H1130 M930 238 V400 H755"></path>
+        <text class="label" x="1095" y="128">ram_rop / ram_wop</text>
+        <text class="label" x="1040" y="228">alu_op / alua_sel / alub_sel</text>
+        <text class="label" x="725" y="389">rf_wsel / rf_we</text>
+
+        <path class="control-flow thin" data-key="sig_control_to_npc" tabindex="0" d="M930 112 H970 V20 H195 V360 H210"></path>
+        <text class="label" x="240" y="350">npc_op</text>
+
+        <path class="flow" data-key="sig_rf_rd1" tabindex="0" d="M980 400 H1130 M980 400 H1060 V320 H330"></path>
+        <text class="label" x="1035" y="388">rf_rd1</text>
+        <text class="label" x="422" y="309">base</text>
+
+        <path class="flow" data-key="sig_rf_rd2" tabindex="0" d="M980 464 H1130 M980 464 H1475 V274 H1510"></path>
+        <text class="label" x="1035" y="455">rf_rd2</text>
+        <text class="label" x="1390" y="260">ram_wdata</text>
+
+        <path class="flow" data-key="sig_ext" tabindex="0" d="M740 592 H1128 M740 592 V670 H206 V462 H210 M740 592 V680 H755"></path>
+        <text class="label" x="785" y="580">ext</text>
+        <text class="label" x="255" y="650">offset</text>
+
+        <path class="flow thin" data-key="sig_pc_to_alu" tabindex="0" d="M445 390 H1088 V416 H1130"></path>
+        <text class="label" x="720" y="378">PC for AUIPC</text>
+
+        <path class="flow" data-key="sig_alu_inputs" tabindex="0" d="M1164 410 H1225 M1164 540 H1225"></path>
+        <text class="label" x="1175" y="400">A</text>
+        <text class="label" x="1175" y="530">B</text>
+
+        <path class="flow" data-key="sig_alu_c" tabindex="0" d="M1330 462 H1465 V313 H1510 M1330 462 V705 H755"></path>
+        <text class="label" x="1370" y="450">alu_c</text>
+        <text class="label" x="1375" y="302">ram_addr</text>
+
+        <path class="control-flow" data-key="sig_br" tabindex="0" d="M1330 502 H1410 V735 H185 V428 H210"></path>
+        <text class="label" x="1340" y="493">br</text>
+
+        <path class="state-flow" data-key="sig_busy" tabindex="0" d="M1330 536 H1430 V718 H1080 V712"></path>
+        <text class="label" x="1240" y="724">mul_div_busy</text>
+
+        <path class="mem-flow" data-key="sig_mreq_to_dram" tabindex="0" d="M1685 185 H1810 M1685 220 H1810 M1685 273 H1810 M1685 313 H1810"></path>
+        <text class="label" x="1712" y="172">da_ren / da_addr</text>
+        <text class="label" x="1712" y="260">da_wen / da_wdata</text>
+
+        <path class="mem-flow" data-key="sig_dram_to_mext" tabindex="0" d="M1810 405 H1695 V540 H1660"></path>
+        <text class="label" x="1702" y="527">daccess_rdata / valid</text>
+
+        <path class="flow" data-key="sig_mext_to_wb" tabindex="0" d="M1545 605 H1480 V725 H755 V508"></path>
+        <text class="label" x="1420" y="714">ram_ext</text>
+
+        <path class="flow" data-key="sig_alu_to_wb" tabindex="0" d="M1330 462 V690 H755 V424"></path>
+        <text class="label" x="980" y="680">WB_ALU</text>
+
+        <path class="flow" data-key="sig_pc4_to_wb" tabindex="0" d="M330 440 H715 V452 H755"></path>
+        <text class="label" x="352" y="430">pc4</text>
+
+        <path class="flow" data-key="sig_ext_to_wb" tabindex="0" d="M740 592 V650 H755 V482"></path>
+        <text class="label" x="760" y="640">WB_EXT</text>
+
+        <path class="flow" data-key="sig_wb_to_rf" tabindex="0" d="M793 468 H820"></path>
+        <text class="label" x="725" y="558">rf_wD / rf_we1 / rf_wR</text>
+
+        <path class="flow" data-key="sig_npc_to_pc" tabindex="0" d="M330 382 H365"></path>
+        <text class="label" x="336" y="373">npc</text>
+
+        <path class="state-flow" data-key="sig_inst_finished" tabindex="0" d="M990 672 H405 V448"></path>
+        <text class="label" x="555" y="660">inst_finished 更新 PC / 触发下一次取指</text>
+
+        <text class="diagram-note" x="700" y="300">源码信号名以当前 RTL 为准；悬浮模块或连线查看解释</text>
+      </svg>
+    </section>
+
+    <aside class="detail-panel" aria-live="polite">
+      <div class="detail-kicker">组件/连线详情</div>
+      <h2 id="detail-title">miniRV 单周期 CPU 数据通路</h2>
+      <span id="detail-type" class="detail-type">总览</span>
+      <p id="detail-text">这张图按当前 RTL 的 `cpu_top.v` 和 `cpu_core.v` 绘制：取指接口连接 `Inst_ROM`，数据访存接口连接 `Data_RAM`，核心内部按 IF、ID、EX、MEM、WB 组织。普通指令在 `ifetch_valid` 同拍完成，load/store 和乘除法通过状态标志等待响应或 `busy` 解除。</p>
+      <dl>
+        <div>
+          <dt>源码位置</dt>
+          <dd id="detail-source"><code>lab1/miniRV_basic_ego1/miniRV_basic/src/rtl</code></dd>
+        </div>
+        <div>
+          <dt>关键信号</dt>
+          <dd id="detail-signals"><code>ifetch_req</code> <code>ifetch_valid</code> <code>daccess_*</code> <code>inst_finished</code></dd>
+        </div>
+      </dl>
+    </aside>
+
+    <section class="source-notes" aria-labelledby="notes-title">
+      <h2 id="notes-title">源码实现思路</h2>
+      <div class="note-grid">
+        <article class="note">
+          <h3>1. 顶层连接</h3>
+          <p><code>cpu_top.v</code> 只做结构连接：`U_core` 输出取指请求到 `Inst_ROM`，输出数据访存请求到 `Data_RAM`。两个存储器 wrapper 把字节地址的低两位丢给 BRAM 地址选择：`inst_addr[31:2]`、`data_addr[31:2]`。</p>
+        </article>
+        <article class="note">
+          <h3>2. IF 取指</h3>
+          <p><code>cpu_core.v</code> 中 `ifetch_req = first_req | inst_finished_r`。复位结束后取第一条指令；之后只有上一条指令完成后才发下一次请求。`PC.v` 在 `fetch=inst_finished` 时更新到 `npc`。</p>
+        </article>
+        <article class="note">
+          <h3>3. ID 译码</h3>
+          <p>`inst` 只在 `ifetch_valid` 时使用真实 `ifetch_inst`，否则替换为 `32'h13` NOP。`Controller.v` 根据 `opcode/funct3/funct7` 产生 `npc_op`、`sext_op`、`alu_op`、`ram_rop`、`ram_wop`、`rf_we` 和 `rf_wsel`。</p>
+        </article>
+        <article class="note">
+          <h3>4. RF 与立即数</h3>
+          <p><code>RF.v</code> 异步读 `rs1/rs2`，时钟沿写 `rd`，并保持 x0 恒为 0。<code>SEXT.v</code> 根据 `sext_op` 生成 I/S/B/U/J 五类立即数，供 ALU、NPC 和 LUI 写回使用。</p>
+        </article>
+        <article class="note">
+          <h3>5. EX 执行</h3>
+          <p>`alu_a = alua_sel ? pc : rf_rd1`，`alu_b = alub_sel ? ext : rf_rd2`。<code>ALU.v</code> 完成算术逻辑、移位、比较和分支判断；乘除法在 ALU 内部启动 `multiplier.v` / `divider.v`，通过 `busy` 暴露多周期状态。</p>
+        </article>
+        <article class="note">
+          <h3>6. MEM 访存</h3>
+          <p><code>MREQ.v</code> 把 ALU 生成的字节地址转换成 `daccess_ren/daccess_wen/daccess_wdata`，按 `addr[1:0]` 处理 byte/half/word 写掩码。<code>MEXT.v</code> 用缓存的 `alu_c_r[1:0]` 从读回字中选 byte/half 并做符号或零扩展。</p>
+        </article>
+        <article class="note">
+          <h3>7. WB 写回</h3>
+          <p>写回数据由 `rf_wsel` 和 `ld_st_flag` 决定：ALU 类写 `alu_c`，`jal/jalr` 写 `pc4`，`lui` 写 `ext`，load 写 `ram_ext`。`rf_we1` 保证普通指令、load、乘除法在各自完成拍只提交一次。</p>
+        </article>
+        <article class="note">
+          <h3>8. 多周期控制</h3>
+          <p>`ld_st_flag` 表示 load/store 正在等待 `daccess_rvalid` 或 `daccess_wresp`；`mul_div_flag` 表示乘除法正在等待 `mul_div_busy` 解除。`inst_finished` 统一作为本条指令完成信号，既驱动 PC 更新，也间接触发下一次取指。</p>
+        </article>
+        <article class="note">
+          <h3>9. 跳转路径</h3>
+          <p><code>NPC.v</code> 同时接收 `pc`、`rf_rd1` 作为 `base`、`ext` 作为 `offset` 和 ALU 的 `br`。顺序执行走 `pc4`，B 型根据 `br` 选择 `pc+offset`，`jal` 走 `pc+offset`，`jalr` 走 `(base+offset)&~1`。</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const details = {
+      pc: {
+        title: "PC",
+        type: "组件",
+        source: ["PC.v", "cpu_core.v"],
+        signals: ["pc", "npc", "inst_finished"],
+        text: "程序计数器保存当前取指地址。源码中 `PC U_PC` 的 `fetch` 端口接 `inst_finished`，所以普通指令同拍完成后更新 PC；load/store 和乘除法等待完成后才更新。"
+      },
+      npc: {
+        title: "NPC",
+        type: "组件",
+        source: ["NPC.v", "cpu_core.v"],
+        signals: ["npc_op", "pc", "rf_rd1(base)", "ext(offset)", "br", "pc4", "npc"],
+        text: "`NPC.v` 计算下一条 PC。`NPC_PC4` 输出 `pc+4`，`NPC_BRA` 根据 ALU 的 `br` 决定是否 `pc+offset`，`NPC_JMP` 用于 `jal`，`NPC_JALR` 使用 `(rs1+imm)&32'hffff_fffe`。"
+      },
+      irom: {
+        title: "Inst_ROM",
+        type: "取指存储器",
+        source: ["cpu_top.v", "Inst_ROM.v"],
+        signals: ["inst_rreq", "inst_addr", "inst_valid", "inst_out", "ifetch_*"],
+        text: "`cpu_top.v` 把 `cpu_core` 的 `ifetch_req/ifetch_addr` 接到 `Inst_ROM`。`Inst_ROM.v` 在请求后一拍拉高 `inst_valid`，并通过 BRAM 读出 `inst_out`。"
+      },
+      controller: {
+        title: "Controller",
+        type: "控制组件",
+        source: ["Controller.v", "defines.vh"],
+        signals: ["opcode", "funct3", "funct7", "npc_op", "sext_op", "alu_op", "ram_r_op", "ram_w_op", "rf_we", "rf_wsel"],
+        text: "`Controller.v` 以 `opcode/funct3/funct7` 唯一识别 miniRV 指令，输出操作选择和多路选择信号。它决定立即数类型、ALU 功能、访存读写宽度、写回来源和是否启用乘除法等待。"
+      },
+      rf: {
+        title: "RF",
+        type: "寄存器堆",
+        source: ["RF.v", "cpu_core.v"],
+        signals: ["rR1=inst[19:15]", "rR2=inst[24:20]", "wR=rf_wR", "wD=rf_wD", "we=rf_we1", "rf_rd1", "rf_rd2"],
+        text: "`RF.v` 提供两个异步读端口和一个同步写端口。读出的 `rf_rd1/rf_rd2` 进入 ALU、NPC 和 store 数据路径；写回由 `rf_we1` 控制，且 x0 永远不被写入。"
+      },
+      sext: {
+        title: "SEXT",
+        type: "立即数扩展",
+        source: ["SEXT.v", "Controller.v"],
+        signals: ["sext_op", "inst[31:7]", "ext"],
+        text: "`SEXT.v` 按 `sext_op` 生成 I、S、B、U、J 型立即数。`ext` 可作为 ALU B 端、NPC offset，或在 `lui` 时直接进入写回 MUX。"
+      },
+      alu_mux: {
+        title: "ALU 输入选择",
+        type: "多路选择",
+        source: ["cpu_core.v", "Controller.v"],
+        signals: ["alua_sel", "alub_sel", "alu_a", "alu_b"],
+        text: "`cpu_core.v` 中 `alu_a = alua_sel ? pc : rf_rd1`，`alu_b = alub_sel ? ext : rf_rd2`。因此 R 型使用 rs1/rs2，I/load/store 使用 rs1/imm，`auipc` 使用 PC/U-imm。"
+      },
+      alu: {
+        title: "ALU",
+        type: "执行组件",
+        source: ["ALU.v", "multiplier.v", "divider.v"],
+        signals: ["alu_op", "alu_a", "alu_b", "alu_c", "br", "busy"],
+        text: "`ALU.v` 产生普通运算结果 `alu_c` 和分支条件 `br`。乘除法通过内部 `multiplier`、`divider` 运行，`busy` 拉高期间 CPU 不前进，完成后仍从 `alu_c` 写回。"
+      },
+      mreq: {
+        title: "MREQ",
+        type: "访存请求格式化",
+        source: ["MREQ.v", "cpu_core.v"],
+        signals: ["ram_addr=alu_c", "ram_rop", "ram_wop", "da_ren", "da_wen", "da_wdata", "da_addr"],
+        text: "`MREQ.v` 根据 load/store 宽度和地址低两位生成数据 RAM 请求。`sb/sh/sw` 会形成不同的 `da_wen` 和移位后的 `da_wdata`，load 则生成 `da_ren`。"
+      },
+      dram: {
+        title: "Data_RAM",
+        type: "数据存储器",
+        source: ["cpu_top.v", "Data_RAM.v"],
+        signals: ["data_ren", "data_addr", "data_valid", "data_rdata", "data_wen", "data_wdata", "data_wresp"],
+        text: "`Data_RAM.v` 包装 DRAM IP。读请求使 `data_valid` 下一拍有效，写请求使 `data_wresp` 下一拍有效；实际 BRAM 地址使用 `data_addr[31:2]`。"
+      },
+      mext: {
+        title: "MEXT",
+        type: "读数据扩展",
+        source: ["MEXT.v", "cpu_core.v"],
+        signals: ["ram_rop_r", "daccess_rdata", "alu_c_r[1:0]", "ram_ext"],
+        text: "`MEXT.v` 根据缓存的读类型和 byte offset 从 `daccess_rdata` 中抽取 byte/half/word，并对 `lb/lh` 符号扩展、对 `lbu/lhu` 零扩展。"
+      },
+      wb_mux: {
+        title: "WB MUX",
+        type: "写回选择",
+        source: ["cpu_core.v"],
+        signals: ["rf_wsel", "ld_st_flag", "rf_wD", "rf_wR", "rf_we1"],
+        text: "写回 MUX 在 `cpu_core.v` 的 `always @(*)` 中实现：`WB_ALU` 写 `alu_c`，`WB_PC4` 写 `pc4`，`WB_EXT` 写 `ext`，load 完成时写 `ram_ext`。"
+      },
+      flags: {
+        title: "多周期状态寄存",
+        type: "状态控制",
+        source: ["cpu_core.v", "ALU.v"],
+        signals: ["ld_st_flag", "mul_div_flag", "rf_wR_r", "pc_r", "alu_c_r", "ram_rop_r", "inst_finished"],
+        text: "`ld_st_flag` 和 `mul_div_flag` 把多周期指令锁住，防止 PC 提前前进。源码还缓存 `rd`、`pc`、`alu_c` 和 `ram_rop`，保证完成拍写回和 Trace 仍对应原指令。"
+      },
+      sig_pc_to_irom: {
+        title: "PC 到取指地址",
+        type: "数据线",
+        source: ["cpu_core.v"],
+        signals: ["ifetch_addr = pc"],
+        text: "`ifetch_addr` 直接等于当前 `pc`。这条线决定 `Inst_ROM` 读哪条指令。"
+      },
+      sig_ifetch_req: {
+        title: "取指请求",
+        type: "访存握手线",
+        source: ["cpu_core.v", "Inst_ROM.v"],
+        signals: ["ifetch_req", "first_req", "inst_finished_r", "ifetch_valid"],
+        text: "`ifetch_req = first_req | inst_finished_r`。首次复位释放后请求第一条；后续上一条指令完成后一拍发出下一次取指请求。"
+      },
+      sig_inst: {
+        title: "指令返回",
+        type: "数据线",
+        source: ["cpu_core.v", "Inst_ROM.v"],
+        signals: ["ifetch_valid", "ifetch_inst", "inst"],
+        text: "`Inst_ROM` 返回 `ifetch_inst` 并拉高 `ifetch_valid`。`cpu_core.v` 只在 valid 时使用真实指令，否则将 `inst` 置为 NOP，避免无效周期误译码。"
+      },
+      sig_decode_fields: {
+        title: "译码字段",
+        type: "控制输入线",
+        source: ["cpu_core.v", "Controller.v"],
+        signals: ["inst[6:0]", "inst[14:12]", "inst[31:25]"],
+        text: "`opcode/funct3/funct7` 进入 Controller。普通 R 型、M 扩展、分支和访存宽度都依靠这些字段区分。"
+      },
+      sig_inst_to_rf: {
+        title: "寄存器编号字段",
+        type: "数据线",
+        source: ["cpu_core.v", "RF.v"],
+        signals: ["inst[19:15]", "inst[24:20]", "inst[11:7]"],
+        text: "`rs1/rs2/rd` 字段分别接 RF 的两个读地址和写回目标。多周期指令会把 `rd` 暂存在 `rf_wR_r`。"
+      },
+      sig_inst_to_sext: {
+        title: "立即数字段",
+        type: "数据线",
+        source: ["cpu_core.v", "SEXT.v"],
+        signals: ["inst[31:7]", "sext_op", "ext"],
+        text: "`SEXT` 从 `inst[31:7]` 重组不同格式的立即数。S/B/J 型不是连续字段，因此在 `SEXT.v` 中显式拼接。"
+      },
+      sig_control_bus: {
+        title: "控制总线",
+        type: "控制线",
+        source: ["Controller.v", "cpu_core.v"],
+        signals: ["npc_op", "sext_op", "alu_op", "alua_sel", "alub_sel", "ram_rop", "ram_wop", "rf_we", "rf_wsel", "is_mul", "is_div"],
+        text: "Controller 的输出驱动各阶段。`cpu_core.v` 尽量不散落指令判断，而是消费这些控制信号来选择数据来源、访存行为和写回时机。"
+      },
+      sig_control_to_npc: {
+        title: "NPC 控制",
+        type: "控制线",
+        source: ["Controller.v", "NPC.v"],
+        signals: ["npc_op"],
+        text: "`npc_op` 区分顺序执行、条件分支、`jal` 和 `jalr`。`jalr` 不能复用 `pc+offset`，因为目标来自 `rs1+imm`。"
+      },
+      sig_rf_rd1: {
+        title: "rs1 数据",
+        type: "数据线",
+        source: ["cpu_core.v", "RF.v"],
+        signals: ["rf_rd1", "alu_a", "base"],
+        text: "`rf_rd1` 是大多数 ALU 操作的 A 端来源，也是 `jalr` 的 NPC base。"
+      },
+      sig_rf_rd2: {
+        title: "rs2 数据",
+        type: "数据线",
+        source: ["cpu_core.v", "MREQ.v"],
+        signals: ["rf_rd2", "alu_b", "ram_wdata"],
+        text: "`rf_rd2` 可作为 R 型 ALU B 端，也作为 store 原始写数据传入 `MREQ`。Trace 中 `debug_mem_wdata` 也缓存原始 store 数据。"
+      },
+      sig_ext: {
+        title: "扩展立即数",
+        type: "数据线",
+        source: ["SEXT.v", "cpu_core.v"],
+        signals: ["ext", "alu_b", "offset", "rf_wD"],
+        text: "`ext` 同时服务 I/S/U/B/J 型路径：可进入 ALU B 端、NPC offset，或在 `lui` 写回时直接作为 `rf_wD`。"
+      },
+      sig_pc_to_alu: {
+        title: "PC 到 ALU",
+        type: "数据线",
+        source: ["cpu_core.v", "Controller.v"],
+        signals: ["alua_sel", "pc", "alu_a"],
+        text: "`auipc` 需要 `PC + U-imm`，因此 Controller 对 `AUIPC` 输出 `alua_sel=ALU_A_PC`，使 ALU A 端选择 `pc`。"
+      },
+      sig_alu_inputs: {
+        title: "ALU 输入",
+        type: "数据线",
+        source: ["cpu_core.v", "ALU.v"],
+        signals: ["alu_a", "alu_b", "alu_op"],
+        text: "ALU 的两个输入来自 MUX。输入选择和 `alu_op` 共同覆盖 R/I 算术逻辑、load/store 地址计算、branch 比较、`auipc` 和乘除法。"
+      },
+      sig_alu_c: {
+        title: "ALU 结果",
+        type: "数据线",
+        source: ["cpu_core.v", "ALU.v", "MREQ.v"],
+        signals: ["alu_c", "ram_addr", "rf_wD"],
+        text: "`alu_c` 对 ALU 指令是写回结果，对 load/store 是字节地址，对 `auipc` 是 `PC+imm`。访存指令会把地址缓存到 `alu_c_r` 供 MEXT 使用。"
+      },
+      sig_br: {
+        title: "分支条件",
+        type: "控制线",
+        source: ["ALU.v", "NPC.v"],
+        signals: ["br", "npc_op=NPC_BRA"],
+        text: "`ALU.v` 根据 `ALU_EQ/NE/LT/GE/LTU/GEU` 产生 `br`。`NPC.v` 在 B 型分支下用它选择 `pc+offset` 或 `pc4`。"
+      },
+      sig_busy: {
+        title: "乘除 busy",
+        type: "状态线",
+        source: ["ALU.v", "cpu_core.v"],
+        signals: ["mul_div_busy", "mul_div_flag", "inst_finished"],
+        text: "乘除法不是单拍完成。`ALU.busy` 汇总乘法器和除法器 busy，`cpu_core.v` 等待 `mul_div_flag & !mul_div_busy` 后才写回并完成指令。"
+      },
+      sig_mreq_to_dram: {
+        title: "数据访存请求",
+        type: "访存握手线",
+        source: ["MREQ.v", "Data_RAM.v", "cpu_core.v"],
+        signals: ["daccess_ren", "daccess_addr", "daccess_wen", "daccess_wdata"],
+        text: "`MREQ` 生成内部 `da_*`，`cpu_core.v` 在时钟沿寄存成 `daccess_*` 输出到 `Data_RAM`，满足顶层输出寄存的 RTL 规范。"
+      },
+      sig_dram_to_mext: {
+        title: "访存响应与读数据",
+        type: "访存握手线",
+        source: ["Data_RAM.v", "cpu_core.v", "MEXT.v"],
+        signals: ["daccess_rvalid", "daccess_wresp", "daccess_rdata", "ld_st_done"],
+        text: "`ld_st_done = daccess_rvalid | daccess_wresp`。load 用 `daccess_rdata` 进入 MEXT，store 只等待写响应，不写 RF。"
+      },
+      sig_mext_to_wb: {
+        title: "Load 扩展结果",
+        type: "数据线",
+        source: ["MEXT.v", "cpu_core.v"],
+        signals: ["ram_ext", "rf_wD"],
+        text: "load 完成时 `ld_st_flag=1`，写回 MUX 无视 `rf_wsel` 的普通取值，直接选择 `ram_ext` 写入缓存的目标寄存器。"
+      },
+      sig_alu_to_wb: {
+        title: "ALU 写回结果",
+        type: "数据线",
+        source: ["cpu_core.v", "ALU.v"],
+        signals: ["alu_c", "rf_wD", "WB_ALU"],
+        text: "算术逻辑、比较写回、`auipc` 和乘除完成都走 `WB_ALU`。乘除完成时目标寄存器来自 `rf_wR_r`，数据仍来自 ALU 当前输出。"
+      },
+      sig_pc4_to_wb: {
+        title: "PC+4 写回",
+        type: "数据线",
+        source: ["NPC.v", "cpu_core.v"],
+        signals: ["pc4", "WB_PC4", "jal", "jalr"],
+        text: "`NPC.v` 持续输出 `pc4=pc+4`。`jal/jalr` 的链接寄存器写回来源是 `pc4`，跳转目标则由 NPC 的另一条路径计算。"
+      },
+      sig_ext_to_wb: {
+        title: "LUI 写回立即数",
+        type: "数据线",
+        source: ["SEXT.v", "cpu_core.v"],
+        signals: ["ext", "WB_EXT", "lui"],
+        text: "`lui` 不需要 ALU 结果，`SEXT` 产生 U 型立即数后由 `WB_EXT` 直接写回 RF。"
+      },
+      sig_wb_to_rf: {
+        title: "写回 RF",
+        type: "数据线",
+        source: ["cpu_core.v", "RF.v"],
+        signals: ["rf_wD", "rf_wR", "rf_we1"],
+        text: "`rf_we1` 是最终写使能：普通写回在 `ifetch_valid` 同拍发生，load 在 `daccess_rvalid` 发生，乘除法在 `busy` 解除后发生。"
+      },
+      sig_npc_to_pc: {
+        title: "下一 PC",
+        type: "数据线",
+        source: ["NPC.v", "PC.v", "cpu_core.v"],
+        signals: ["npc", "pc"],
+        text: "`npc` 是 PC 的下一值，但只有 `inst_finished` 为真时才被 `PC.v` 接收。多周期等待期间即使 NPC 已算好，PC 也保持不变。"
+      },
+      sig_inst_finished: {
+        title: "指令完成控制",
+        type: "状态线",
+        source: ["cpu_core.v"],
+        signals: ["inst_finished", "inst_finished_r", "ld_st_done", "mul_div_busy", "ifetch_valid"],
+        text: "`inst_finished` 合并三类完成条件：访存完成、乘除 `busy` 解除、普通指令在 `ifetch_valid` 且非访存/乘除时完成。它控制 PC 更新，并通过寄存后的 `inst_finished_r` 触发下一次取指。"
+      }
+    };
+
+    const defaultDetail = {
+      title: "miniRV 单周期 CPU 数据通路",
+      type: "总览",
+      source: ["lab1/miniRV_basic_ego1/miniRV_basic/src/rtl"],
+      signals: ["ifetch_req", "ifetch_valid", "daccess_*", "inst_finished"],
+      text: "这张图按当前 RTL 的 `cpu_top.v` 和 `cpu_core.v` 绘制：取指接口连接 `Inst_ROM`，数据访存接口连接 `Data_RAM`，核心内部按 IF、ID、EX、MEM、WB 组织。普通指令在 `ifetch_valid` 同拍完成，load/store 和乘除法通过状态标志等待响应或 `busy` 解除。"
+    };
+
+    const titleEl = document.getElementById("detail-title");
+    const typeEl = document.getElementById("detail-type");
+    const textEl = document.getElementById("detail-text");
+    const sourceEl = document.getElementById("detail-source");
+    const signalsEl = document.getElementById("detail-signals");
+    let activeEl = null;
+
+    function codeList(items) {
+      return items.map((item) => `<code>${item}</code>`).join(" ");
+    }
+
+    function renderDetail(detail) {
+      titleEl.textContent = detail.title;
+      typeEl.textContent = detail.type;
+      textEl.textContent = detail.text;
+      sourceEl.innerHTML = codeList(detail.source);
+      signalsEl.innerHTML = codeList(detail.signals);
+    }
+
+    function setActive(el) {
+      if (activeEl) activeEl.classList.remove("active");
+      activeEl = el;
+      if (activeEl) activeEl.classList.add("active");
+      const key = el && el.dataset.key;
+      renderDetail(details[key] || defaultDetail);
+    }
+
+    document.querySelectorAll("[data-key]").forEach((el) => {
+      el.addEventListener("mouseenter", () => setActive(el));
+      el.addEventListener("focus", () => setActive(el));
+      el.addEventListener("mouseleave", () => {
+        if (activeEl === el) {
+          activeEl.classList.remove("active");
+          activeEl = null;
+          renderDetail(defaultDetail);
+        }
+      });
+    });
+
+    renderDetail(defaultDetail);
+  </script>
+</body>
+</html>
