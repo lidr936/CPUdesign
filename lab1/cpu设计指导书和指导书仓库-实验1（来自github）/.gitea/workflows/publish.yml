@@ -1,0 +1,36 @@
+name: publish 
+on:
+  push:
+    branches: 
+      - master
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: 'Install Python'
+        run: 'apt-get update && apt-get install -y python3 python3-pip python3-venv python-is-python3'
+
+      - name: 'Prepare virtualenv'
+        run: |
+          python3 -m venv venv
+          source venv/bin/activate
+          echo PATH=$PATH >> $GITHUB_ENV                    
+
+      - name: 'Install dependencies'
+        run: pip install -r requirements.txt -i https://mirrors.osa.moe/pypi/web/simple
+
+      - name: 'Build site'
+        run: mkdocs build --verbose --site-dir site
+
+      - name: 'Deploy to Meli'
+        uses: actions/meli-deploy@1.0.0-beta.2
+        with:
+          action: release
+          meliUrl: https://p.cs-lab.top
+          meliSiteId: ${{ secrets.MELI_SITE_ID }}
+          meliSiteToken: ${{ secrets.MELI_SITE_TOKEN }}
+          buildFolder: site

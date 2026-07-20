@@ -46,6 +46,11 @@
 - 当前工作区未发现 `cdp-tests`、`mySoC` 或 Trace 框架目录；Basic Trace 运行需要先放置/下载 Trace 框架。
 - 已新增 `tools/prepare_basic_trace_sources.ps1`，用于 Trace 框架就位后将当前 RTL 顶层 `.v/.vh` 同步到 `cdp-tests/mySoC`，不复制 IP 或 Vivado 生成物。
 - 用户计划后续转 Linux 跑 Basic Trace；已新增 `tools/prepare_basic_trace_sources.sh` 作为 Linux 版同步脚本。
+- 用户反馈 Basic Trace 普通指令测试已通过；旧版 `cdp-tests` 下 `start` 失败经对比确认不是 RTL 问题。
+- 旧版 `cdp-tests` 的 `start.bin` 与新版哈希一致，二进制未变；差异在测试框架和反汇编注释：新版 `golden_model/emu.c` 将 Digit 外设基址修正为 `0xffff2000`，新版 `start.dump` 也将对应注释修正为 `0xffff2000`。
+- 已用远端最新 `cdp-tests` 替换旧框架目录，重新同步 RTL 到 `cdp-tests/mySoC`；`make run TEST=start` 已通过，输出 Digit 计数到 `0x25000025` 并最终 `Test Point Pass!`。
+- 已新增 `lab1/实验一收尾与提交清单.md`，整理后续 Vivado 综合/实现截图、报告结构和提交包注意事项。
+- 保留老师模板中的 `Inst_ROM/Data_RAM` 地址连接写法；`addra` 位宽 warning 来自 `addr[31:2]` 接入较窄 BRAM IP 地址端口，Vivado 自动截断，不影响已通过的行为仿真、Basic Trace、综合和实现。
 
 ## Technical Decisions
 | Decision | Rationale |
@@ -58,6 +63,7 @@
 | 乘法器使用 Booth 迭代结构 | 与指导书对 Booth 补码乘法器的方向一致，`mulhu` 通过 33 位补 0 复用 |
 | 单周期交付包使用脚本生成的时间戳目录 | 避免清理/覆盖目录导致误删，同时规避 stale 文件混入；后续按 manifest 压缩 |
 | 用户侧 Vivado 行为仿真作为模板工程仿真证据 | 它证明 Vivado 能打开工程、编译/展开/运行 `soc_simple_tb` 并得到 `Test Passed!`；不替代 Basic Trace 证据 |
+| `start` 失败按框架版本问题处理 | 旧框架 Digit 外设地址与 `start.bin` 访问地址不一致；更新到最新 `cdp-tests` 后通过，不再作为 RTL 或 `start.bin` 本体错误记录 |
 
 ## Issues Encountered
 | Issue | Resolution |
@@ -70,8 +76,11 @@
 - `lab1/数据通路表、控制信号取值表_miniRV - A组.xlsx`
 - `lab1/数据通路表、控制信号取值表_miniRV - B组.xlsx`
 - `lab1/miniRV_basic_ego1/miniRV_basic/src/rtl/`
-- `dist/single_cycle_20260714_120705/`
-- `dist/single_cycle_20260714_120705.zip`
+- `dist/single_cycle_20260716_093918/`
+- `dist/single_cycle_20260716_093918.zip`
 
 ## Visual/Browser Findings
-- 无。
+- `pic/PixPin_2026-07-16_09-42-58.png`：Vivado Project Summary，显示 Synthesis Complete、Implementation Complete；Power 摘要显示 Total On-Chip Power `0.068 W`；Timing 区域 WNS/TNS 为 `NA`。
+- `pic/PixPin_2026-07-16_09-47-07.png`：Post-Implementation Utilization 报告截图，显示 IO 使用 `41/210`，约 `19.52%`。
+- `pic/PixPin_2026-07-16_09-49-16.png`：Post-Implementation Power 报告截图，显示 Total On-Chip Power `0.068 W`、Junction Temperature `25.3 C`、Thermal Margin `59.7 C`。
+- `pic/image.png`：Implemented Design 的 Timing Summary 截图，显示 `All user specified timing constraints are met.`；WNS/TNS/失败端点为 `NA`，可解释为当前约束下无可报告的约束违例。

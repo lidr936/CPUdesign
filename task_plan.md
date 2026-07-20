@@ -4,7 +4,7 @@
 依据实验一指导书，完成需求梳理、实现、Basic Trace 验证与交付材料整理。
 
 ## Current Phase
-Phase 4：调试与验证（本机静态/算法检查已通过；用户侧 Vivado 行为仿真已通过；Basic Trace 待执行）
+Phase 5：交付整理（Basic Trace 含 start 综合测试已通过；进入综合/实现截图、报告和提交包收口）
 
 ## Phases
 
@@ -29,15 +29,18 @@ Phase 4：调试与验证（本机静态/算法检查已通过；用户侧 Vivad
 - [x] 完成本机静态检查
 - [x] 完成本机乘除算法边界检查
 - [x] 完成用户侧 Vivado 行为仿真
-- [ ] 使用 Vivado/Basic Trace 调试目标指令
-- [ ] 完成完整 CPU 的 Vivado/Trace 测试与问题修复
-- **Status:** in_progress
+- [x] 使用 Basic Trace 调试目标指令
+- [x] 完成完整 CPU 的 Vivado/Trace 测试与问题修复（含新版 `cdp-tests` 下 `start` 综合测试）
+- **Status:** complete
 
 ### Phase 5：交付整理
 - [x] 核对源码、工程和实验材料
 - [x] 准备单周期源码交付包脚本
 - [x] 总结本机验证结果与 Vivado/Trace 待办事项
-- **Status:** complete_except_vivado_trace_evidence
+- [ ] 补齐综合/实现/功耗/时序截图
+- [ ] 完成 PDF 实验报告
+- [ ] 整理最终提交 zip
+- **Status:** in_progress
 
 ## Key Questions
 1. A/B 组所有指令是否都以现有 miniRV EGO1 工程为唯一实现目标？（当前按“是”规划。）

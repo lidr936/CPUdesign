@@ -3,7 +3,7 @@
 ## Session: 2026-07-14
 
 ### Phase 1-5：需求、方案、实现、验证准备与交付整理
-- **Status:** RTL 已落地；本机静态/算法/交付包验证已完成；用户侧 Vivado 行为仿真已通过；Basic Trace 待执行
+- **Status:** RTL 已落地；本机静态/算法/交付包验证已完成；用户侧 Vivado 行为仿真已通过；Basic Trace 含新版 `cdp-tests` 下 `start` 综合测试已通过；进入报告/截图收尾
 - **Started:** 2026-07-14
 - Actions taken:
   - 确认实验指导书 ZIP 与作业材料整理文件存在。
@@ -43,11 +43,24 @@
   - 检查当前工作区，未发现 `cdp-tests`、`mySoC` 或 Trace 框架目录。
   - 新增 `tools/prepare_basic_trace_sources.ps1`，用于 Trace 框架就位后把 `src/rtl` 顶层 `.v/.vh` 同步到 `cdp-tests/mySoC`，并排除 IP/生成物。
   - 用户确认后续转 Linux 跑 Basic Trace；新增 `tools/prepare_basic_trace_sources.sh`，提供 Linux 版 RTL 同步脚本。
+  - 用户反馈 Basic Trace 除旧框架下 `start` 综合测试外全部通过；初步记录为外部测试框架异常。
+  - 新增 `lab1/实验一收尾与提交清单.md`，整理下一步综合/实现截图、报告结构、提交包边界和 `start.bin` 异常说明。
+  - 对 `Data_RAM.v`、`Inst_ROM.v` 保持老师模板原始地址连接：恢复 `.addra(data_addr[31:2])` 与 `.addra(inst_addr[31:2])`，不为清理 warning 修改模板封装。
+  - 恢复后重新运行静态检查：`STATIC CHECK PASSED`。
+  - 重新生成恢复模板后的最新源码包和 zip：`dist/single_cycle_20260716_093918.zip`，大小 14,056 字节。
+  - 对比旧版 `cdp-tests` 与远端最新 `miniRV` 分支：`start.bin` 哈希不变，`start.dump` 注释与 `golden_model/emu.c` 中 Digit 外设地址已从旧版不一致状态修正为 `0xffff2000`。
+  - 用远端最新 `cdp-tests` 替换旧框架目录，重新同步 RTL 到 `cdp-tests/mySoC`，删除临时 `cdp-tests.clean` 目录。
+  - 运行 `make clean && make run TEST=start`：新版框架输出 Digit 计数至 `0x25000025`，最终 `Test Point Pass!`。
+  - 验证后执行 `make -C cdp-tests clean`，清除 `obj_dir`、`waveform`、`meminit.bin`，工作区仅保留正式 `cdp-tests` 目录。
+  - 对照指导书和 `pic/` 截图：现有截图已覆盖 Vivado 综合/实现完成、Post-Implementation Utilization、Power 和 Timing Summary；Timing Summary 显示 `All user specified timing constraints are met.`。
+  - 新增 `lab1/课堂验收恶补.md`：整理课堂验收缺口、现场打开文件、模块解释、截图说明、Trace 命令和高频问答，供用户短时间补基础和准备现场口径。
 - Files created/modified:
   - `task_plan.md`（创建）
   - `findings.md`（创建）
   - `progress.md`（创建）
   - `lab1/指导书通读要点记录.md`（创建）
+  - `lab1/实验一收尾与提交清单.md`（创建）
+  - `lab1/课堂验收恶补.md`（创建）
   - `lab1/A_B组模块化Verilog实现落地方案.md`（更新）
   - `tools/check_minirv_static.py`（创建）
   - `tools/verify_minirv_algorithms.py`（创建）
@@ -56,8 +69,8 @@
   - `tools/prepare_single_cycle_sources.ps1`（创建）
   - `tools/prepare_basic_trace_sources.ps1`（创建）
   - `tools/prepare_basic_trace_sources.sh`（创建）
-  - `dist/single_cycle_20260714_120705/`（最新生成的交付包目录）
-  - `dist/single_cycle_20260714_120705.zip`（最新单周期源码 zip 包）
+  - `dist/single_cycle_20260716_093918/`（最新生成的交付包目录）
+  - `dist/single_cycle_20260716_093918.zip`（最新单周期源码 zip 包）
   - `docs/superpowers/plans/2026-07-14-minirv-ab-implementation.md`（创建）
   - `lab1/miniRV_basic_ego1/miniRV_basic/src/rtl/*.v/.vh`（实现修改）
 
@@ -78,6 +91,8 @@
 | 最新单周期源码包准备 | `powershell -ExecutionPolicy Bypass -File tools\prepare_single_cycle_sources.ps1` | 生成包含最新 RTL 的源码包 | `dist/single_cycle_20260714_120705`，含 RTL/COE/manifest | ✓ |
 | 单周期源码 zip | `Compress-Archive -Path dist\single_cycle_20260714_120705\* -DestinationPath dist\single_cycle_20260714_120705.zip -Force` | 生成小于 100MB 且不含 IP/生成物的 zip | 14,042 字节，仅含 `rtl/`、`coe/`、`manifest.txt` | ✓ |
 | 用户侧 Vivado 行为仿真 | `source tools/vivado_lab1_check.tcl` | Vivado 打开工程、编译、展开并运行 testbench | `xvlog`/`xelab`/XSim 完成，`run all` 输出 `Test Passed!`，`$finish` at `11480100 ps` | ✓ |
+| 用户侧 Basic Trace | Linux Trace 框架批量测试 | A/B 组与模板指令回归通过 | 用户反馈普通指令批测通过；旧框架 `start` 失败已定位为框架版本问题 | ✓ |
+| 新版 start 综合测试 | `make run TEST=start` | Digit 计数到 `0x25000025` 并输出 `Test Point Pass!` | 通过，退出码 0 | ✓ |
 
 ## Error Log
 | Timestamp | Error | Attempt | Resolution |
@@ -88,12 +103,13 @@
 | 2026-07-14 | `vivado/xvlog/iverilog/verilator` 不在 PATH | 多次检查 | 保留 Vivado Tcl 与环境检查脚本，等待用户本机 Vivado/Trace 执行 |
 | 2026-07-14 | Vivado Tcl Console 输入 `ls` 报 `ambiguous command name "ls": lsearch lset lsort` | 用户侧日志 | 根因是 Tcl 命令前缀歧义；Vivado Tcl 中列目录用 `glob *`，或在系统终端使用 `dir/ls` |
 | 2026-07-14 | `source tools/vivado_lab1_check.tcl` 报 `Project ... is already open` | 用户侧日志 | 修复 Tcl 脚本：若当前已打开目标工程则复用；若打开的是其他工程则先 `close_project` 再打开目标工程 |
+| 2026-07-17 | 旧 `cdp-tests` 运行 `start` 报 `Memory access out of bound` | 只读对比新旧框架 | 根因是旧框架 Digit 外设地址与 `start.bin` 实际访问地址不一致；替换为最新 `cdp-tests` 后 `start` 通过 |
 
 ## 5-Question Reboot Check
 | Question | Answer |
 |----------|--------|
-| Where am I? | RTL 已落地，本机静态/算法/交付包验证已完成，用户侧 Vivado 行为仿真已通过 |
-| Where am I going? | 继续 Basic Trace、综合/实现和截图 |
+| Where am I? | RTL 已落地，本机静态/算法/交付包验证已完成，用户侧 Vivado 行为仿真已通过，Basic Trace 含新版 `start` 已通过 |
+| Where am I going? | 继续综合/实现、报告截图和最终提交包整理 |
 | What's the goal? | 完成实验一单周期 CPU 的设计、实现、验证和交付整理 |
 | What have I learned? | 见 findings.md |
 | What have I done? | 已定位并阅读实验步骤，建立计划文件 |

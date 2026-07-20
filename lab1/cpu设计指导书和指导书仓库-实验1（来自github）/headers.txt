@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Alt-Svc: h3=":443"; ma=2592000
+Cache-Control: public,max-age=0,must-revalidate
+Content-Type: text/html; charset=utf-8
+Date: Mon, 13 Jul 2026 09:14:30 GMT
+Etag: "ti1cg9uro"
+Last-Modified: Sun, 12 Jul 2026 00:09:45 GMT
+Server: Caddy
+Server: Caddy
+Vary: Accept-Encoding
+Transfer-Encoding: chunked
+

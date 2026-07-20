@@ -1,0 +1,128 @@
+site_name: 计算机设计与实践（2026夏季） | 哈工大（深圳）
+copyright: 'Copyright &copy; 2019 - 2026 哈尔滨工业大学（深圳）'
+# repo_name: 'HITSZ-COMP2012'
+# repo_url: 'https://gitee.com/hitsz-cslab/cpu'
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - mdx_math:
+      enable_dollar_delimiter: True
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:pymdownx.emoji.twemoji
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML
+  # - mathjaxhelper.js
+
+theme:
+  language: 'zh'
+  name: material
+  features:
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - navigation.tabs
+    - navigation.expand
+  # favicon: fontawesome/solid/microchip
+  icon:
+    logo: fontawesome/solid/microchip
+    repo: fontawesome/brands/git-alt
+  palette:
+    - scheme: 'default'
+      primary: 'cyan'
+      accent: 'cyan'
+      toggle:
+        icon: material/weather-sunny
+        name: 切换到夜晚模式
+    - scheme: 'slate'
+      primary: 'cyan'
+      accent: 'cyan'
+      toggle:
+        icon: material/weather-night
+        name: 切换到白天模式
+
+nav:
+  - 首页:
+    - 实验须知: index.md
+    - ★开发板使用须知: home/fpga.md
+    - Verilog代码规范: home/codingstyle.md
+    - ★常见问题汇总: home/problems.md
+    - 作业提交说明:
+      # - ★课程提交要求: home/submit.md
+      - 作业系统指南: home/operation.md
+  - 实验1：单周期CPU设计:
+    - 实验概述: lab1/0-overview.md
+    - 开始之前: lab1/1-warmup.md
+    - 实验原理:
+      - 指令集介绍:
+        - miniRV指令集: lab1/2-inst.md
+        - miniLA指令集: lab1/2-inst_LA.md
+      - 功能部件设计: lab1/3-parts.md
+      - 数据通路设计: lab1/4-datpth.md
+      - 控制单元设计: lab1/5-ctrler.md
+      - 访存及乘除法指令实现: 
+        - 多周期指令的数据通路: lab1/6-multcycle.md
+        - 乘除法运算的实现: lab1/7-muldiv.md
+        - 除法器设计: lab1/8-divider.md
+      - 单周期CPU时序: lab1/9-timing.md
+      - CPU功能验证原理: lab1/10-verify.md
+      - 单周期CPU性能分析: lab1/11-performance.md
+      # - 例外与中断 (选): lab1/13-trap.md
+    - 实验步骤: lab1/12-step.md
+    - 附录:
+      - A. Verilog宏定义的使用: lab1/A-macro.md
+      - B. 引脚约束文件: lab1/B-constr.md
+  # - 实验2：A. 流水线CPU设计:
+  #   - 实验概述: lab2-A/0-overview.md
+  #   - 实验原理:
+  #     - 流水线概述: lab2-A/1-pipeline.md
+  #     - 理想流水线: lab2-A/2-idealpl.md
+  #     - 指令相关与流水线冒险: lab2-A/3-hazard.md
+  #     - 数据冒险的处理: lab2-A/4-handleDH.md
+  #     - 控制冒险的处理: lab2-A/5-handleCH.md
+  #     - 流水线的取指逻辑: lab2-A/6-ifetch.md
+  #   - 实验步骤: lab2-A/7-step.md
+  # - 实验2：B. SoC设计:
+  #   - 实验概述: lab2-B/0-overview.md
+  #   - 实验原理:
+  #     - SoC架构及系统总线: lab2-B/1-sysbus.md
+  #     - I/O接口与外设: lab2-B/2-ioitf.md
+  #   - 实验步骤:
+  #     - 实验步骤: lab2-B/3-step.md
+  #     - 总线控制器实现: lab2-B/4-bus_impl.md
+  #     - I/O接口编程: lab2-B/5-ioupg.md
+  #     - I/O接口电路实现: lab2-B/6-ioitf_impl.md
+  #     - LLAMA2推理测试: lab2-B/7-llama.md
+  - Trace测试说明:
+    - 测试框架说明: trace/trace.md
+    - 附录:
+      - A. 远程平台使用指南: trace/remote_env.md
+      - B. 虚拟机使用指南: trace/vm.md
+      - C. 实验环境部署指南: trace/env_diy.md
+      - D. Surfer使用指南: trace/surfer.md
+  - SoC的下板调试:
+    - 方法1：Trace下板调试: verify/trace-debug.md
+    - 方法2：FPGA在线调试: verify/online-debug.md

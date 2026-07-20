@@ -1,6 +1,6 @@
 # miniRV 单周期 CPU：A/B 组模块化 Verilog 实现落地方案
 
-> 状态：**已按本文方案完成 RTL 落地、静态检查、算法边界检查，并已通过用户侧 Vivado 行为仿真**。Basic Trace、综合、实现和报告截图仍按第 7.4 节由用户在本机 Vivado/Trace 环境继续执行。
+> 状态：**已按本文方案完成 RTL 落地、静态检查、算法边界检查，并已通过用户侧 Vivado 行为仿真**。Basic Trace 含新版 `cdp-tests` 下 `start` 综合测试已通过；综合、实现和报告截图仍按第 7.4 节继续收口。
 
 ## 1. 目标与范围
 
@@ -227,7 +227,9 @@ PC 更新与取指也沿用模板：`PC.fetch=inst_finished`，`ifetch_req=first
 
 Basic Trace 只验证 CPU 内核主存访问，不覆盖外设访问；若后续下板表现和仿真不一致，再按指导书建议排查 bit 文件、Timing Summary、Warning、RTL 规范和在线调试信号。
 
-当前工作区未发现 `cdp-tests`/`mySoC` Trace 框架目录。等 Trace 框架放到工作区后，可用辅助脚本同步 RTL：
+当前状态：Basic Trace 普通指令测试已通过；旧版 `cdp-tests` 下 `start` 失败已定位为测试框架版本问题。新版 `cdp-tests` 中 Digit 外设基址修正为 `0xffff2000`，重新同步 RTL 后 `make run TEST=start` 已输出 `Test Point Pass!`。
+
+当前工作区已有最新 `cdp-tests` Trace 框架。需要重新同步 RTL 时，可用辅助脚本：
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File tools\prepare_basic_trace_sources.ps1 -TraceRoot cdp-tests
@@ -299,8 +301,8 @@ powershell -ExecutionPolicy Bypass -File tools\prepare_single_cycle_sources.ps1
 当前已实跑一次，生成：
 
 ```text
-dist/single_cycle_20260714_120705
-dist/single_cycle_20260714_120705.zip
+dist/single_cycle_20260716_093918
+dist/single_cycle_20260716_093918.zip
 ```
 
 该目录和 zip 包包含 17 个 RTL 源文件、3 个 `coe/asm` 初始化文件和 `manifest.txt`，未包含 IP 或 Vivado 生成物。zip 包大小约 14 KB，低于指导书 100 MB 限制。
@@ -323,7 +325,8 @@ dist/single_cycle_20260714_120705.zip
 | `tools/prepare_single_cycle_sources.ps1` | 已新增单周期源码交付包准备脚本，默认排除 IP 与 Vivado 生成物 |
 | `tools/prepare_basic_trace_sources.ps1` | 已新增 Basic Trace 源码同步脚本，等待 `cdp-tests/mySoC` 框架后使用 |
 | `tools/prepare_basic_trace_sources.sh` | 已新增 Linux Basic Trace 源码同步脚本，转 Linux 后使用 |
-| `dist/single_cycle_20260714_120705.zip` | 已生成单周期源码 zip 包，内容仅含 `rtl/`、`coe/`、`manifest.txt` |
+| `lab1/实验一收尾与提交清单.md` | 已新增最终报告、截图和提交包收尾清单 |
+| `dist/single_cycle_20260716_093918.zip` | 已生成单周期源码 zip 包，内容仅含 `rtl/`、`coe/`、`manifest.txt` |
 
 未新增独立的“总控模块”，未改动顶层端口或 IP 文件；Vivado 工程可直接沿用。
 
@@ -421,6 +424,7 @@ python tools\verify_minirv_algorithms.py
 - [x] 已补充 Vivado Tcl 辅助脚本 `tools/vivado_lab1_check.tcl`；
 - [x] 已补充环境检查脚本 `tools/check_vivado_env.ps1`；
 - [x] 已补充单周期源码交付包脚本 `tools/prepare_single_cycle_sources.ps1`；
-- [x] 已生成单周期源码 zip 包 `dist/single_cycle_20260714_120705.zip`；
+- [x] 已生成单周期源码 zip 包 `dist/single_cycle_20260716_093918.zip`；
 - [x] 用户侧 Vivado 行为仿真已通过，transcript 输出 `Test Passed!`；
-- [ ] Basic Trace、综合、实现、报告截图由用户在本机继续执行，我负责给出源码和检查清单。
+- [x] Basic Trace 含新版 `start` 综合测试已通过；
+- [ ] 综合、实现、报告截图由用户在本机继续执行，我负责给出源码和检查清单。

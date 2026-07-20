@@ -1,0 +1,1920 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../lab1/B-constr/">
+      
+      
+        <link rel="next" href="../remote_env/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.21">
+    
+    
+      
+        <title>测试框架说明 - 计算机设计与实践（2026夏季） | 哈工大（深圳）</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.66ac8b77.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="计算机设计与实践（2026夏季） | 哈工大（深圳）" class="md-header__button md-logo" aria-label="计算机设计与实践（2026夏季） | 哈工大（深圳）" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M176 24c0-13.3-10.7-24-24-24s-24 10.7-24 24v40c-35.3 0-64 28.7-64 64H24c-13.3 0-24 10.7-24 24s10.7 24 24 24h40v56H24c-13.3 0-24 10.7-24 24s10.7 24 24 24h40v56H24c-13.3 0-24 10.7-24 24s10.7 24 24 24h40c0 35.3 28.7 64 64 64v40c0 13.3 10.7 24 24 24s24-10.7 24-24v-40h56v40c0 13.3 10.7 24 24 24s24-10.7 24-24v-40h56v40c0 13.3 10.7 24 24 24s24-10.7 24-24v-40c35.3 0 64-28.7 64-64h40c13.3 0 24-10.7 24-24s-10.7-24-24-24h-40v-56h40c13.3 0 24-10.7 24-24s-10.7-24-24-24h-40v-56h40c13.3 0 24-10.7 24-24s-10.7-24-24-24h-40c0-35.3-28.7-64-64-64V24c0-13.3-10.7-24-24-24s-24 10.7-24 24v40h-56V24c0-13.3-10.7-24-24-24s-24 10.7-24 24v40h-56V24zm-16 104h192c17.7 0 32 14.3 32 32v192c0 17.7-14.3 32-32 32H160c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32zm192 32H160v192h192V160z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            计算机设计与实践（2026夏季） | 哈工大（深圳）
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              测试框架说明
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="cyan"  aria-label="切换到夜晚模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到夜晚模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="cyan"  aria-label="切换到白天模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到白天模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+  首页
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../lab1/0-overview/" class="md-tabs__link">
+          
+  
+  实验1：单周期CPU设计
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  Trace测试说明
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../verify/trace-debug/" class="md-tabs__link">
+          
+  
+  SoC的下板调试
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="计算机设计与实践（2026夏季） | 哈工大（深圳）" class="md-nav__button md-logo" aria-label="计算机设计与实践（2026夏季） | 哈工大（深圳）" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M176 24c0-13.3-10.7-24-24-24s-24 10.7-24 24v40c-35.3 0-64 28.7-64 64H24c-13.3 0-24 10.7-24 24s10.7 24 24 24h40v56H24c-13.3 0-24 10.7-24 24s10.7 24 24 24h40v56H24c-13.3 0-24 10.7-24 24s10.7 24 24 24h40c0 35.3 28.7 64 64 64v40c0 13.3 10.7 24 24 24s24-10.7 24-24v-40h56v40c0 13.3 10.7 24 24 24s24-10.7 24-24v-40h56v40c0 13.3 10.7 24 24 24s24-10.7 24-24v-40c35.3 0 64-28.7 64-64h40c13.3 0 24-10.7 24-24s-10.7-24-24-24h-40v-56h40c13.3 0 24-10.7 24-24s-10.7-24-24-24h-40v-56h40c13.3 0 24-10.7 24-24s-10.7-24-24-24h-40c0-35.3-28.7-64-64-64V24c0-13.3-10.7-24-24-24s-24 10.7-24 24v40h-56V24c0-13.3-10.7-24-24-24s-24 10.7-24 24v40h-56V24zm-16 104h192c17.7 0 32 14.3 32 32v192c0 17.7-14.3 32-32 32H160c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32zm192 32H160v192h192V160z"/></svg>
+
+    </a>
+    计算机设计与实践（2026夏季） | 哈工大（深圳）
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    首页
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            首页
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    实验须知
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../home/fpga/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ★开发板使用须知
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../home/codingstyle/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Verilog代码规范
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../home/problems/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ★常见问题汇总
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_5" id="__nav_1_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    作业提交说明
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_5">
+            <span class="md-nav__icon md-icon"></span>
+            作业提交说明
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../home/operation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    作业系统指南
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    实验1：单周期CPU设计
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            实验1：单周期CPU设计
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab1/0-overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    实验概述
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab1/1-warmup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    开始之前
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    实验原理
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            实验原理
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_1" id="__nav_2_3_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    指令集介绍
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            指令集介绍
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab1/2-inst/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    miniRV指令集
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab1/2-inst_LA/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    miniLA指令集
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab1/3-parts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    功能部件设计
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab1/4-datpth/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    数据通路设计
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab1/5-ctrler/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    控制单元设计
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_5" id="__nav_2_3_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    访存及乘除法指令实现
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            访存及乘除法指令实现
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab1/6-multcycle/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    多周期指令的数据通路
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab1/7-muldiv/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    乘除法运算的实现
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab1/8-divider/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    除法器设计
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab1/9-timing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    单周期CPU时序
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab1/10-verify/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CPU功能验证原理
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab1/11-performance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    单周期CPU性能分析
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab1/12-step/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    实验步骤
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    附录
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            附录
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab1/A-macro/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    A. Verilog宏定义的使用
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lab1/B-constr/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    B. 引脚约束文件
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Trace测试说明
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Trace测试说明
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    测试框架说明
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    测试框架说明
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 关于实验环境
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 了解测试框架
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 添加待测试代码
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 运行测试
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 运行测试">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 运行单个测试
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 查看波形
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3 查看反汇编
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.4 批量运行测试
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    附录
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            附录
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../remote_env/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    A. 远程平台使用指南
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    B. 虚拟机使用指南
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../env_diy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    C. 实验环境部署指南
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../surfer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    D. Surfer使用指南
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    SoC的下板调试
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            SoC的下板调试
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../verify/trace-debug/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    方法1：Trace下板调试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../verify/online-debug/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    方法2：FPGA在线调试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 关于实验环境
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 了解测试框架
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 添加待测试代码
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 运行测试
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 运行测试">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 运行单个测试
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 查看波形
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3 查看反汇编
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.4 批量运行测试
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>测试框架说明</h1>
+
+<h2 id="1">1. 关于实验环境</h2>
+<p>&emsp;&emsp;Trace测试使用Linux系统部署测试环境，我们提供了三种实验环境供同学们选择：</p>
+<p><strong>（1）实验室虚拟机</strong></p>
+<p>&emsp;&emsp;实验室的台式机均已提前安装好基于WSL2虚拟机的实验环境，推荐同学们直接使用。</p>
+<p>&emsp;&emsp;WSL2虚拟机最方便的地方之一就是可以快速实现系统之间的文件拷贝。</p>
+<p><strong>（2）远程实验平台</strong></p>
+<p>&emsp;&emsp;远程实验平台的资源和性能有限，不要在上课期间使用，否则服务器负载能力有限，会导致使用体验很差。</p>
+<p>&emsp;&emsp;远程实验平台已经将Trace测试的运行环境部署在实验中心的服务器上，我们把所有依赖的配置都已经事先搭建完毕。无论你的电脑性能如何，无论你是在宿舍、实验室还是自习室，只要你还能连上校园网，你就能完成你的实验。具体使用方式详见<a href="../remote_env/" target="_blank">附录A：远程实验环境使用指南</a>。</p>
+<div class="admonition info">
+<p class="admonition-title">温馨提示</p>
+<p>&emsp;&emsp;虽然我们已经做了一些方案保证远程环境的可靠性，但在某些特殊情况下，也不能确保不出故障，为安全起见，建议同学们将代码及时上传到git仓库或者下载到本地保存。</p>
+</div>
+<p><strong>（3）自行部署实验环境</strong></p>
+<p>&emsp;&emsp;如果要自行安装环境，推荐安装WSL2虚拟机。安装说明见<a href="../vm/" target="_blank">附录B：虚拟机使用指南</a>。</p>
+<p>&emsp;&emsp;感兴趣的同学也可以尝试在自己的电脑上从零开始安装实验环境，体验一下自己动手的乐趣：）具体搭建方法详见<a href="../env_diy/" target="_blank">附录C：实验环境部署指南</a>。</p>
+<h2 id="2">2. 了解测试框架</h2>
+<p>&emsp;&emsp;下面以WSL2虚拟机为例，介绍Trace测试框架使用方法。</p>
+<p>&emsp;&emsp;首先在桌面上打开wsl2distromanager，并启动comp2008虚拟机。</p>
+<p>&emsp;&emsp;在虚拟机终端输入并执行下列命令，以拉取测试框架代码：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>~<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://gitee.com/hitsz-cslab/cdp-tests.git
+</code></pre></div></td></tr></table></div>
+<div class="admonition info">
+<p class="admonition-title">关于miniLA <img alt="📢" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f4e2.svg" title=":loudspeaker:" /></p>
+<p>&emsp;&emsp;实现miniLA指令集的同学，拉取测试框架时，请执行以下命令：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>~<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>miniLA<span class="w"> </span>https://gitee.com/hitsz-cslab/cdp-tests.git
+</code></pre></div></td></tr></table></div>
+</div>
+<p>&emsp;&emsp;cdp-tests目录的文件结构如下图所示。</p>
+<div class="highlight"><pre><span></span><code>.
+├── bin             # 指令测试用例，用于初始化内存
+│   ├── add.bin
+│   ├── .......
+│   ├── xor.bin
+│   └── xori.bin
+├── asm             # 指令测试用例的反汇编文件，用于阅读汇编代码来辅助调试
+│   ├── add.dump
+│   ├── .......
+│   ├── xor.dump
+│   └── xori.dump
+├── csrc            # 测试驱动框架，包括比对逻辑
+│   ├── dut.h
+│   └── test.cpp
+├── golden_model    # C语言编写的CPU行为模型
+│   ├── emu.c
+│   ├── include/...
+│   └── stage/...
+├── waveform        #【运行测试后生成】的波形文件，用于查看波形来辅助调试
+│   ├── add.vcd
+│   ├── ........
+│   └── xori.vcd
+├── Makefile
+├── mySoC           # 你实现的SoC的Verilog代码，放在此目录下，仅拷贝HDL代码，不拷贝IP核
+│   ├── miniRV(或LA)_SoC.v
+|   ├── defines.vh
+│   └── ......
+├── vsrc            # 仿真需要用到的其他文件
+|   ├── ram.v       # Basic测试的主存模块，不含总线
+│   └── bram_axi.v  # AXI测试的主存模块
+├── run_all_tests.py        # 自动化测试脚本
+├── Makefile
+├── sim_simple.surf.ron     # 单周期CPU的Surfer波形配置文件
+└── sim_pipeline.surf.ron   # 流水线CPU的Surfer波形配置文件
+</code></pre></div>
+<p>&emsp;&emsp;测试的原理是差分测试，即比对标准模型和待测模型之间的区别。在实验中，标准模型就是<code>golden_model</code>下使用C语言实现的CPU模型，而待测模块就是你所实现的CPU。驱动测试的代码逻辑位于<code>csrc</code>文件夹中，分别让标准模型和待测模型执行同一条指令，比对他们执行的结果，来确定你的CPU是否实现正确。<strong>你只需要关注<code>mySoC</code>目录，暂时不需要关注其他目录，你需要将自己实现的CPU的Verilog代码粘贴到这个目录下。</strong></p>
+<h2 id="3">3. 添加待测试代码</h2>
+<p>&emsp;&emsp;<code>mySoC</code>目录存放待测试CPU、总线控制器以及SoC顶层模块及其对外的连线等代码文件。运行测试时，需要将整个SoC工程的代码复制到该目录下。拷贝代码时，需要注意：</p>
+<ul>
+<li>
+<p>把Vivado工程目录的 <code>src</code> / <code>rtl</code> 下的所有源文件拷贝到 <code>cdp-tests</code> / <code>mySoC</code> 目录。<strong>不要拷贝<code>ip</code>文件夹</strong>，也 <strong>不要拷贝IP核相关文件</strong>。</p>
+</li>
+<li>
+<p>如果使用WSL2虚拟机，在Windows下把源文件拷贝到虚拟机之后，有时会出现许多带有<code>Zone.Identifier</code>后缀的文件。这些文件需要全部删除，否则测试无法运行。删除方法是在文件资源管理器的搜索框搜索<code>Zone.Identifier</code>，然后快捷键 <span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-a">A</kbd></span> 全选后删除。</p>
+</li>
+<li>
+<p><strong>保证<code>mySoC</code>目录下的架构是<code>miniRV_SoC</code>（或<code>miniLA_SoC</code>）包含<code>cpu_top</code>，然后<code>cpu_top</code>包含<code>cpu_core</code>，且这些模块的模块名、实例名，以及<code>cpu_core</code>的接口信号均不要改动</strong>。课程提供的模板工程默认满足要求，不要改动。</p>
+</li>
+<li>
+<p><strong>不要修改所有源文件中任何出现<code>RUN_TRACE</code>宏定义的代码。</strong></p>
+</li>
+<li>
+<p><strong>不要修改所有源文件中任何在行内出现<code>/* verilator public */</code>的代码，并且不要删除或修改此注释。</strong></p>
+</li>
+<li>
+<p>在Trace测试框架中，SoC顶层模块的复位信号<code>fpga_rst</code>是高电平复位。</p>
+</li>
+<li>
+<p>系统复位后首条指令的地址是<code>0x00000000</code>。</p>
+</li>
+</ul>
+<p>&emsp;&emsp;<u><strong>Trace测试框架会根据SoC是否支持AXI总线，自动进行相应架构的测试</strong></u>，如下图所示：</p>
+<p><center><img src = "../assets/trace-1.png" width = 100%></center></p>
+<p>&emsp;&emsp;Basic Trace只会测试CPU内核，而AXI Trace会将CPU连同ICache、DCache和总线一起测试。</p>
+<div class="admonition danger">
+<p class="admonition-title"><strong>Trace测试框架只会测试主存访问，不会测试外设访问</strong></p>
+<p>&emsp;&emsp;如果SoC通过了AXI Trace测试，但下板测试失败，则首先应排查Uncached访问和外设访问的实现是否存在问题。</p>
+</div>
+<p>&emsp;&emsp;Trace测试框架使用<code>cpu_core.v</code>末尾的两组Trace信号来获取待测试CPU的部分结构状态。其中，第一组带有<code>debug_wb_</code>前缀的信号用于获取写回寄存器的信息，第二组带有<code>debug_mem_</code>前缀的则用于获取写访存的信息。单周期CPU的demo工程已提前连接好两组Trace信号：</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">cpu_core.v</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">debug_wb_pc</span><span class="w">    </span><span class="cm">/* verilator public */</span><span class="w"> </span><span class="p">;</span><span class="w">     </span><span class="c1">// WB阶段的PC</span>
+<span class="kt">wire</span><span class="w">        </span><span class="n">debug_wb_rf_we</span><span class="w"> </span><span class="cm">/* verilator public */</span><span class="w"> </span><span class="p">;</span><span class="w">     </span><span class="c1">// WB阶段的寄存器写使能</span>
+<span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mh">4</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">debug_wb_rf_wR</span><span class="w"> </span><span class="cm">/* verilator public */</span><span class="w"> </span><span class="p">;</span><span class="w">     </span><span class="c1">// WB阶段的目标寄存器   (若wb_rf_we为0，此项可为任意值)</span>
+<span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">debug_wb_rf_wD</span><span class="w"> </span><span class="cm">/* verilator public */</span><span class="w"> </span><span class="p">;</span><span class="w">     </span><span class="c1">// WB阶段写入寄存器的值 (若wb_rf_we为0，此项可为任意值)</span>
+
+<span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">debug_mem_pc</span><span class="w">    </span><span class="cm">/* verilator public */</span><span class="w"> </span><span class="p">;</span><span class="w">    </span><span class="c1">// MEM阶段的PC</span>
+<span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">debug_mem_we</span><span class="w">    </span><span class="cm">/* verilator public */</span><span class="w"> </span><span class="p">;</span><span class="w">    </span><span class="c1">// MEM阶段写访存时的写使能</span>
+<span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">debug_mem_waddr</span><span class="w"> </span><span class="cm">/* verilator public */</span><span class="w"> </span><span class="p">;</span><span class="w">    </span><span class="c1">// MEM阶段写访存时的写地址 (若mem_we为0，此项可为任意值)</span>
+<span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">debug_mem_wdata</span><span class="w"> </span><span class="cm">/* verilator public */</span><span class="w"> </span><span class="p">;</span><span class="w">    </span><span class="c1">// MEM阶段写访存时的写数据 (若mem_we为0，此项可为任意值)</span>
+
+<span class="k">assign</span><span class="w"> </span><span class="n">debug_wb_pc</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">pc</span><span class="p">;</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">debug_wb_rf_we</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rf_we1</span><span class="p">;</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">debug_wb_rf_wR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rf_wR</span><span class="p">;</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">debug_wb_rf_wD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rf_wD</span><span class="p">;</span>
+
+<span class="k">assign</span><span class="w"> </span><span class="n">debug_mem_pc</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">pc</span><span class="p">;</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">debug_mem_we</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">daccess_wen</span><span class="p">;</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">debug_mem_waddr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">daccess_addr</span><span class="p">;</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">debug_mem_wdata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">daccess_wdata</span><span class="p">;</span>
+</code></pre></div></td></tr></table></div>
+<p>&emsp;&emsp;在开发流水线CPU及SoC时，请参照上述代码中的注释，自行连接两组Trace信号。注意，<strong>对于同一条指令，每一组信号只能有效一个时钟周期，特别是<code>debug_wb_rf_we</code>和<code>debug_mem_we</code></strong>。</p>
+<div class="admonition question">
+<p class="admonition-title">对于流水线，一定是连接WB阶段、MEM阶段的信号吗？</p>
+<p>&emsp;&emsp;不一定。第一组Trace信号的作用是获取写回寄存器的信息，而第二组则是为了获取写访存的信息。因此，你的流水线CPU在哪个阶段写回寄存器，就把哪个阶段的信号连接到第一组Trace信号。同理，流水线CPU在哪个阶段发出写访存请求，就把哪个阶段的信号连接到第二组Trace信号。</p>
+</div>
+<div class="admonition question">
+<p class="admonition-title">运行AXI Trace测试时，第二组Trace信号没报错，代表Store指令的写访存操作一定没问题吗？</p>
+<p>&emsp;&emsp;不一定。第二组Trace信号只能帮助Trace测试框架判断CPU发出的写请求是否正确，但写请求后续传输到DCache、总线、存储器的路径上都有可能出错，导致写访存失败，从而数据没有被正确写入主存。出现这种这种情况时，Trace测试会在后续相同访存地址的Load指令处报错。</p>
+</div>
+<p>&emsp;&emsp;若运行Basic Trace测试，需要保证代码中实例化了<code>IROM</code>、<code>DRAM</code>（模板工程默认已实例化）：</p>
+<div class="highlight"><span class="filename">Inst_ROM.v, Data_RAM.v</span><pre><span></span><code><span class="n">IROM</span><span class="w"> </span><span class="n">U_irom</span><span class="w"> </span><span class="p">(</span><span class="w">       </span><span class="c1">// 模块名必须是IROM</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clka</span><span class="w">   </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">addra</span><span class="w">  </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">douta</span><span class="w">  </span><span class="p">(...)</span>
+<span class="p">);</span>
+
+<span class="n">DRAM</span><span class="w"> </span><span class="n">U_dram</span><span class="w"> </span><span class="p">(</span><span class="w">       </span><span class="c1">// 模块名必须是DRAM</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clka</span><span class="w">   </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">addra</span><span class="w">  </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">douta</span><span class="w">  </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">wea</span><span class="w">    </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">dina</span><span class="w">   </span><span class="p">(...)</span>
+<span class="p">);</span>
+</code></pre></div>
+<p>&emsp;&emsp;若运行AXI Trace测试，需要保证代码中实例化了<code>bram_axi</code>：</p>
+<div class="highlight"><span class="filename">miniRV_SoC.v, miniLA_SoC</span><pre><span></span><code><span class="n">bram_axi</span><span class="w"> </span><span class="n">U_bram</span><span class="w"> </span><span class="p">(</span><span class="w">               </span><span class="c1">// 模块名必须是bram_axi</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_aclk</span><span class="w">         </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_aresetn</span><span class="w">      </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_awid</span><span class="w">     </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_awaddr</span><span class="w">   </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_awlen</span><span class="w">    </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_awsize</span><span class="w">   </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_awburst</span><span class="w">  </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_awready</span><span class="w">  </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_awvalid</span><span class="w">  </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_wdata</span><span class="w">    </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_wstrb</span><span class="w">    </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_wvalid</span><span class="w">   </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_wlast</span><span class="w">    </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_wready</span><span class="w">   </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_bready</span><span class="w">   </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_bresp</span><span class="w">    </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_bvalid</span><span class="w">   </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_arid</span><span class="w">     </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_araddr</span><span class="w">   </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_arlen</span><span class="w">    </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_arsize</span><span class="w">   </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_arburst</span><span class="w">  </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_arready</span><span class="w">  </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_arvalid</span><span class="w">  </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_rdata</span><span class="w">    </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_rvalid</span><span class="w">   </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_rlast</span><span class="w">    </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_rready</span><span class="w">   </span><span class="p">(...),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">s_axi_rresp</span><span class="w">    </span><span class="p">(...)</span>
+<span class="p">);</span>
+</code></pre></div>
+<h2 id="4">4. 运行测试</h2>
+<p>&emsp;&emsp;把待测试代码拷贝到 <code>cdp-tests</code> / <code>mySoC</code> 目录后，在虚拟机终端执行下列命令进入<code>cdp-tests</code>目录：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>cdp-tests
+</code></pre></div></td></tr></table></div>
+<p>&emsp;&emsp;然后继续在终端执行<code>make</code>命令，从而编译代码，生成可执行的仿真模型。</p>
+<p><img alt="image-20210704012833242" src="../assets/trace-2.png" /></p>
+<h3 id="41">4.1 运行单个测试</h3>
+<p>&emsp;&emsp;所有的测试用例都位于<code>bin</code>文件夹下，输入下列命令即可获取测试用例名称：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>ls<span class="w"> </span>bin
+</code></pre></div></td></tr></table></div>
+<p>&emsp;&emsp;每个测试用例的名称都和某条指令的名称相同，但测试用例内部使用了多条不同的指令。</p>
+<p>&emsp;&emsp;第一次运行测试时，推荐选择单个测试运行。例如，我们想运行<code>sltu</code>指令的测试用例，则在终端执行命令：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>make<span class="w"> </span>run<span class="w"> </span><span class="nv">TEST</span><span class="o">=</span>sltu
+</code></pre></div></td></tr></table></div>
+<p><img alt="image-20210704013056368" src="../assets/trace-3.png" /></p>
+<p>&emsp;&emsp;打印出Test Point Pass之后，就代表这条指令测试通过了。</p>
+<p>&emsp;&emsp;如果发生了错误，就会打印如下所示的信息：</p>
+<p><img alt="image-20210704013210584" src="../assets/trace-4.png" /></p>
+<p>&emsp;&emsp;左栏为参照的正确实现，右栏为你实现的CPU给出的信号，通过比对这两组信号，你可以很快地确定错误发生在哪一条指令执行过程中，然后通过反汇编和波形的形式进行调试。</p>
+<h3 id="42">4.2 查看波形</h3>
+<p>&emsp;&emsp;运行某个测试之后，测试框架会在<code>waveform</code>文件夹下生成对应的.vcd波形文件。.vcd格式的波形文件可以使用GTKWave、Surfer等常用的波形查看器查看。</p>
+<p>&emsp;&emsp;打开桌面上的Surfer工具，然后直接把<code>waveform</code>文件夹下的.vcd波形文件拖拽到Surfer，如下图所示。</p>
+<p><center><img src = "../assets/trace-5.png" width = 600></center></p>
+<p>&emsp;&emsp;然后把<code>cdp-tests</code>目录下的.surf.ron格式的波形配置文件拖拽到Surfer，如下图所示。</p>
+<p><center><img src = "../assets/trace-6.png" width = 100%></center></p>
+<p>&emsp;&emsp;修改HDL代码并重新编译、重新运行测试后，只需点击左上角工具栏的刷新按钮，即可查看最新的波形，如下图所示。</p>
+<p><center><img src = "../assets/trace-7.png" width = 350></center></p>
+<p>&emsp;&emsp;更多Surfer工具的使用方法，请查看<a href="../surfer" target=_blank>附录D. Surfer使用指南</a>。</p>
+<h3 id="43">4.3 查看反汇编</h3>
+<p>&emsp;&emsp;反汇编文件在<code>asm</code>文件夹下。在上述的<code>auipc</code>的测试例子中，可见在PC等于0x8处出现了错误，写回值有误。通过查看和分析<code>auipc.dump</code>中的反汇编指令，可以帮助我们找到出错的指令。</p>
+<p><center><img src = "../assets/trace-8.png" width = 600></center></p>
+<p>&emsp;&emsp;请根据出错点，结合波形和反汇编代码，完成调试。</p>
+<h3 id="44">4.4 批量运行测试</h3>
+<p>&emsp;&emsp;<code>cdp-tests</code>目录下提供<code>run_all_tests.py</code>的脚本来进行批量测试。</p>
+<p>&emsp;&emsp;首先确保已执行过<code>make</code>命令，且编译没有报错，然后执行下列命令：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>python3<span class="w"> </span>run_all_tests.py
+</code></pre></div></td></tr></table></div>
+<p>&emsp;&emsp;脚本运行结束后，会在最末尾输出测试总结报告。该报告会列出当前代码已通过和未通过的测试数量及测试名称。对于未通过的测试，请结合<code>waveform</code>目录下的波形和<code>asm</code>目录下的反汇编代码进行调试。</p>
+<p>&emsp;&emsp;通过Basic Trace测试的示意图：</p>
+<p><center><img src = "../assets/trace-9.png" width = 100%></center></p>
+<p>&emsp;&emsp;通过AXI Trace测试的示意图：</p>
+<p><center><img src = "../assets/trace-10.png" width = 100%></center></p>
+<!-- **（2）使用start测试程序自动测试**
+
+!!! info "关于miniLA :loudspeaker:"
+    &emsp;&emsp;miniLA的Trace测试包无此功能，故可略过。
+
+&emsp;&emsp;输入以下命令:
+
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>make<span class="w"> </span>run<span class="w"> </span><span class="nv">TEST</span><span class="o">=</span>start
+</code></pre></div></td></tr></table></div>
+
+&emsp;&emsp;如果你的mycpu能够支持37条指令（24条必做和13条选做），则会显示“Test Point Pass!”。
+
+<center><img src = "../assets/trace-11.png" width = 300></center>
+
+&emsp;&emsp;如果测试显示“[difftest] Test Failed!”，说明没有通过37条指令测试。Digiti的数值则表示你的mycpu通过的功能点数，其高8位为0x25，表示共有37个测试点，低8位表示通过的测试点数。
+
+<center><img src = "../assets/trace-12.png" width = 380></center>
+
+&emsp;&emsp;例如，上图所示的测试结果表面，该CPU通过了0x18，即24条指令的测试。 -->
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2019 - 2026 哈尔滨工业大学（深圳）
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "content.code.annotate", "content.tabs.link", "navigation.tabs", "navigation.expand"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a7c05c9e.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+    
+  </body>
+</html>
