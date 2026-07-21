@@ -63,11 +63,11 @@ Phase 7：实验二实现与验证（所有新材料位于 `lab2/`）
 
 ### Phase 8：C_TEST TODO 实现与编译
 - [x] 确认课程原包来源、目标目录和不修改范围
-- [ ] 获取 `c_test_rv_stu` 原包并定位全部 TODO
-- [ ] 补齐 UART、格式化 I/O、排序和 LLAMA2 TODO
+- [x] 获取 `c_test_rv_stu` 原包并定位全部 TODO
+- [x] 补齐 UART、格式化 I/O、排序和 LLAMA2 TODO
 - [ ] 编译全部 C_TEST 目录并核验产物
-- [ ] 提交并推送变更
-- **Status:** in_progress
+- [x] 提交并推送 C_TEST 源码变更
+- **Status:** implementation complete; compilation waits for the RISC-V toolchain
 
 ### Phase 9：Lab2 可直接打开的 Vivado 工程
 - [x] 复制 Lab1 `miniRV_basic` 完整 Vivado 工程骨架

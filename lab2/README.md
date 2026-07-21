@@ -27,6 +27,9 @@
 - `pipeline_cpu/miniRV_pipeline`：Lab2-A 五级流水线 CPU。
 - `axi_soc/miniRV_axi`：Lab2-B 单周期 CPU 的 AXI SoC。
 - `integrated_soc/miniRV_pipeline_axi`：流水线 CPU 接入 Cache/AXI 的最终版本。
+- `miniRV_pipeline_axi/miniRV.xpr`：可直接打开的 Lab2 Vivado 工程；其 `src/` 与
+  最终集成版同步。首次打开必须执行 **Reset Runs**，复制来的 Lab1 缓存和报告不代表
+  Lab2 已综合通过。
 - `assets/cache_reference`：课程提供的 ICache/DCache 参考源码。
 
 ## Trace

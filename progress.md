@@ -118,8 +118,9 @@
 
 ### Lab2：C_TEST TODO 与编译
 - **Status:** in progress
-- 已确认目标原包：`https://cpu-design.p.cs-lab.top/lab2-B/assets/c_test_rv_stu.tar.gz`。
-- 课程站点下载在直连和系统代理两种模式下均发生 TLS `unexpected eof`；尚未写入任何 C_TEST 源码，下一步检索本机材料或换用备用下载渠道。
+- 已从 `https://cpu-design.p.cs-lab.top/lab2-B/assets/c_test_rv_stu.tar.gz` 下载官方原包。必须同时清除大小写代理环境变量后直连课程站点；系统代理会导致 TLS `unexpected eof`。
+- 已解压到 `lab2/c_test_rv_stu`，补完 UART、格式化 I/O、排序和 LLAMA2 的所有 TODO，并统一写入学号 `2024311270`；`3_ddr_test`、`4_coremark` 未改动。
+- 静态 TODO 检查通过。本机缺少 `riscv32-unknown-elf-*` 工具链且无无密码管理员权限；待用户安装后运行各目录的 `compile.sh` 并验证 `main.s`、`main.coe`、`main.bin`。
 
 ### Lab2：Vivado 工程骨架
 - **Status:** prepared; waiting for Vivado verification
