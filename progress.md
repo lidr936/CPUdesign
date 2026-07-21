@@ -121,6 +121,8 @@
 - 已从 `https://cpu-design.p.cs-lab.top/lab2-B/assets/c_test_rv_stu.tar.gz` 下载官方原包。必须同时清除大小写代理环境变量后直连课程站点；系统代理会导致 TLS `unexpected eof`。
 - 已解压到 `lab2/c_test_rv_stu`，补完 UART、格式化 I/O、排序和 LLAMA2 的所有 TODO，并统一写入学号 `2024311270`；`3_ddr_test`、`4_coremark` 未改动。
 - 静态 TODO 检查通过。本机缺少 `riscv32-unknown-elf-*` 工具链且无无密码管理员权限；待用户安装后运行各目录的 `compile.sh` 并验证 `main.s`、`main.coe`、`main.bin`。
+- 用户已安装 GNU RISC-V 与 Picolibc 工具链。Picolibc 开启 `--gc-sections` 且要求双下划线堆符号，因此为四个目标脚本增加兼容参数 `-Wl,-e,_start`、Picolibc specs 和堆边界别名；另修复课程排序源码的 `CLKS_PER_SEC` 宏名及 LLAMA2 的 `<stdint.h>` 缺失、裸机 `fflush(stdout)` 调用。
+- `0_uart_test`、`1_formatIO_test`、`2_sort_test`、`5_llama2.c` 均成功生成非空 `main.s`、`main.coe`、`main.bin`。在线文档确认：测试 0 至 2 可按 EGO1 C_TEST 流程下板；LLAMA2 必须使用 Minisys、DDR/MIG、112640 x 32-bit BRAM 和 7 主设备 Crossbar。
 
 ### Lab2：Vivado 工程骨架
 - **Status:** prepared; waiting for Vivado verification

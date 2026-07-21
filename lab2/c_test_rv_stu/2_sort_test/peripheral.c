@@ -79,7 +79,7 @@ void delay_ms(int ms)
 	while (1)
 	{
 		t1 = get_time();
-		delay_time = (float)(t1 - t0) * 1000 / CLOCKS_PER_SEC;
+		delay_time = (float)(t1 - t0) * 1000 / CLKS_PER_SEC;
 		if (delay_time > (float)ms) break;
 	}
 }

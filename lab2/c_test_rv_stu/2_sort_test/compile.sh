@@ -84,10 +84,19 @@ SECTIONS
     _end = .; /* 标记初始数据的结束 */
     _heap_start = ORIGIN(ram2); /* 堆的起始地址 */
     _stack_top = ORIGIN(ram2) + LENGTH(ram2); /* 栈底 */
+    __heap_start = _heap_start;
+    __heap_end = _stack_top;
 }
 EOF
 
-riscv32-unknown-elf-gcc -T link.ld \
+PICO_SPECS=""
+PICO_ENTRY=""
+if [ -f /usr/lib/picolibc/riscv64-unknown-elf/picolibc.specs ]; then
+    PICO_SPECS="--specs=/usr/lib/picolibc/riscv64-unknown-elf/picolibc.specs"
+    PICO_ENTRY="-Wl,-e,_start"
+fi
+
+riscv32-unknown-elf-gcc $PICO_SPECS $PICO_ENTRY -T link.ld \
                         -nostartfiles -fno-builtin -mabi=ilp32 -march=rv32im \
                         -o "$base" temp_main.c peripheral.c
 rm startup.h temp_main.c link.ld

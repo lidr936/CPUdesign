@@ -8,6 +8,7 @@
 #include "peripheral.h"
 #endif
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <math.h>
@@ -971,7 +972,9 @@ void generate(Transformer *transformer, Tokenizer *tokenizer, Sampler *sampler, 
         // print the token as string, decode it with the Tokenizer object
         char* piece = decode(tokenizer, token, next);
         safe_printf(piece); // same as printf("%s", piece), but skips "unsafe" bytes
+#ifdef C_TEST
         fflush(stdout);
+#endif
         token = next;
 
         // init the timer here because the first iteration can be slower
