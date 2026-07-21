@@ -61,6 +61,22 @@ Phase 7：实验二实现与验证（所有新材料位于 `lab2/`）
 - [x] 记录 Vivado IP、I/O、C_TEST 和下板的手动验收边界
 - **Status:** complete for workspace-automatable work; Vivado/downboard work remains manual
 
+### Phase 8：C_TEST TODO 实现与编译
+- [x] 确认课程原包来源、目标目录和不修改范围
+- [ ] 获取 `c_test_rv_stu` 原包并定位全部 TODO
+- [ ] 补齐 UART、格式化 I/O、排序和 LLAMA2 TODO
+- [ ] 编译全部 C_TEST 目录并核验产物
+- [ ] 提交并推送变更
+- **Status:** in_progress
+
+### Phase 9：Lab2 可直接打开的 Vivado 工程
+- [x] 复制 Lab1 `miniRV_basic` 完整 Vivado 工程骨架
+- [x] 以 Lab2 最终集成版 `src/` 覆盖工程源码、COE、仿真和约束
+- [x] 恢复 `clk_wiz_0` 等 Lab1 IP 并登记 Cache/AXI 新增 RTL
+- [x] 校验 `.xpr` 引用路径和源文件同步
+- [ ] 在 Vivado 打开工程并 Reset Runs 后做综合
+- **Status:** complete for filesystem preparation; Vivado verification remains manual
+
 ## Key Questions
 1. A/B 组所有指令是否都以现有 miniRV EGO1 工程为唯一实现目标？（当前按“是”规划。）
 2. 是否需要在提交 Excel/数据通路图之外，保留完整可综合的 HDL 工程？（当前按“需要”规划。）
@@ -82,3 +98,4 @@ Phase 7：实验二实现与验证（所有新材料位于 `lab2/`）
 | `git` 记录不可用 | 1 | `F:\\cpu-design` 不是 Git 仓库；改为直接基于现有文件结构规划 |
 | Windows 沙箱读文件/列目录报 1312 | 1 | 对必要只读操作使用已授权的 escalated 方式重跑 |
 | Codex 环境 Vivado/Verilog 命令行工具缺失 | 多次检查 | 新增 `tools/check_vivado_env.ps1` 和 `tools/vivado_lab1_check.tcl`；用户侧 Vivado 已完成行为仿真，Basic Trace 仍待用户环境继续执行 |
+| 课程 C_TEST 原包 HTTPS 下载 TLS 失败 | 2 | 已尝试直连和系统代理；改为检索本机已有材料，再采用不同下载方式 |

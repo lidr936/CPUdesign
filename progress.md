@@ -116,6 +116,17 @@
 
 ## Session: 2026-07-22
 
+### Lab2：C_TEST TODO 与编译
+- **Status:** in progress
+- 已确认目标原包：`https://cpu-design.p.cs-lab.top/lab2-B/assets/c_test_rv_stu.tar.gz`。
+- 课程站点下载在直连和系统代理两种模式下均发生 TLS `unexpected eof`；尚未写入任何 C_TEST 源码，下一步检索本机材料或换用备用下载渠道。
+
+### Lab2：Vivado 工程骨架
+- **Status:** prepared; waiting for Vivado verification
+- 已将 `lab1/miniRV_basic_ego1/miniRV_basic` 完整复制为 `lab2/miniRV_pipeline_axi`，以 `lab2/integrated_soc/miniRV_pipeline_axi/src` 覆盖工程源文件，并保留 Lab1 的 `.xpr`、IP、缓存、仿真和运行目录。
+- `miniRV.xpr` 已登记 Lab2 新增的 `DCache.v`、`ICache.v`、`axi_master.v`；工程 XML 与文件引用路径检查通过，所有 Lab2 RTL 均已纳入工程文件集。
+- 本环境未发现 `vivado` 命令，未实际打开或综合；首次在 Vivado 打开后应先执行 `Reset Runs`，再按 C_TEST/Vivado 清单创建 Lab2 AXI 外设 IP 并综合。
+
 ### Lab2：材料探索与文档起草
 - **Status:** first-pass complete
 - **Started:** 2026-07-22
