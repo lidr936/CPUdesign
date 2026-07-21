@@ -79,6 +79,35 @@
 - `dist/single_cycle_20260716_093918/`
 - `dist/single_cycle_20260716_093918.zip`
 
+## Lab2 Initial Findings
+- `lab2/` 已创建但目前为空目录，Git 不会跟踪空目录。
+- 课程站点 `https://cpu-design.p.cs-lab.top` 在校园网直连下可访问；走系统代理会出现 TLS 握手失败。
+- 实验二材料在课程站点中分为 `lab2-A` 与 `lab2-B` 两条线。
+- `lab2-A` 目标是把实验一完整单周期 CPU 改造成至少五级流水线 CPU，支持 miniRV 或 miniLA 全部指令，通过 Basic Trace，并与 SoC 侧集成后通过 AXI Trace 和下板测试。
+- `lab2-A` 明确要求：静态分支预测解决控制冒险，暂停与数据前递解决数据冒险，流水线 SoC 频率不低于 50MHz，单周期 SoC 频率不低于 25MHz，下板检查不能有时序违例。
+- `lab2-B` 目标是在 FPGA 上基于单周期或流水线 CPU 实现可运行 CoreMark 或 LLAMA2 推理程序的 SoC。
+- `lab2-B` 明确要求：实现 ICache/DCache，用状态机实现支持 AXI 协议的总线控制器，添加总线桥与主存模块，完成 I/O 接口测试程序和下板测试，实现拨码开关、LED、数码管、UART、计时器至少 5 个外设，通过 AXI Trace。
+- `lab2-A/7-step` 的实施顺序：复制单周期工程；划分数据通路并实现理想流水线；用无相关、无访存、无乘除法程序仿真；增加冒险检测和默认不跳转分支预测；实现暂停法并覆盖访存/乘除取指逻辑；实现数据前递；通过 Basic Trace；再集成 SoC 进行 AXI Trace 和 CoreMark/LLAMA2 下板。
+- `lab2-B/3-step` 的实施顺序：复制单周期工程；集成组成原理实验 3 的 ICache/DCache；用状态机实现 `axi_master`；添加总线桥和主存 IP；完成 C_TEST I/O 程序并用提供比特流下板；实现 5 个外设 I/O；通过单周期 SoC AXI Trace；再与流水线 CPU 集成。
+- `lab2-B` 调试建议：首次使用 AXI SoC 跑 Trace 时，建议先在 `defines.vh` 禁用 Cache；AXI Trace 通过后再启用 Cache 调试。
+- `lab2-B/1-sysbus` 给出 SoC 架构：`cpu_core` 经 ICache/DCache 接入 `axi_master`，`axi_master` 把 Cache/CPU 请求转换为 AXI 读写请求，再经 bridge 访问主存或外设。
+- AXI4 基于 `ready`-`valid` 握手；读写地址、写数据、写响应、读数据通道独立。课程简化建议：`rready`、`bready` 复位后可一直有效，`rresp`、`bresp` 可忽略，`arid/awid/wid` 可用常量驱动。
+- Cache 侧接口约定：ICache 读接口，DCache 读/写接口；`axi_master` 一般按 DCache 写请求、DCache 读请求、ICache 读请求的优先级处理。
+- 外设地址表：SW `0xFFFF_0000` 只读；LED `0xFFFF_1000` 写；数码管 `0xFFFF_2000` 写；UART `0xFFFF_3000/3004/3008/300C` 分别为 RX FIFO、TX FIFO、状态、控制；计时器 `0xFFFF_4000/4008` 读低/高 32 位。
+
+## Lab2 Implementation Findings
+- 用户确认实验二所有新内容都应位于 `lab2/`；Lab1 工程只能作为只读功能基线。
+- 已在 `lab2/` 固化设计规格 `实验二设计规格.md` 和执行计划 `实验二实施计划.md`。
+- 课程 `lab2-A/7-step` 的完成顺序与实现计划一致：理想流水线、冒险检测与分支预测、暂停、前递、Basic Trace、SoC 集成。
+- 本地 `lab2/实验3_2026-06-07T15_26_00Z.zip` 含课程参考 `ICache.v`（8,563 字节）和 `DCache.v`（18,386 字节），可在 Lab2-B 中按原接口复用。
+- 当前 Git 工作区位于普通 `main` 检出而非 linked worktree；已存在用户未提交文件，且 `.worktrees` 被 `.gitignore` 忽略。实验二 HDL 实现开始前需要用户确认是否创建隔离 worktree。
+- 实验一基线复查：`python3 tools/check_minirv_static.py` 输出 `STATIC CHECK PASSED`，`python3 tools/verify_minirv_algorithms.py` 输出 `ALGORITHM CHECK PASSED (16 cases)`。
+- Lab2-A 实现为保持原外设接口的五级流水线：IF 响应缓冲、IF/ID、ID/EX、EX/MEM、MEM/WB 有效位、load-use 暂停、EX/MEM/WB 前递、默认不跳转分支冲刷，以及单次启动的乘除法暂停。
+- Lab2-A 的完整 Basic Trace 已在本机 Verilator 通过；`div` 初始失败来自多周期暂停期间重复保持 `mem_wb_valid`，`sb` 初始失败来自 Trace 要求保存未经字节移位的源寄存器写数据，均已修正。
+- Lab2-B `axi_master` 串行化 DCache 写、DCache 读和 ICache 读，AXI 读按 `IC_BLK_LEN`/`DC_BLK_LEN` 组装数据，AXI 写按 AW/W/B 三阶段完成。`RUN_TRACE` 下 `miniRV_SoC` 直接连接 `bram_axi`。
+- Cache 旁路模块在发出 `cpu_*en` 前需要先观察 `dev_*rdy`；因此 AXI 主机空闲态必须先公告可接受状态，不能把 ready 反向依赖尚未产生的 Cache 请求。
+- 最终流水线 AXI SoC 的 Cache-off 和 Cache-on 配置均完成 45 个本地 Trace 程序回归。Cache-on Trace 复用框架 `vsrc/ram.v` 的 `blk_mem_gen_1` 行为模型；Vivado 下必须手动生成同名 Block Memory IP。
+
 ## Visual/Browser Findings
 - `pic/PixPin_2026-07-16_09-42-58.png`：Vivado Project Summary，显示 Synthesis Complete、Implementation Complete；Power 摘要显示 Total On-Chip Power `0.068 W`；Timing 区域 WNS/TNS 为 `NA`。
 - `pic/PixPin_2026-07-16_09-47-07.png`：Post-Implementation Utilization 报告截图，显示 IO 使用 `41/210`，约 `19.52%`。

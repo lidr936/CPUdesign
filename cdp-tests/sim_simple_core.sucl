@@ -1,0 +1,74 @@
+# Surfer command file for current single-cycle miniRV cdp-tests waveform.
+# Usage:
+#   cd /run/media/caige/File/cpu-design/cdp-tests
+#   surfer waveform/addi.vcd --command-file sim_simple_core.sucl
+#
+# You can replace addi.vcd with lw.vcd, beq.vcd, start.vcd, etc.
+
+# Top-level clock/reset
+variable_add TOP.miniRV_SoC.sys_clk
+variable_add TOP.miniRV_SoC.sys_rst
+
+# Instruction fetch and PC flow
+variable_add TOP.miniRV_SoC.U_cpu.U_core.first_req
+variable_add TOP.miniRV_SoC.U_cpu.U_core.ifetch_req
+variable_add TOP.miniRV_SoC.U_cpu.U_core.ifetch_addr
+variable_add TOP.miniRV_SoC.U_cpu.U_core.ifetch_valid
+variable_add TOP.miniRV_SoC.U_cpu.U_core.ifetch_inst
+variable_add TOP.miniRV_SoC.U_cpu.U_core.pc
+variable_add TOP.miniRV_SoC.U_cpu.U_core.inst
+variable_add TOP.miniRV_SoC.U_cpu.U_core.npc
+variable_add TOP.miniRV_SoC.U_cpu.U_core.pc4
+variable_add TOP.miniRV_SoC.U_cpu.U_core.inst_finished
+
+# Controller decode outputs
+variable_add TOP.miniRV_SoC.U_cpu.U_core.npc_op
+variable_add TOP.miniRV_SoC.U_cpu.U_core.rf_we
+variable_add TOP.miniRV_SoC.U_cpu.U_core.rf_wsel
+variable_add TOP.miniRV_SoC.U_cpu.U_core.sext_op
+variable_add TOP.miniRV_SoC.U_cpu.U_core.alu_op
+variable_add TOP.miniRV_SoC.U_cpu.U_core.alua_sel
+variable_add TOP.miniRV_SoC.U_cpu.U_core.alub_sel
+variable_add TOP.miniRV_SoC.U_cpu.U_core.ram_rop
+variable_add TOP.miniRV_SoC.U_cpu.U_core.ram_wop
+variable_add TOP.miniRV_SoC.U_cpu.U_core.is_mul
+variable_add TOP.miniRV_SoC.U_cpu.U_core.is_div
+variable_add TOP.miniRV_SoC.U_cpu.U_core.is_mul_div
+
+# Register file and immediate
+variable_add TOP.miniRV_SoC.U_cpu.U_core.rf_rd1
+variable_add TOP.miniRV_SoC.U_cpu.U_core.rf_rd2
+variable_add TOP.miniRV_SoC.U_cpu.U_core.rf_wR
+variable_add TOP.miniRV_SoC.U_cpu.U_core.rf_wD
+variable_add TOP.miniRV_SoC.U_cpu.U_core.ext
+
+# ALU and branch result
+variable_add TOP.miniRV_SoC.U_cpu.U_core.alu_a
+variable_add TOP.miniRV_SoC.U_cpu.U_core.alu_b
+variable_add TOP.miniRV_SoC.U_cpu.U_core.alu_c
+variable_add TOP.miniRV_SoC.U_cpu.U_core.br
+variable_add TOP.miniRV_SoC.U_cpu.U_core.mul_div_busy
+variable_add TOP.miniRV_SoC.U_cpu.U_core.mul_div_flag
+
+# Data memory request/response
+variable_add TOP.miniRV_SoC.U_cpu.U_core.is_ld_st
+variable_add TOP.miniRV_SoC.U_cpu.U_core.ld_st_flag
+variable_add TOP.miniRV_SoC.U_cpu.U_core.daccess_ren
+variable_add TOP.miniRV_SoC.U_cpu.U_core.daccess_addr
+variable_add TOP.miniRV_SoC.U_cpu.U_core.daccess_rvalid
+variable_add TOP.miniRV_SoC.U_cpu.U_core.daccess_rdata
+variable_add TOP.miniRV_SoC.U_cpu.U_core.daccess_wen
+variable_add TOP.miniRV_SoC.U_cpu.U_core.daccess_wdata
+variable_add TOP.miniRV_SoC.U_cpu.U_core.daccess_wresp
+variable_add TOP.miniRV_SoC.U_cpu.U_core.ram_ext
+
+# Signals compared by Trace framework
+variable_add TOP.miniRV_SoC.U_cpu.U_core.debug_wb_pc
+variable_add TOP.miniRV_SoC.U_cpu.U_core.debug_wb_rf_we
+variable_add TOP.miniRV_SoC.U_cpu.U_core.debug_wb_rf_wR
+variable_add TOP.miniRV_SoC.U_cpu.U_core.debug_wb_rf_wD
+variable_add TOP.miniRV_SoC.U_cpu.U_core.debug_mem_pc
+variable_add TOP.miniRV_SoC.U_cpu.U_core.debug_mem_we
+variable_add TOP.miniRV_SoC.U_cpu.U_core.debug_mem_waddr
+variable_add TOP.miniRV_SoC.U_cpu.U_core.debug_mem_wdata
+

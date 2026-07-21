@@ -4,7 +4,7 @@
 依据实验一指导书，完成需求梳理、实现、Basic Trace 验证与交付材料整理。
 
 ## Current Phase
-Phase 5：交付整理（Basic Trace 含 start 综合测试已通过；进入综合/实现截图、报告和提交包收口）
+Phase 7：实验二实现与验证（所有新材料位于 `lab2/`）
 
 ## Phases
 
@@ -41,6 +41,25 @@ Phase 5：交付整理（Basic Trace 含 start 综合测试已通过；进入综
 - [ ] 完成 PDF 实验报告
 - [ ] 整理最终提交 zip
 - **Status:** in_progress
+
+### Phase 6：实验二材料探索与文档起草
+- [x] 确认 `lab2/` 目录状态
+- [x] 确认课程站点实验二入口
+- [x] 提取 `lab2-A` 流水线 CPU 关键章节与实验步骤
+- [x] 提取 `lab2-B` SoC/总线/I/O 关键章节与实验步骤
+- [x] 在 `lab2/` 下输出实验二需求与路线文档
+- [x] 同步更新发现记录和进度记录
+- **Status:** complete
+
+### Phase 7：实验二实现与验证
+- [x] 明确全量目标、可自动化边界和实施顺序
+- [x] 将实验二规格和实施计划固定在 `lab2/`
+- [x] 建立三个实验二工程副本和 RTL/Trace 同步脚本
+- [x] 完成 Lab2-A 五级流水线 CPU，并通过完整 Basic Trace
+- [x] 完成 Lab2-B AXI SoC、Cache 路径，并通过完整 AXI Trace
+- [x] 完成流水线 SoC 集成，并在 Cache-off/Cache-on 两种 AXI Trace 配置下回归
+- [x] 记录 Vivado IP、I/O、C_TEST 和下板的手动验收边界
+- **Status:** complete for workspace-automatable work; Vivado/downboard work remains manual
 
 ## Key Questions
 1. A/B 组所有指令是否都以现有 miniRV EGO1 工程为唯一实现目标？（当前按“是”规划。）

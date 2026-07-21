@@ -113,3 +113,38 @@
 | What's the goal? | 完成实验一单周期 CPU 的设计、实现、验证和交付整理 |
 | What have I learned? | 见 findings.md |
 | What have I done? | 已定位并阅读实验步骤，建立计划文件 |
+
+## Session: 2026-07-22
+
+### Lab2：材料探索与文档起草
+- **Status:** first-pass complete
+- **Started:** 2026-07-22
+- Actions taken:
+  - 确认 `lab2/` 目录已存在但为空。
+  - 直连校园网访问课程站点成功，确认系统代理会导致 TLS 失败。
+  - 从课程站点首页导航定位实验二章节：`lab2-A/*` 与 `lab2-B/*`。
+  - 初读 `lab2-A/0-overview/` 与 `lab2-B/0-overview/`，确认 A 侧聚焦流水线 CPU，B 侧聚焦 SoC、AXI、I/O 与下板。
+  - 读取 `lab2-A/7-step/` 与 `lab2-B/3-step/`，提取两条线的实施顺序。
+  - 读取 `lab2-B/1-sysbus/`、外设地址表和本地实验一 RTL/Trace 目录，确认后续文档可直接围绕现有 miniRV 单周期实现展开。
+  - 在 `lab2/` 下创建 `README.md`、`实验二指导书通读要点记录.md`、`实验二实施路线.md`。
+  - 运行文档轻量检查：3 个文档共 453 行；关键术语 `Lab2-A/Lab2-B/Basic Trace/AXI Trace/axi_master/0xFFFF_3000/debug_wb_pc` 均可检索。
+
+### Lab2：实施设计与执行准备
+- **Status:** in progress; waiting for worktree consent before RTL changes.
+- Actions taken:
+  - 用户确认实验二产物统一放置在 `lab2/`。
+  - 新建设计规格 `lab2/实验二设计规格.md` 和实施计划 `lab2/实验二实施计划.md`，覆盖流水线、AXI SoC、Cache、I/O、最终集成及手动验收边界。
+  - 读取 Lab2-A/Lab2-B 关键页面并确认现有 Lab1 `cpu_core` 对外取指、访存及 Trace 接口。
+  - 确认本地实验三压缩包提供 `ICache.v` 和 `DCache.v` 参考实现。
+  - 复查 Git 状态：当前是带用户未提交改动的 `main` 普通检出，`.worktrees` 已被忽略。
+  - 复跑 Lab1 静态与算法基线：分别输出 `STATIC CHECK PASSED`、`ALGORITHM CHECK PASSED (16 cases)`。
+
+### Lab2：RTL 实现与 Trace 验证
+- **Status:** workspace implementation complete; Vivado/C_TEST/downboard items documented for manual execution.
+- Actions taken:
+  - 创建三个 Lab2 工程副本及 `create_lab2_workspace.sh`、`sync_pipeline_trace_sources.sh`、`sync_integrated_trace_sources.sh`。
+  - 完成五级流水线 `cpu_core`，实现前递、暂停、冲刷、访存/乘除多周期控制和 Trace 提交对齐。
+  - 完成单周期 AXI SoC：ICache/DCache、`axi_master`、`cpu_top` AXI 接口及 `RUN_TRACE` 下的 `bram_axi` 连接。
+  - 将流水线核、Cache 和 AXI SoC 合并为 `integrated_soc/miniRV_pipeline_axi`。
+  - 完整 Basic Trace、单周期 AXI Trace、最终流水线 Cache-off AXI Trace 和 Cache-on AXI Trace 均通过 45 个程序；`start` 的数码管序列到 `0x25000025` 后通过。
+  - 新增板级/IP/I-O/C_TEST 手动验收清单，明确未执行 Vivado、下板和性能测试。

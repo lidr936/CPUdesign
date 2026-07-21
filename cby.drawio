@@ -1,6 +1,6 @@
 <mxfile host="Electron">
   <diagram name="第 1 页" id="q07fmqZqEH2t5fOPVAJR">
-    <mxGraphModel dx="4867" dy="2503" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="5317" dy="4386" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -29,7 +29,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="tCHkqSWkUcsV8xGDlCzm-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;" value="" vertex="1">
-          <mxGeometry height="99" width="92" x="-320" y="174" as="geometry" />
+          <mxGeometry height="120" width="117" x="-345" y="174" as="geometry" />
         </mxCell>
         <mxCell id="tCHkqSWkUcsV8xGDlCzm-2" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="指令" vertex="1">
           <mxGeometry height="30" width="52" x="-291" y="190" as="geometry" />
@@ -297,10 +297,10 @@
         <mxCell id="tCHkqSWkUcsV8xGDlCzm-92" edge="1" parent="1" source="tCHkqSWkUcsV8xGDlCzm-13" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;" target="tCHkqSWkUcsV8xGDlCzm-75" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
             <Array as="points">
-              <mxPoint x="1088.22" y="192" />
-              <mxPoint x="1088.22" y="26.17" />
-              <mxPoint x="-60.48" y="26.17" />
-              <mxPoint x="-60.48" y="443.04" />
+              <mxPoint x="1088.25" y="192" />
+              <mxPoint x="1088.25" y="26.17" />
+              <mxPoint x="-77.92" y="26.17" />
+              <mxPoint x="-77.92" y="443" />
             </Array>
             <mxPoint x="450" y="549" as="sourcePoint" />
             <mxPoint x="500" y="499" as="targetPoint" />
@@ -496,8 +496,8 @@
         <mxCell id="tCHkqSWkUcsV8xGDlCzm-155" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;" target="tCHkqSWkUcsV8xGDlCzm-78" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
             <Array as="points">
-              <mxPoint x="-72.2" y="866.6" />
-              <mxPoint x="-72.2" y="533" />
+              <mxPoint x="-122.59" y="866.65" />
+              <mxPoint x="-122.59" y="533" />
             </Array>
             <mxPoint x="723.84" y="866.6" as="sourcePoint" />
             <mxPoint x="612" y="793" as="targetPoint" />
@@ -726,9 +726,9 @@
         <mxCell id="tCHkqSWkUcsV8xGDlCzm-219" edge="1" parent="1" source="tCHkqSWkUcsV8xGDlCzm-193" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;" target="tCHkqSWkUcsV8xGDlCzm-77" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
             <Array as="points">
-              <mxPoint x="1649.54" y="949.08" />
-              <mxPoint x="-56" y="949.08" />
-              <mxPoint x="-56" y="503.08" />
+              <mxPoint x="1649.53" y="949.12" />
+              <mxPoint x="-76.94" y="949.12" />
+              <mxPoint x="-76.94" y="503" />
             </Array>
             <mxPoint x="1617" y="812" as="sourcePoint" />
             <mxPoint x="1667" y="762" as="targetPoint" />
@@ -764,6 +764,12 @@
         </mxCell>
         <mxCell id="tCHkqSWkUcsV8xGDlCzm-225" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp;ALU A mux:&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp;0 = RF.rD1&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp;1 = PC.pc&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp;ALU B mux:&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp;0 = RF.rD2&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp;1 = SEXT.ext&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
           <mxGeometry height="252" width="101" x="1476" y="533" as="geometry" />
+        </mxCell>
+        <mxCell id="4XgJHiTXpolzHwYzs0NT-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="1337" width="2922" x="-437" y="-50" as="geometry" />
+        </mxCell>
+        <mxCell id="4XgJHiTXpolzHwYzs0NT-3" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=30;" value="数据通路图&lt;div&gt;2026.7.20&lt;br&gt;&lt;div&gt;蔡博宇&lt;/div&gt;&lt;div&gt;李都人&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="162" width="346" x="2139" y="1125" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

@@ -1,0 +1,114 @@
+
+divu:     file format elf32-littleriscv
+
+
+Disassembly of section .text.init:
+
+00000000 <_start>:
+   0:	0040006f          	jal x0,4 <reset_vector>
+
+00000004 <reset_vector>:       
+   4:	400002b7          	lui x5,0x40000
+   8:	07b2e293          	ori x5,x5,0x7b
+   c:	16506313          	ori x6,x0,0x165
+  10:	0262d533          	divu x10,x5,x6
+  14:	00200193          	addi x3,x0,2
+  18:	000023b7          	lui x7,2
+  1c:	02038e13          	addi x28,x7,0x20 # 2020 <ans_divu>
+  20:	000e2403          	lw x8,0(x28) # 002de4c0
+  24:	0ca41c63          	bne x8,x10,f8 <fail>
+
+00000028 <test_3>:
+  28:	fe606293          	ori x5,x0,0xffffffe6
+  2c:	00506313          	ori x6,x0,5
+  30:	0262d533          	divu x10,x5,x6
+  34:	00300193          	addi x3,x0,3
+  38:	000023b7          	lui x7,2
+  3c:	02038e13          	addi x28,x7,0x20 # 2020 <ans_divu>
+  40:	004e2403          	lw x8,4(x28) # 3333332e
+  44:	0aa41c63          	bne x8,x10,f8 <fail>
+
+00000048 <test_4>:
+  48:	456702b7          	lui x5,0x45670
+  4c:	0642e293          	ori x5,x5,0x64
+  50:	ff306313          	ori x6,x0,0xfffffff3
+  54:	0262d533          	divu x10,x5,x6
+  58:	00400193          	addi x3,x0,4
+  5c:	000023b7          	lui x7,2
+  60:	02038e13          	addi x28,x7,0x20 # 2020 <ans_divu>
+  64:	008e2403          	lw x8,8(x28) # 00000000
+  68:	08a41a63          	bne x8,x10,f8 <fail>
+
+0000006c <test_5>:
+  6c:	ece06293          	ori x5,x0,0xfffffece
+  70:	fe406313          	ori x6,x0,0xffffffe4
+  74:	0262d533          	divu x10,x5,x6
+  78:	00500193          	addi x3,x0,5
+  7c:	000023b7          	lui x7,2
+  80:	02038e13          	addi x28,x7,0x20 # 2020 <ans_divu>
+  84:	00ce2403          	lw x8,12(x28) # 00000000
+  88:	06a41a63          	bne x8,x10,f8 <fail>
+
+0000008c <test_6>:
+  8c:	00002fb7          	lui x31,2
+  90:	000f8f93          	addi x31,x31,0
+  94:	00002f37          	lui x30,2
+  98:	010f0f13          	addi x30,x30,16
+  9c:	000fa403          	lw x8,0(x31)
+  a0:	000f2483          	lw x9,0(x30)
+  a4:	004fa903          	lw x18,4(x31)
+  a8:	004f2983          	lw x19,4(x30)
+  ac:	008faa03          	lw x20,8(x31)
+  b0:	008f2a83          	lw x21,8(x30)
+  b4:	00cfab03          	lw x22,12(x31)
+  b8:	00cf2b83          	lw x23,12(x30)
+  bc:	02945533          	divu x10,x8,x9
+  c0:	033955b3          	divu x11,x18,x19
+  c4:	035a5633          	divu x12,x20,x21
+  c8:	037b56b3          	divu x13,x22,x23
+  cc:	000022b7          	lui x5,2
+  d0:	02028413          	addi x8,x5,0x20 # 2020 <ans_divu>
+  d4:	00042283          	lw x5,0(x8) # 002de4c0
+  d8:	00442303          	lw x6,4(x8) # 3333332e
+  dc:	00842383          	lw x7,8(x8) # 00000000
+  e0:	00c42e03          	lw x28,12(x8) # 00000000
+  e4:	00a29c63          	bne x5,x10,f8 <fail>
+  e8:	00b31a63          	bne x6,x11,f8 <fail>
+  ec:	00c39863          	bne x7,x12,f8 <fail>
+  f0:	00de1663          	bne x28,x13,f8 <fail>
+  f4:	00600193          	addi x3,x0,6
+  f8:	00301e63          	bne x0,x3,114 <pass>
+
+000000f8 <fail>:
+  fc:	00018063          	beq x3,x0,f8 <fail>
+ 100:	00119193          	slli x3,x3,1
+ 104:	0011e193          	ori x3,x3,1
+ 108:	05d00893          	addi x17,x0,0x5d
+ 10c:	00018513          	addi x10,x3,0
+ 110:	00000073          	ecall
+
+00000114 <pass>:
+ 114:	00100193          	addi x3,x0,1
+ 118:	05d00893          	addi x17,x0,0x5d
+ 11c:	00000513          	addi x10,x0,0
+ 120:	00000073          	ecall
+
+Disassembly of section .data:
+
+00002000 <num1>:
+    2000:	4000007b
+    2004:	ffffffe6
+    2008:	45670064
+    200c:	fffffece
+
+00002010 <num2>:
+    2010:	00000165
+    2014:	00000005
+    2018:	fffffff3
+    201c:	ffffffe4
+
+00002020 <ans_divu>:
+    2020:	002de4c0
+    2024:	3333332e
+    2028:	00000000
+    202c:	00000000
