@@ -122,7 +122,6 @@
 - **Status:** in progress
 - 同学 U 盘工程能够生成 `miniRV_SoC.bit`，但串口无输出；此前生成成功不构成下板通过证据。
 - 课程文档确认：C_TEST 官方流程使用提供的 I/O test bitstream，复位后通过 UART 二进制发送 `.bin`；自建 SoC 则必须将 `.coe` 固化到 BRAM，两条路径不能混用。
-- 已创建 `lab2/Windows下板接力与Linux排查.md`，写明官方 UART 对照、固定 COE 脚本、Cache-off 首次启动、故障分层和 Windows 需回传的证据。
 - Linux 环境确认 `verilator` 和 RISC-V 编译器可用；Vivado/xvlog/xsim 不在 PATH。
 - 在 `/tmp/cdp-tests-lab2-axi` 隔离副本同步 `lab2/integrated_soc` RTL 后，执行 `start` 和全部 45 个 `bin/*.bin` Trace 程序，结果 `pass=45 fail=0`；未覆盖当前工作区的 `cdp-tests` 用户产物。
 - 已审查并修正 Cache-off 板级工程：去除 PLL lock 门控时钟，增加 50 MHz 域同步复位释放，恢复 `RUN_TRACE` 默认输出，并使五个外设分别使用 converter 0 到 4。
@@ -185,7 +184,6 @@
 - 收到字符后 LED 按 ASCII 码变化，修复后的 8 位动态数码管显示对应十六进制 ASCII 值；用户确认 C_TEST0 通过。
 - 后续：用同一路线验证 `1_formatIO_test` 和 `2_sort_test`，再进入 Cache-on、DDR、CoreMark 和 LLAMA2。
 - Actions taken:
-  - 以 `lab2/同学实操教学与检查清单.md` 为唯一实操主线，并核对 `lab2/Windows下板接力与Linux排查.md` 的分层诊断顺序。
   - 已完成本地只读预检：`lab2/miniRV_pipeline_axi/miniRV.xpr`、重建脚本、`0_uart_test/main.coe` 和 `main.bin` 均存在；`defines.vh` 当前为 Cache-off，且未定义 `RUN_TRACE`。
   - 重建 Tcl 脚本当前固定引用 `F:/lab2/lab2/c_test_rv_stu/0_uart_test/main.coe`；Windows 使用的工程路径必须与此一致，否则先更新脚本中的固定路径，不能在错误路径上启动综合。
   - 已查阅本地 EGO1 用户手册：当前应使用 USB-JTAG（J22）而非产生 COM9 的 USB-UART；红色 D18 是板卡已上电的物理判据。Vivado 可见 target 但无 devices 时，优先检查 J22、D18 与 6-pin J3 链路，而非工程或 bitstream。
