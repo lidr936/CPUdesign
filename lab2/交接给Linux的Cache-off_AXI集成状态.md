@@ -4,7 +4,15 @@
 
 ## 交接结论
 
-Windows 侧已完成 Cache-off 所需 Vivado IP 创建与地址配置；当前 RTL 已接入 AXI Crossbar、BRAM 和五个外设。Linux 已完成静态审查，并在隔离 Verilator Trace 中回归 45/45 程序通过。当前仍未经过 Vivado Elaborate、综合、行为仿真或真实下板验收，不能表述为“硬件已通过”。
+Windows 侧已完成 Cache-off 所需 Vivado IP 创建与地址配置；当前 RTL 已接入 AXI Crossbar、BRAM 和五个外设。Linux 已完成静态审查，并在隔离 Verilator Trace 中回归 45/45 程序通过。2026-07-30 已用自建 Cache-off bitstream、置换 `bram_axi` 的 COE 后，在 EGO1 上通过 `0_uart_test`；这不替代其它外设、Cache-on 或性能程序的验收。
+
+## 已完成下板：C_TEST0（2026-07-30）
+
+- 构建：`ENABLE_ICACHE` 和 `ENABLE_DCACHE` 保持关闭，使用自建 SoC bitstream；不是课程提供的 UART 下载 bitstream。
+- 程序加载：把 `lab2/c_test_rv_stu/0_uart_test/main.coe` 置换为 `bram_axi` 的初始化 COE，重新生成并烧录 bitstream；本路线不拖入 `main.bin`。
+- 串口：`115200`、`8N1`、无流控。程序输出 Phase 0 的 `Hello World!`，Phase 1 可接收并回显单字符。
+- 板级外设：收到字符后，LED 按 ASCII 位图变化，数码管按 8 位十六进制显示 ASCII 值。例如输入 `A` 时显示 `00000041`。
+- 结论：CPU、BRAM、Cache-off AXI、Crossbar、UART、LED 和 Dig 的本次 C_TEST0 使用路径已获得真实下板证据。
 
 ## Windows 已完成内容
 
@@ -187,13 +195,14 @@ make -C /path/to/cdp-tests run TEST=start
 3. Run Elaborate Design：确认无黑盒、无多驱动、`miniRV_SoC -> axi_peripheral_subsystem -> axi_crossbar_0` 可展开。
 4. 用 `lw.coe` 跑行为仿真，观察 AR/R 握手；换 `sw.coe` 后观察 AW/W/B 握手。
 5. Run Synthesis / Implementation，确认 50 MHz 下无负 slack。
-6. 最后才将 `0_uart_test/main.coe` 写入 `bram_axi`，生成 bitstream 并在 COM9（115200、8N1、无流控）验证 UART。
+6. 已完成：将 `0_uart_test/main.coe` 写入 `bram_axi`，生成 bitstream 并在 COM9（115200、8N1、无流控）通过 UART、LED 和数码管验证。
+7. 下一项：保持 Cache-off，置换 `1_formatIO_test/main.coe`，验证格式化输入、负数 LED 状态和数码管显示；之后再运行 `2_sort_test`。
 
 ## 不可宣称的结论
 
 当前没有以下证据，因此不能宣称：
 
-- Vivado Elaborate、综合、实现已通过；
-- Cache-off 行为仿真已通过；
-- UART/Timer/数码管/LED/拨码开关已下板通过；
+- 完整 Vivado Elaborate、综合、实现和时序报告已通过；
+- Cache-off 行为仿真（`lw.coe`/`sw.coe`）已通过；
+- `1_formatIO_test`、排序、Timer 和拨码开关已下板通过；
 - Cache-on、DDR、CoreMark 或 LLAMA2 已完成。

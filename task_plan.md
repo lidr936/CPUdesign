@@ -83,7 +83,8 @@ Phase 7：实验二实现与验证（所有新材料位于 `lab2/`）
 - [x] 在 Linux 隔离副本复跑最终集成 AXI RTL 的 45 个 Trace 程序
 - [x] 导入 Windows 侧 Cache-off AXI 外设 RTL，修正时钟/复位、Trace 输出和协议转换器映射
 - [x] 在 Linux 隔离副本回归当前 Cache-off 文件集的 45 个 Trace 程序
-- [ ] 在 Windows 完成官方 UART 对照、自建 Cache-off 和 Cache-on 上板验收
+- [x] 在 Windows 以 COE 置换方式完成自建 Cache-off `0_uart_test` 下板验收
+- [ ] 在 Windows 完成其余 Cache-off C_TEST、Cache-on 和性能程序上板验收
 - **Status:** in_progress
 
 ## Key Questions
