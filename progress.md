@@ -116,6 +116,19 @@
 
 ## Session: 2026-07-22
 
+## Session: 2026-07-28
+
+### Lab2：下板故障隔离与 Windows 接力
+- **Status:** in progress
+- 同学 U 盘工程能够生成 `miniRV_SoC.bit`，但串口无输出；此前生成成功不构成下板通过证据。
+- 课程文档确认：C_TEST 官方流程使用提供的 I/O test bitstream，复位后通过 UART 二进制发送 `.bin`；自建 SoC 则必须将 `.coe` 固化到 BRAM，两条路径不能混用。
+- 已创建 `lab2/Windows下板接力与Linux排查.md`，写明官方 UART 对照、固定 COE 脚本、Cache-off 首次启动、故障分层和 Windows 需回传的证据。
+- Linux 环境确认 `verilator` 和 RISC-V 编译器可用；Vivado/xvlog/xsim 不在 PATH。
+- 在 `/tmp/cdp-tests-lab2-axi` 隔离副本同步 `lab2/integrated_soc` RTL 后，执行 `start` 和全部 45 个 `bin/*.bin` Trace 程序，结果 `pass=45 fail=0`；未覆盖当前工作区的 `cdp-tests` 用户产物。
+- 已审查并修正 Cache-off 板级工程：去除 PLL lock 门控时钟，增加 50 MHz 域同步复位释放，恢复 `RUN_TRACE` 默认输出，并使五个外设分别使用 converter 0 到 4。
+- 将外设封装 RTL 正式登记为 `miniRV.xpr` Design Sources，取消在 `miniRV_SoC.v` 内 include `.v` 文件；在 `/tmp/cdp-tests-cache-off` 用当前完整 Cache-off RTL 全量回归，结果 `pass=45 fail=0`。
+- 发现 `axi_protocol_converter_1` 至 `_4` 在 `.xpr` 被 AutoDisabled；已解除禁用并使 RTL 按支路一一实例化 converter 0 至 4。静态检查现会拒绝这些 XCI 被静默禁用。
+
 ### Lab2：C_TEST TODO 与编译
 - **Status:** in progress
 - 已从 `https://cpu-design.p.cs-lab.top/lab2-B/assets/c_test_rv_stu.tar.gz` 下载官方原包。必须同时清除大小写代理环境变量后直连课程站点；系统代理会导致 TLS `unexpected eof`。
@@ -162,3 +175,13 @@
   - 将流水线核、Cache 和 AXI SoC 合并为 `integrated_soc/miniRV_pipeline_axi`。
   - 完整 Basic Trace、单周期 AXI Trace、最终流水线 Cache-off AXI Trace 和 Cache-on AXI Trace 均通过 45 个程序；`start` 的数码管序列到 `0x25000025` 后通过。
   - 新增板级/IP/I-O/C_TEST 手动验收清单，明确未执行 Vivado、下板和性能测试。
+
+### Lab2：Windows 下板实操启动（2026-07-28）
+- **Status:** in progress; awaiting Windows Vivado and EGO1 hardware interaction.
+- Actions taken:
+  - 以 `lab2/同学实操教学与检查清单.md` 为唯一实操主线，并核对 `lab2/Windows下板接力与Linux排查.md` 的分层诊断顺序。
+  - 已完成本地只读预检：`lab2/miniRV_pipeline_axi/miniRV.xpr`、重建脚本、`0_uart_test/main.coe` 和 `main.bin` 均存在；`defines.vh` 当前为 Cache-off，且未定义 `RUN_TRACE`。
+  - 重建 Tcl 脚本当前固定引用 `F:/lab2/lab2/c_test_rv_stu/0_uart_test/main.coe`；Windows 使用的工程路径必须与此一致，否则先更新脚本中的固定路径，不能在错误路径上启动综合。
+  - 已查阅本地 EGO1 用户手册：当前应使用 USB-JTAG（J22）而非产生 COM9 的 USB-UART；红色 D18 是板卡已上电的物理判据。Vivado 可见 target 但无 devices 时，优先检查 J22、D18 与 6-pin J3 链路，而非工程或 bitstream。
+  - 仿真预检发现：当前 `miniRV_SoC` 的非 `RUN_TRACE` 分支仍为 AXI 零响应占位实现，现有 `soc_simple_tb` 不能验收 `bram_axi` 的读写；必须先完成 Crossbar 和主存的实际连接。
+  - Cache-off IP 批次已按文件证据核验；下一阶段为编写/导入外设 wrapper，并把 CPU AXI 主机、Crossbar、主存与五个外设接入 `miniRV_SoC`。Vivado 本次发生原生 UI 崩溃，尚未运行工程综合。

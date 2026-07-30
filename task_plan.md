@@ -77,6 +77,15 @@ Phase 7：实验二实现与验证（所有新材料位于 `lab2/`）
 - [ ] 在 Vivado 打开工程并 Reset Runs 后做综合
 - **Status:** complete for filesystem preparation; Vivado verification remains manual
 
+### Phase 10：Lab2 下板故障隔离与 Windows 接力
+- [x] 记录自建 bitstream 无串口输出的已知状态与 C_TEST/自建 COE 路径差异
+- [x] 固化 Windows 下板与 Linux 回归的职责边界
+- [x] 在 Linux 隔离副本复跑最终集成 AXI RTL 的 45 个 Trace 程序
+- [x] 导入 Windows 侧 Cache-off AXI 外设 RTL，修正时钟/复位、Trace 输出和协议转换器映射
+- [x] 在 Linux 隔离副本回归当前 Cache-off 文件集的 45 个 Trace 程序
+- [ ] 在 Windows 完成官方 UART 对照、自建 Cache-off 和 Cache-on 上板验收
+- **Status:** in_progress
+
 ## Key Questions
 1. A/B 组所有指令是否都以现有 miniRV EGO1 工程为唯一实现目标？（当前按“是”规划。）
 2. 是否需要在提交 Excel/数据通路图之外，保留完整可综合的 HDL 工程？（当前按“需要”规划。）

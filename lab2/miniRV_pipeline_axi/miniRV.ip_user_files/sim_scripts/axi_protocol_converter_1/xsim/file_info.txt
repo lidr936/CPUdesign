@@ -1,0 +1,2 @@
+axi_protocol_converter_1.v,verilog,xil_defaultlib,../../../../src/rtl/ip/axi_protocol_converter_1/sim/axi_protocol_converter_1.v,incdir="../../../ipstatic/hdl"incdir="../../../ipstatic/hdl"
+glbl.v,Verilog,xil_defaultlib,glbl.v

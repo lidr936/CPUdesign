@@ -97,6 +97,28 @@
 
 ## Lab2 Implementation Findings
 - 用户确认实验二所有新内容都应位于 `lab2/`；Lab1 工程只能作为只读功能基线。
+
+## Lab2 Windows Hands-on Preflight (2026-07-28)
+- 实操入口确认：`lab2/miniRV_pipeline_axi/miniRV.xpr`，当前 Cache 宏关闭、`RUN_TRACE` 未定义，符合首次 Cache-off 硬件验证要求。
+- `lab2/miniRV_pipeline_axi/scripts/rebuild_with_coe.tcl` 会设置 `bram_axi` 的 `CONFIG.Coe_File`，然后重置并执行 IP 综合、顶层综合、实现和写 bitstream；不能只看旧 `.runs` 目录结果。
+- `lab2/c_test_rv_stu/0_uart_test/main.coe`（115,712 bytes）和 `main.bin`（51,404 bytes）已存在，可分别用于自建 SoC 固化和课程 bitstream 串口下载验证。
+- 脚本的 COE 路径是硬编码的 `F:/lab2/lab2/...`；仅当 Windows/U 盘项目实际位于该路径时可直接使用。路径不同必须在 Vivado 执行前修正该变量并再次核对 Console 的 `Using COE`/`Configured bram_axi COE` 输出。
+
+## EGO1 JTAG Detection Diagnosis (2026-07-30)
+- 用户日志已区分两个状态：`No matching targets found` 表示主机未发现 USB-JTAG；`No devices detected on target ...1234-tulA` 表示已发现 USB-JTAG 下载器，但其后的 FPGA JTAG 链为空。
+- 本地《EGO1开发板用户手册》确认：EGO1 有两个 Micro-USB 接口，分别为 USB-UART 和 USB-JTAG；两者都可为板卡供电，上电成功时红色 D18 LED 点亮。FPGA 配置应走 USB-JTAG 接口 J22（或独立 6-pin JTAG J3），不是 USB-UART。
+- 用户的 COM9 仅证明 CP2102 USB-UART 被系统识别，不能证明 USB-JTAG/J22 或 FPGA JTAG 链路正常。
+
+## Lab2 Vivado Simulation Preflight (2026-07-30)
+- `lab2/miniRV_pipeline_axi` 已有仿真集 `sim_1`，顶层是 `src/sim/soc_simple_tb.v`；其停止条件仅为观察 CPU 取到 `ecall`（`32'h00000073`）后打印 `Test Passed!`。
+- 该 testbench 不能用于当前非 `RUN_TRACE` 硬件分支的 AXI 主存验收：`miniRV_SoC.v` 第 89-102 行把全部 AXI ready/valid/rdata 固定为零，且未实例化 `bram_axi`、Crossbar 或外设；因此 CPU 的读请求不会得到响应，仿真会停滞。
+- `bram_axi.xci` 已存在且当前 COE 指向 `src/coe/lw.coe`，但在完成第 4 节 Crossbar/主存连接前，修改该 IP 的 COE 不会让当前 `soc_simple_tb` 读写通过。
+
+## Cache-off IP Batch Verification (2026-07-30)
+- 已验证生成物：`bram_axi`、`axi_crossbar_0`、`Switch`、`LED`、`Dig`、`Timer`、`axi_uartlite_0` 和 5 个 `axi_protocol_converter_*` 均有 `.xci`、`synth/` 与 `sim/` 输出目录。
+- Crossbar 已验证为 1 个 Slave、6 个 Master；M00 为 `0x00000000`、地址宽度 18；M01-M05 分别为 `0xFFFF0000`、`0xFFFF1000`、`0xFFFF2000`、`0xFFFF3000`、`0xFFFF4000`，外设宽度均为 12。
+- 外设 IP 已验证：Switch 32-bit input；LED 16-bit output；Dig 32-bit output；Timer 双通道、各 32-bit input；UARTLite 为 50 MHz / 115200 / 8-bit / no parity；协议转换器为 AXI4 -> AXI4-Lite、32-bit addr/data。
+- Vivado 日志保留一个未解决的环境错误：创建 Crossbar 后出现 `[Common 17-180] Spawn failed: No error`，随后在 `librdi_filemgmt.dll` 的编辑器刷新线程发生 `EXCEPTION_ACCESS_VIOLATION`。Crossbar 输出产物已落盘；尚未执行或声称通过完整工程综合。
 - 已在 `lab2/` 固化设计规格 `实验二设计规格.md` 和执行计划 `实验二实施计划.md`。
 - 课程 `lab2-A/7-step` 的完成顺序与实现计划一致：理想流水线、冒险检测与分支预测、暂停、前递、Basic Trace、SoC 集成。
 - 本地 `lab2/实验3_2026-06-07T15_26_00Z.zip` 含课程参考 `ICache.v`（8,563 字节）和 `DCache.v`（18,386 字节），可在 Lab2-B 中按原接口复用。
@@ -107,6 +129,16 @@
 - Lab2-B `axi_master` 串行化 DCache 写、DCache 读和 ICache 读，AXI 读按 `IC_BLK_LEN`/`DC_BLK_LEN` 组装数据，AXI 写按 AW/W/B 三阶段完成。`RUN_TRACE` 下 `miniRV_SoC` 直接连接 `bram_axi`。
 - Cache 旁路模块在发出 `cpu_*en` 前需要先观察 `dev_*rdy`；因此 AXI 主机空闲态必须先公告可接受状态，不能把 ready 反向依赖尚未产生的 Cache 请求。
 - 最终流水线 AXI SoC 的 Cache-off 和 Cache-on 配置均完成 45 个本地 Trace 程序回归。Cache-on Trace 复用框架 `vsrc/ram.v` 的 `blk_mem_gen_1` 行为模型；Vivado 下必须手动生成同名 Block Memory IP。
+
+## Lab2 Downboard Findings (2026-07-28)
+- U 盘中的实际 Vivado 工程后来加入了 `axi_peripheral_subsystem.v` 和 AXI 外设 IP；本机仓库当前 `lab2/miniRV_pipeline_axi` 没有该手写外设子系统，不能直接把两者视为同一工程版本。
+- 自建 bitstream 无串口输出时，第一步应使用课程官方 `lab2_IOtest_miniRV_ego1.bit` 验证板级 UART；官方 bitstream 可复位后显示下载提示才说明 UART/COM 链路正常。
+- `rebuild_with_coe.tcl` 已写死 U 盘 Windows 路径的 `0_uart_test/main.coe`，并在输出中显示实际配置给 `bram_axi` 的 COE，避免默认 `lw.coe` 被误烧录。
+- 自建 SoC 首次上板应 Cache-off；这既隔离 ICache/DCache/AXI master 风险，也符合课程 Trace 的推荐调试顺序。
+- Linux 使用隔离的 `/tmp/cdp-tests-lab2-axi` 副本同步 `lab2/integrated_soc/miniRV_pipeline_axi/src/rtl` 后，Verilator AXI Trace 全量 45/45 通过。该结果覆盖 CPU、AXI master、指令取数、访存、乘除和 Trace 数码管路径，但不覆盖 Vivado IP、真实 Crossbar/UARTLite、时钟复位和板级 UART。
+- Cache-off 顶层的 `pll_lock & pll_clk1` 属于门控时钟，且原 `sys_rst` 在 100 MHz 域产生、被 50 MHz AXI 系统使用。已改为未门控的 `pll_clk1` 和同步释放复位，以避免上板启动随机失败。
+- 为使 Vivado 和 Linux Trace 使用同一编译边界，`axi4lite_peripheral_wrap.v` 与 `axi_peripheral_subsystem.v` 已登记入 `.xpr`，顶层不再 include 它们。当前 Cache-off 源文件集重新在 `/tmp/cdp-tests-cache-off` 中全量 Trace 45/45 通过。
+- 五条外设支路必须使用各自的 `axi_protocol_converter_0` 至 `_4`。原工程中 converter 1 至 4 被 `AutoDisabled`，会在 RTL 使用它们后导致 Vivado 黑盒/模块缺失；已解除这四个 XCI 的禁用标记，并写入静态检查。
 
 ## Visual/Browser Findings
 - `pic/PixPin_2026-07-16_09-42-58.png`：Vivado Project Summary，显示 Synthesis Complete、Implementation Complete；Power 摘要显示 Total On-Chip Power `0.068 W`；Timing 区域 WNS/TNS 为 `NA`。

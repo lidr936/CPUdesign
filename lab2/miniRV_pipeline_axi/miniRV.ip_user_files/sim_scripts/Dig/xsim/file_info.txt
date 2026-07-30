@@ -1,0 +1,2 @@
+Dig.vhd,vhdl,xil_defaultlib,../../../../src/rtl/ip/Dig/sim/Dig.vhd,
+glbl.v,Verilog,xil_defaultlib,glbl.v

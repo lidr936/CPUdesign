@@ -1,0 +1,5 @@
+vhdl xil_defaultlib  \
+"../../../../src/rtl/ip/Switch/sim/Switch.vhd" \
+
+# Do not sort compile order
+nosort

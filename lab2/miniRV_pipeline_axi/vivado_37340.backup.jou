@@ -1,0 +1,28 @@
+#-----------------------------------------------------------
+# Vivado v2023.2 (64-bit)
+# SW Build 4029153 on Fri Oct 13 20:14:34 MDT 2023
+# IP Build 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Start of session at: Thu Jul 30 09:38:47 2026
+# Process ID: 37340
+# Current directory: F:/cpu-design/lab2/miniRV_pipeline_axi
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent37588 F:\cpu-design\lab2\miniRV_pipeline_axi\miniRV.xpr
+# Log file: F:/cpu-design/lab2/miniRV_pipeline_axi/vivado.log
+# Journal file: F:/cpu-design/lab2/miniRV_pipeline_axi\vivado.jou
+# Running On: LAPTOP-BB300ES7, OS: Windows, CPU Frequency: 2304 MHz, CPU Physical cores: 20, Host memory: 16944 MB
+#-----------------------------------------------------------
+start_gui
+open_project F:/cpu-design/lab2/miniRV_pipeline_axi/miniRV.xpr
+update_compile_order -fileset sources_1
+open_hw_manager
+connect_hw_server -allow_non_jtag
+open_hw_target
+disconnect_hw_server
+connect_hw_server
+get_hw_targets
+open_hw_target [lindex [get_hw_targets] 0]
+version -short
+open_hw_manager
+connect_hw_server
+disconnect_hw_server localhost:3121
+connect_hw_server -allow_non_jtag

@@ -1,0 +1,8 @@
+xpm_cdc.sv,systemverilog,xpm,D:/Xilinx/Vivado/2023.2/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv,
+xpm_VCOMP.vhd,vhdl,xpm,D:/Xilinx/Vivado/2023.2/data/ip/xpm/xpm_VCOMP.vhd,
+axi_lite_ipif_v3_0_vh_rfs.vhd,vhdl,axi_lite_ipif_v3_0_4,../../../ipstatic/hdl/axi_lite_ipif_v3_0_vh_rfs.vhd,
+lib_cdc_v1_0_rfs.vhd,vhdl,lib_cdc_v1_0_2,../../../ipstatic/hdl/lib_cdc_v1_0_rfs.vhd,
+interrupt_control_v3_1_vh_rfs.vhd,vhdl,interrupt_control_v3_1_5,../../../ipstatic/hdl/interrupt_control_v3_1_vh_rfs.vhd,
+axi_gpio_v2_0_vh_rfs.vhd,vhdl,axi_gpio_v2_0_31,../../../ipstatic/hdl/axi_gpio_v2_0_vh_rfs.vhd,
+Timer.vhd,vhdl,xil_defaultlib,../../../../src/rtl/ip/Timer/sim/Timer.vhd,
+glbl.v,Verilog,xil_defaultlib,glbl.v

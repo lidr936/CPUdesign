@@ -1,0 +1,2 @@
+LED.vhd,vhdl,xil_defaultlib,../../../../src/rtl/ip/LED/sim/LED.vhd,
+glbl.v,Verilog,xil_defaultlib,glbl.v

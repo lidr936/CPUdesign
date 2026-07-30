@@ -17,7 +17,9 @@
 #include "VminiRV_SoC___024root.h"
 #include "VminiRV_SoC_miniRV_SoC.h"
 #include "VminiRV_SoC_cpu_top.h"
+#include "VminiRV_SoC_Inst_ROM.h"
 #include "VminiRV_SoC_cpu_core.h"
+#include "VminiRV_SoC_IROM.h"
 
 // DPI TYPES for DPI Export callbacks (Internal use)
 
@@ -36,10 +38,13 @@ class alignas(VL_CACHE_LINE_BYTES)VminiRV_SoC__Syms final : public VerilatedSyms
     VminiRV_SoC_miniRV_SoC         TOP__miniRV_SoC;
     VminiRV_SoC_cpu_top            TOP__miniRV_SoC__U_cpu;
     VminiRV_SoC_cpu_core           TOP__miniRV_SoC__U_cpu__U_core;
+    VminiRV_SoC_Inst_ROM           TOP__miniRV_SoC__U_cpu__U_irom;
+    VminiRV_SoC_IROM               TOP__miniRV_SoC__U_cpu__U_irom__U_irom;
 
     // SCOPE NAMES
     VerilatedScope __Vscope_miniRV_SoC__U_cpu__U_core;
-    VerilatedScope __Vscope_miniRV_SoC__U_trace_bram;
+    VerilatedScope __Vscope_miniRV_SoC__U_cpu__U_dram__U_dram;
+    VerilatedScope __Vscope_miniRV_SoC__U_cpu__U_irom__U_irom;
 
     // CONSTRUCTORS
     VminiRV_SoC__Syms(VerilatedContext* contextp, const char* namep, VminiRV_SoC* modelp);

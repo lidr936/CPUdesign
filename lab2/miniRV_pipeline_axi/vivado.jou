@@ -1,0 +1,51 @@
+#-----------------------------------------------------------
+# Vivado v2023.2 (64-bit)
+# SW Build 4029153 on Fri Oct 13 20:14:34 MDT 2023
+# IP Build 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Start of session at: Thu Jul 30 10:32:34 2026
+# Process ID: 19740
+# Current directory: F:/cpu-design/lab2/miniRV_pipeline_axi
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent29868 F:\cpu-design\lab2\miniRV_pipeline_axi\miniRV.xpr
+# Log file: F:/cpu-design/lab2/miniRV_pipeline_axi/vivado.log
+# Journal file: F:/cpu-design/lab2/miniRV_pipeline_axi\vivado.jou
+# Running On: LAPTOP-BB300ES7, OS: Windows, CPU Frequency: 2304 MHz, CPU Physical cores: 20, Host memory: 16944 MB
+#-----------------------------------------------------------
+start_gui
+open_project F:/cpu-design/lab2/miniRV_pipeline_axi/miniRV.xpr
+update_compile_order -fileset sources_1
+create_ip -name blk_mem_gen -vendor xilinx.com -library ip -version 8.4 -module_name bram_axi -dir F:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/ip
+set_property -dict [list \
+  CONFIG.Coe_File {F:/cpu-design/lab2/miniRV_pipeline_axi/src/coe/lw.coe} \
+  CONFIG.EN_SAFETY_CKT {false} \
+  CONFIG.Fill_Remaining_Memory_Locations {true} \
+  CONFIG.Interface_Type {AXI4} \
+  CONFIG.Load_Init_File {true} \
+  CONFIG.Write_Depth_A {38400} \
+] [get_ips bram_axi]
+generate_target {instantiation_template} [get_files f:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/ip/bram_axi/bram_axi.xci]
+update_compile_order -fileset sources_1
+generate_target all [get_files  f:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/ip/bram_axi/bram_axi.xci]
+catch { config_ip_cache -export [get_ips -all bram_axi] }
+export_ip_user_files -of_objects [get_files f:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/ip/bram_axi/bram_axi.xci] -no_script -sync -force -quiet
+export_simulation -of_objects [get_files f:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/ip/bram_axi/bram_axi.xci] -directory F:/cpu-design/lab2/miniRV_pipeline_axi/miniRV.ip_user_files/sim_scripts -ip_user_files_dir F:/cpu-design/lab2/miniRV_pipeline_axi/miniRV.ip_user_files -ipstatic_source_dir F:/cpu-design/lab2/miniRV_pipeline_axi/miniRV.ip_user_files/ipstatic -lib_map_path [list {modelsim=F:/cpu-design/lab2/miniRV_pipeline_axi/miniRV.cache/compile_simlib/modelsim} {questa=F:/cpu-design/lab2/miniRV_pipeline_axi/miniRV.cache/compile_simlib/questa} {riviera=F:/cpu-design/lab2/miniRV_pipeline_axi/miniRV.cache/compile_simlib/riviera} {activehdl=F:/cpu-design/lab2/miniRV_pipeline_axi/miniRV.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+generate_target all [get_files  f:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/ip/bram_axi/bram_axi.xci]
+catch { config_ip_cache -export [get_ips -all bram_axi] }
+export_ip_user_files -of_objects [get_files f:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/ip/bram_axi/bram_axi.xci] -no_script -sync -force -quiet
+export_simulation -of_objects [get_files f:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/ip/bram_axi/bram_axi.xci] -directory F:/cpu-design/lab2/miniRV_pipeline_axi/miniRV.ip_user_files/sim_scripts -ip_user_files_dir F:/cpu-design/lab2/miniRV_pipeline_axi/miniRV.ip_user_files -ipstatic_source_dir F:/cpu-design/lab2/miniRV_pipeline_axi/miniRV.ip_user_files/ipstatic -lib_map_path [list {modelsim=F:/cpu-design/lab2/miniRV_pipeline_axi/miniRV.cache/compile_simlib/modelsim} {questa=F:/cpu-design/lab2/miniRV_pipeline_axi/miniRV.cache/compile_simlib/questa} {riviera=F:/cpu-design/lab2/miniRV_pipeline_axi/miniRV.cache/compile_simlib/riviera} {activehdl=F:/cpu-design/lab2/miniRV_pipeline_axi/miniRV.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+create_ip -name axi_crossbar -vendor xilinx.com -library ip -version 2.1 -module_name axi_crossbar_0 -dir F:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/ip
+set_property -dict [list \
+  CONFIG.M00_A00_ADDR_WIDTH {18} \
+  CONFIG.M01_A00_BASE_ADDR {0x00000000FFFF0000} \
+  CONFIG.M02_A00_BASE_ADDR {0x00000000FFFF1000} \
+  CONFIG.M03_A00_BASE_ADDR {0x00000000FFFF2000} \
+  CONFIG.M04_A00_BASE_ADDR {0x00000000FFFF3000} \
+  CONFIG.M05_A00_BASE_ADDR {0x00000000FFFF4000} \
+  CONFIG.NUM_MI {6} \
+] [get_ips axi_crossbar_0]
+generate_target {instantiation_template} [get_files f:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/ip/axi_crossbar_0/axi_crossbar_0.xci]
+generate_target all [get_files  f:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/ip/axi_crossbar_0/axi_crossbar_0.xci]
+catch { config_ip_cache -export [get_ips -all axi_crossbar_0] }
+export_ip_user_files -of_objects [get_files f:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/ip/axi_crossbar_0/axi_crossbar_0.xci] -no_script -sync -force -quiet
+create_ip_run [get_files -of_objects [get_fileset sources_1] f:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/ip/axi_crossbar_0/axi_crossbar_0.xci]
+launch_runs axi_crossbar_0_synth_1 -jobs 14

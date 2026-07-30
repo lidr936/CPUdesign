@@ -39,7 +39,7 @@ bool VminiRV_SoC___024root___eval_phase__act(VminiRV_SoC___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    VminiRV_SoC___024root___eval_phase__act\n"); );
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Init
-    VlTriggerVec<2> __VpreTriggered;
+    VlTriggerVec<3> __VpreTriggered;
     CData/*0:0*/ __VactExecute;
     // Body
     VminiRV_SoC___024root___eval_triggers__act(vlSelf);

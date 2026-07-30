@@ -5,17 +5,11 @@
 #include "VminiRV_SoC__pch.h"
 #include "VminiRV_SoC___024root.h"
 
-VL_ATTR_COLD void VminiRV_SoC___024root___eval_initial__TOP(VminiRV_SoC___024root* vlSelf) {
+VL_ATTR_COLD void VminiRV_SoC___024root___eval_static(VminiRV_SoC___024root* vlSelf) {
     (void)vlSelf;  // Prevent unused variable warning
     VminiRV_SoC__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    VL_DEBUG_IF(VL_DBG_MSGF("+    VminiRV_SoC___024root___eval_initial__TOP\n"); );
+    VL_DEBUG_IF(VL_DBG_MSGF("+    VminiRV_SoC___024root___eval_static\n"); );
     auto& vlSelfRef = std::ref(*vlSelf).get();
-    // Body
-    vlSelfRef.tx = 1U;
-    vlSelfRef.dig_seg1 = 0xffU;
-    vlSelfRef.dig_seg = 0xffU;
-    vlSelfRef.dig_en = 0xffU;
-    vlSelfRef.led = 0U;
 }
 
 VL_ATTR_COLD void VminiRV_SoC___024root___eval_final(VminiRV_SoC___024root* vlSelf) {
@@ -125,6 +119,9 @@ VL_ATTR_COLD void VminiRV_SoC___024root___dump_triggers__act(VminiRV_SoC___024ro
     if ((2ULL & vlSelfRef.__VactTriggered.word(0U))) {
         VL_DBG_MSGF("         'act' region trigger index 1 is active: @(posedge fpga_rst)\n");
     }
+    if ((4ULL & vlSelfRef.__VactTriggered.word(0U))) {
+        VL_DBG_MSGF("         'act' region trigger index 2 is active: @(posedge miniRV_SoC.U_cpu.U_irom.U_irom.clka)\n");
+    }
 }
 #endif  // VL_DEBUG
 
@@ -144,6 +141,9 @@ VL_ATTR_COLD void VminiRV_SoC___024root___dump_triggers__nba(VminiRV_SoC___024ro
     if ((2ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
         VL_DBG_MSGF("         'nba' region trigger index 1 is active: @(posedge fpga_rst)\n");
     }
+    if ((4ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
+        VL_DBG_MSGF("         'nba' region trigger index 2 is active: @(posedge miniRV_SoC.U_cpu.U_irom.U_irom.clka)\n");
+    }
 }
 #endif  // VL_DEBUG
 
@@ -159,7 +159,6 @@ VL_ATTR_COLD void VminiRV_SoC___024root____Vm_traceActivitySetAll(VminiRV_SoC___
     vlSelfRef.__Vm_traceActivity[3U] = 1U;
     vlSelfRef.__Vm_traceActivity[4U] = 1U;
     vlSelfRef.__Vm_traceActivity[5U] = 1U;
-    vlSelfRef.__Vm_traceActivity[6U] = 1U;
 }
 
 VL_ATTR_COLD void VminiRV_SoC___024root___ctor_var_reset(VminiRV_SoC___024root* vlSelf) {
@@ -179,7 +178,8 @@ VL_ATTR_COLD void VminiRV_SoC___024root___ctor_var_reset(VminiRV_SoC___024root* 
     vlSelf->tx = VL_RAND_RESET_I(1);
     vlSelf->__Vtrigprevexpr___TOP__fpga_clk__0 = VL_RAND_RESET_I(1);
     vlSelf->__Vtrigprevexpr___TOP__fpga_rst__0 = VL_RAND_RESET_I(1);
-    for (int __Vi0 = 0; __Vi0 < 7; ++__Vi0) {
+    vlSelf->__Vtrigprevexpr___TOP__miniRV_SoC__U_cpu__U_irom__U_irom__clka__0 = VL_RAND_RESET_I(1);
+    for (int __Vi0 = 0; __Vi0 < 6; ++__Vi0) {
         vlSelf->__Vm_traceActivity[__Vi0] = 0;
     }
 }

@@ -28,15 +28,16 @@ class alignas(VL_CACHE_LINE_BYTES) VminiRV_SoC___024root final : public Verilate
     CData/*0:0*/ __VicoFirstIteration;
     CData/*0:0*/ __Vtrigprevexpr___TOP__fpga_clk__0;
     CData/*0:0*/ __Vtrigprevexpr___TOP__fpga_rst__0;
+    CData/*0:0*/ __Vtrigprevexpr___TOP__miniRV_SoC__U_cpu__U_irom__U_irom__clka__0;
     CData/*0:0*/ __VactContinue;
     VL_IN16(sw,15,0);
     VL_OUT16(led,15,0);
     IData/*31:0*/ __VactIterCount;
-    VlUnpacked<CData/*0:0*/, 7> __Vm_traceActivity;
+    VlUnpacked<CData/*0:0*/, 6> __Vm_traceActivity;
     VlTriggerVec<1> __VstlTriggered;
     VlTriggerVec<1> __VicoTriggered;
-    VlTriggerVec<2> __VactTriggered;
-    VlTriggerVec<2> __VnbaTriggered;
+    VlTriggerVec<3> __VactTriggered;
+    VlTriggerVec<3> __VnbaTriggered;
 
     // INTERNAL VARIABLES
     VminiRV_SoC__Syms* const vlSymsp;

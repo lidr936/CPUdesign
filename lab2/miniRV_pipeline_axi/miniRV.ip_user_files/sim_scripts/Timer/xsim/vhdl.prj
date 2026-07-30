@@ -1,0 +1,5 @@
+vhdl xil_defaultlib  \
+"../../../../src/rtl/ip/Timer/sim/Timer.vhd" \
+
+# Do not sort compile order
+nosort

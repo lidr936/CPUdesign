@@ -26,26 +26,30 @@ VM_CLASSES_FAST += \
 	VminiRV_SoC \
 	VminiRV_SoC___024root__DepSet_h7ff9d9a5__0 \
 	VminiRV_SoC___024root__DepSet_h17f7d384__0 \
-	VminiRV_SoC_miniRV_SoC__DepSet_ha52312db__0 \
 	VminiRV_SoC_cpu_top__DepSet_h4c9e4841__0 \
+	VminiRV_SoC_Inst_ROM__DepSet_h70169caf__0 \
 	VminiRV_SoC_cpu_core__DepSet_h8e7a3968__0 \
 	VminiRV_SoC_cpu_core__DepSet_ha977b339__0 \
+	VminiRV_SoC_IROM__DepSet_h06e8cd77__0 \
 
 # Generated module classes, non-fast-path, compile with low/medium optimization
 VM_CLASSES_SLOW += \
-	VminiRV_SoC__ConstPool_0 \
 	VminiRV_SoC___024root__Slow \
 	VminiRV_SoC___024root__DepSet_h7ff9d9a5__0__Slow \
 	VminiRV_SoC___024root__DepSet_h17f7d384__0__Slow \
 	VminiRV_SoC_miniRV_SoC__Slow \
-	VminiRV_SoC_miniRV_SoC__DepSet_ha52312db__0__Slow \
 	VminiRV_SoC_miniRV_SoC__DepSet_hce2e9ee6__0__Slow \
 	VminiRV_SoC_cpu_top__Slow \
 	VminiRV_SoC_cpu_top__DepSet_h4c9e4841__0__Slow \
 	VminiRV_SoC_cpu_top__DepSet_he6d34460__0__Slow \
+	VminiRV_SoC_Inst_ROM__Slow \
+	VminiRV_SoC_Inst_ROM__DepSet_hee64a51d__0__Slow \
 	VminiRV_SoC_cpu_core__Slow \
 	VminiRV_SoC_cpu_core__DepSet_h8e7a3968__0__Slow \
 	VminiRV_SoC_cpu_core__DepSet_ha977b339__0__Slow \
+	VminiRV_SoC_IROM__Slow \
+	VminiRV_SoC_IROM__DepSet_h35723a7d__0__Slow \
+	VminiRV_SoC_IROM__DepSet_h06e8cd77__0__Slow \
 
 # Generated support classes, fast-path, compile with highest optimization
 VM_SUPPORT_FAST += \

@@ -1,0 +1,2 @@
+axi_uartlite_0.vhd,vhdl,xil_defaultlib,../../../../src/rtl/ip/axi_uartlite_0/sim/axi_uartlite_0.vhd,
+glbl.v,Verilog,xil_defaultlib,glbl.v

@@ -1,0 +1,2 @@
+Timer.vhd,vhdl,xil_defaultlib,../../../../src/rtl/ip/Timer/sim/Timer.vhd,
+glbl.v,Verilog,xil_defaultlib,glbl.v

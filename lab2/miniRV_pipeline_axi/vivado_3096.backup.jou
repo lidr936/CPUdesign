@@ -1,0 +1,33 @@
+#-----------------------------------------------------------
+# Vivado v2023.2 (64-bit)
+# SW Build 4029153 on Fri Oct 13 20:14:34 MDT 2023
+# IP Build 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Start of session at: Thu Jul 30 01:56:12 2026
+# Process ID: 3096
+# Current directory: F:/cpu-design/lab2/miniRV_pipeline_axi
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent4180 F:\cpu-design\lab2\miniRV_pipeline_axi\miniRV.xpr
+# Log file: F:/cpu-design/lab2/miniRV_pipeline_axi/vivado.log
+# Journal file: F:/cpu-design/lab2/miniRV_pipeline_axi\vivado.jou
+# Running On: LAPTOP-BB300ES7, OS: Windows, CPU Frequency: 2304 MHz, CPU Physical cores: 20, Host memory: 16944 MB
+#-----------------------------------------------------------
+start_gui
+open_project F:/cpu-design/lab2/miniRV_pipeline_axi/miniRV.xpr
+update_compile_order -fileset sources_1
+open_hw_manager
+connect_hw_server -allow_non_jtag
+disconnect_hw_server localhost:3121
+connect_hw_server -allow_non_jtag
+disconnect_hw_server localhost:3121
+connect_hw_server -allow_non_jtag
+open_hw_target
+refresh_hw_target {localhost:3121/xilinx_tcf/Xilinx/1234-tulA}
+refresh_hw_target {localhost:3121/xilinx_tcf/Xilinx/1234-tulA}
+refresh_hw_target {localhost:3121/xilinx_tcf/Xilinx/1234-tulA}
+refresh_hw_target {localhost:3121/xilinx_tcf/Xilinx/1234-tulA}
+disconnect_hw_server localhost:3121
+connect_hw_server -allow_non_jtag
+disconnect_hw_server
+connect_hw_server
+open_hw_manager
+connect_hw_target

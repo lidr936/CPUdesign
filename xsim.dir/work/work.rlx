@@ -1,0 +1,8 @@
+0.7
+2020.2
+Oct 13 2023
+20:47:58
+F:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/axi4lite_peripheral_wrap.v,1785381944,verilog,,F:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/axi_peripheral_subsystem.v,,axi4lite_peripheral_wrap,,,.\lab2\miniRV_pipeline_axi\src\rtl,,,,,
+F:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/axi_peripheral_subsystem.v,1785382248,verilog,,F:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/miniRV_SoC.v,,axi_peripheral_subsystem,,,.\lab2\miniRV_pipeline_axi\src\rtl,,,,,
+F:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/defines.vh,1784652674,verilog,,,,,,,,,,,,
+F:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/miniRV_SoC.v,1785382091,verilog,,,F:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/defines.vh;F:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/axi4lite_peripheral_wrap.v;F:/cpu-design/lab2/miniRV_pipeline_axi/src/rtl/axi_peripheral_subsystem.v,miniRV_SoC,,,.\lab2\miniRV_pipeline_axi\src\rtl,,,,,

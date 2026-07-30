@@ -21,9 +21,21 @@ module miniRV_SoC(
     // The board clock IP is created in Vivado; see the Lab2 manual notes.
     wire pll_clk1;
     wire pll_lock;
-    wire sys_clk = pll_lock & pll_clk1;
-    reg  sys_rst;
-    always @(posedge fpga_clk) sys_rst <= !fpga_rst | !pll_lock;
+    wire sys_clk = pll_clk1;
+    reg [1:0] reset_sync;
+    wire sys_rst = reset_sync[1];
+
+    // fpga_rst is active-low on EGO1. Hold the whole AXI system in reset
+    // until the PLL locks, then release reset synchronously to sys_clk.
+    always @(posedge sys_clk or negedge fpga_rst) begin
+        if (!fpga_rst) begin
+            reset_sync <= 2'b11;
+        end else if (!pll_lock) begin
+            reset_sync <= 2'b11;
+        end else begin
+            reset_sync <= {reset_sync[0], 1'b0};
+        end
+    end
 
     clk_wiz_0 U_clkgen (
         .clk_in1(fpga_clk), .locked(pll_lock), .clk_out1(pll_clk1)
@@ -86,26 +98,25 @@ module miniRV_SoC(
         .s_axi_rdata(axi_rdata), .s_axi_rresp(axi_rresp), .s_axi_rlast(axi_rlast),
         .s_axi_rvalid(axi_rvalid), .s_axi_rready(axi_rready)
     );
-`else
-    // Replace this trace-only slave with Vivado AXI Interconnect/MIG/peripheral
-    // IP when building the FPGA design.  The source-level AXI master boundary
-    // is intentionally kept identical between simulation and hardware.
-    assign axi_awready = 1'b0;
-    assign axi_wready  = 1'b0;
-    assign axi_bresp   = 2'b00;
-    assign axi_bvalid  = 1'b0;
-    assign axi_arready = 1'b0;
-    assign axi_rdata   = 32'h0;
-    assign axi_rresp   = 2'b00;
-    assign axi_rlast   = 1'b0;
-    assign axi_rvalid  = 1'b0;
-`endif
 
-    // Board peripherals are connected by the Vivado AXI subsystem in hardware.
     assign led      = 16'h0000;
     assign dig_en   = 8'hff;
     assign dig_seg  = 8'hff;
     assign dig_seg1 = 8'hff;
     assign tx       = 1'b1;
+`else
+    axi_peripheral_subsystem U_peripheral_subsystem (
+        .clk(sys_clk), .resetn(!sys_rst),
+        .s_axi_awaddr(axi_awaddr), .s_axi_awlen(axi_awlen), .s_axi_awsize(axi_awsize),
+        .s_axi_awburst(axi_awburst), .s_axi_awvalid(axi_awvalid), .s_axi_awready(axi_awready),
+        .s_axi_wdata(axi_wdata), .s_axi_wstrb(axi_wstrb), .s_axi_wlast(axi_wlast),
+        .s_axi_wvalid(axi_wvalid), .s_axi_wready(axi_wready), .s_axi_bresp(axi_bresp),
+        .s_axi_bvalid(axi_bvalid), .s_axi_bready(axi_bready), .s_axi_araddr(axi_araddr),
+        .s_axi_arlen(axi_arlen), .s_axi_arsize(axi_arsize), .s_axi_arburst(axi_arburst),
+        .s_axi_arvalid(axi_arvalid), .s_axi_arready(axi_arready), .s_axi_rdata(axi_rdata),
+        .s_axi_rresp(axi_rresp), .s_axi_rlast(axi_rlast), .s_axi_rvalid(axi_rvalid), .s_axi_rready(axi_rready),
+        .sw(sw), .led(led), .dig_en(dig_en), .dig_seg(dig_seg), .dig_seg1(dig_seg1), .rx(rx), .tx(tx)
+    );
+`endif
 
 endmodule
