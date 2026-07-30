@@ -90,7 +90,9 @@ module axi_peripheral_subsystem(
 `undef PERIPHERAL
 
     assign led = led_gpio[15:0];
-    assign dig_en = dig_gpio[7:0];
-    assign dig_seg = dig_gpio[15:8];
-    assign dig_seg1 = dig_gpio[23:16];
+
+    seven_segment_hex U_seven_segment (
+        .clk(clk), .reset(!resetn), .value(dig_gpio),
+        .dig_en(dig_en), .dig_seg(dig_seg), .dig_seg1(dig_seg1)
+    );
 endmodule

@@ -100,6 +100,7 @@ cpu_top AXI Master
 - `RUN_TRACE` 分支恢复 `led/dig/tx` 默认驱动，保持原 Trace 顶层行为。
 - 两个新增 RTL 已正式登记到 `miniRV.xpr` 的 Design Sources；顶层不再 ``include`` 其它 `.v` 文件，避免 Linux Trace 或 Vivado 出现重复模块定义。
 - `axi_protocol_converter_1` 到 `_4` 已从 `AutoDisabled` 状态启用；五个 converter 与五条外设支路一一对应。打开工程后若 Vivado 显示某个 converter 未生成，只对该 converter 使用 **Generate Output Products**，不要重跑 Crossbar 的独立综合。
+- `Dig` AXI GPIO 的 32-bit 原始数值不再直接接到 EGO1 的位选/段选引脚。新增 `seven_segment_hex.v`，以 EGO1 高有效的两组四位共阴极数码管接口动态显示 8 个十六进制数字。例如 C_TEST 向 `0xFFFF2000` 写入 `123` 时显示 `0000007B`。
 
 ## 已完成的本地检查
 
@@ -137,6 +138,18 @@ make -C /tmp/cdp-tests-cache-off run TEST=start
 ```
 
 随后对 `bin/*.bin` 全量执行 `run_for_python`，结果：`pass=45 fail=0`。该结果覆盖 `RUN_TRACE` 下 CPU、AXI master 与 Trace 外设模型；不覆盖 Vivado IP 实例和板级 UART。
+
+数码管模块还有一条独立仿真：
+
+```bash
+verilator --binary --timing --Mdir /tmp/seven-segment-obj \
+  --top-module seven_segment_hex_tb \
+  lab2/miniRV_pipeline_axi/tests/seven_segment_hex_tb.v \
+  lab2/miniRV_pipeline_axi/src/rtl/seven_segment_hex.v
+/tmp/seven-segment-obj/Vseven_segment_hex_tb
+```
+
+预期：`PASS: seven_segment_hex display protocol`。
 
 ## Windows Vivado 已知问题
 

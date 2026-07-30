@@ -40,7 +40,7 @@ def main() -> None:
         raise AssertionError("hardware AXI zero-response stub remains")
     if "pll_lock & pll_clk1" in top:
         raise AssertionError("PLL lock must not gate the system clock")
-    for source in ("axi4lite_peripheral_wrap.v", "axi_peripheral_subsystem.v"):
+    for source in ("axi4lite_peripheral_wrap.v", "axi_peripheral_subsystem.v", "seven_segment_hex.v"):
         require(project, source, "Vivado design source")
     for index in range(1, 5):
         disabled = (
@@ -52,7 +52,7 @@ def main() -> None:
             raise AssertionError(f"axi_protocol_converter_{index} is disabled in miniRV.xpr")
     if '`include "axi4lite_peripheral_wrap.v"' in top:
         raise AssertionError("peripheral wrapper must be a design source, not included by top")
-    for signal in ("timer[31:0]", "timer[63:32]", "dig_en", "dig_seg", "dig_seg1"):
+    for signal in ("timer[31:0]", "timer[63:32]", "U_seven_segment", "dig_en", "dig_seg", "dig_seg1"):
         require(subsystem, signal, "peripheral wiring")
 
     print("PASS: Cache-off AXI peripheral static contract")
