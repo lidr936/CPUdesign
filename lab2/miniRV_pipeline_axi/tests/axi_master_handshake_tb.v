@@ -83,8 +83,28 @@ module axi_master_handshake_tb;
         end
     endtask
 
+    task expect_peripheral_read_single_beat;
+        input [31:0] address;
+        begin
+            wait (dc_dev_rrdy === 1'b1);
+            dc_cpu_raddr = address;
+            dc_cpu_ren = 4'hf;
+            @(posedge aclk);
+            #1;
+            if (!m_axi_arvalid || m_axi_araddr != address || m_axi_arlen != 8'd0) begin
+                $display("FAIL peripheral read must use one AXI beat");
+                $fatal;
+            end
+            dc_cpu_ren = 4'h0;
+        end
+    endtask
+
     initial begin
         repeat (2) @(posedge aclk);
+        areset = 1'b0;
+        expect_peripheral_read_single_beat(32'hffff_3008);
+        areset = 1'b1;
+        @(posedge aclk);
         areset = 1'b0;
         expect_cache_on_grant(32'h0000_0040);
         areset = 1'b1;

@@ -174,7 +174,13 @@ module axi_master(
                     end else if (|dc_cpu_ren) begin
                         read_is_data <= 1'b1;
                         read_addr_r  <= dc_cpu_raddr;
-                        read_len_r   <= `DC_BLK_LEN - 1;
+                        // DCache marks MMIO accesses as uncached, but the
+                        // request port has no explicit burst-length signal.
+                        // UARTLite decodes only its low address bits, so a
+                        // cache-line burst from 0xFFFF_3008 wraps to its RX
+                        // FIFO and consumes input while polling status.
+                        read_len_r   <= (dc_cpu_raddr[31:16] == 16'hFFFF) ?
+                                        8'd0 : `DC_BLK_LEN - 1;
                         read_count   <= 2'h0;
                         dc_read_buf  <= 128'h0;
                         state        <= R_AR;
@@ -191,7 +197,8 @@ module axi_master(
                     end else if (|dc_cpu_ren) begin
                         read_is_data <= 1'b1;
                         read_addr_r  <= dc_cpu_raddr;
-                        read_len_r   <= `DC_BLK_LEN - 1;
+                        read_len_r   <= (dc_cpu_raddr[31:16] == 16'hFFFF) ?
+                                        8'd0 : `DC_BLK_LEN - 1;
                         read_count   <= 2'h0;
                         dc_read_buf  <= 128'h0;
                         state        <= R_AR;
