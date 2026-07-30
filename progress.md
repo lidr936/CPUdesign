@@ -178,11 +178,14 @@
 ### Lab2：Windows 下板实操启动（2026-07-28）
 - **Status:** in progress; awaiting Windows Vivado and EGO1 hardware interaction.
 
-### Lab2：C_TEST0 Cache-off 下板（2026-07-30）
+### Lab2：C_TEST0/C_TEST1/C_TEST2 Cache-off 下板（2026-07-30 至 2026-07-31）
 - 使用自建 `miniRV_pipeline_axi` bitstream，保持 ICache/DCache 宏关闭，并通过置换 `bram_axi` 初始化 COE 的方式加载 `0_uart_test/main.coe`。
 - EGO1 串口在 115200、8N1、无流控下输出 C_TEST0 的 Phase 0 文本；Phase 1 可接收和回显单字符。
 - 收到字符后 LED 按 ASCII 码变化，修复后的 8 位动态数码管显示对应十六进制 ASCII 值；用户确认 C_TEST0 通过。
-- 后续：用同一路线验证 `1_formatIO_test` 和 `2_sort_test`，再进入 Cache-on、DDR、CoreMark 和 LLAMA2。
+- 保持同一 Cache-off COE 置换流程，用户确认 `1_formatIO_test/main.coe` 的格式化 I/O 测试通过。
+- 保持同一 Cache-off COE 置换流程，用户确认 `2_sort_test/main.coe` 的固定/动态数组排序、计时器和 `malloc` 测试通过。
+- 课程 `lab2_IOtest_miniRV_ego1.bit` 已使用 Tera Term 的 Binary 文件发送功能验证：`0_uart_test`、`1_formatIO_test` 和 `2_sort_test` 的 `.bin` 均下载并运行成功。
+- 后续：Cache-on 下用 COE 复跑 C_TEST0，再进入 DDR、CoreMark 和 LLAMA2。
 - Actions taken:
   - 已完成本地只读预检：`lab2/miniRV_pipeline_axi/miniRV.xpr`、重建脚本、`0_uart_test/main.coe` 和 `main.bin` 均存在；`defines.vh` 当前为 Cache-off，且未定义 `RUN_TRACE`。
   - 重建 Tcl 脚本当前固定引用 `F:/lab2/lab2/c_test_rv_stu/0_uart_test/main.coe`；Windows 使用的工程路径必须与此一致，否则先更新脚本中的固定路径，不能在错误路径上启动综合。
