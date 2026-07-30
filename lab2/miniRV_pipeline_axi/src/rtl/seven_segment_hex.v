@@ -46,12 +46,14 @@ module seven_segment_hex #(
     end
 
     always @(*) begin
-        dig_en = 8'b00000001 << active_digit;
+        // EGO1 maps LED_BIT1..4 to dig_en[7:4] and display bank 0;
+        // LED_BIT5..8 map to dig_en[3:0] and display bank 1.
+        dig_en = 8'b10000000 >> active_digit;
         dig_seg = 8'b0;
         dig_seg1 = 8'b0;
         if (active_digit < 3'd4)
-            dig_seg = hex_to_segment(value[active_digit * 4 +: 4]);
+            dig_seg = hex_to_segment(value[31 - active_digit * 4 -: 4]);
         else
-            dig_seg1 = hex_to_segment(value[active_digit * 4 +: 4]);
+            dig_seg1 = hex_to_segment(value[31 - active_digit * 4 -: 4]);
     end
 endmodule

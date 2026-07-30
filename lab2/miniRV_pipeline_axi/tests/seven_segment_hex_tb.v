@@ -20,21 +20,22 @@ module seven_segment_hex_tb;
         reset = 1'b0;
         #1;
 
-        // Digit 0 displays the least-significant hexadecimal nibble, 7.
-        if (dig_en !== 8'b00000001 || dig_seg !== 8'b11100000 || dig_seg1 !== 8'b0)
-            $fatal(1, "digit 0 did not display hexadecimal 7");
+        // EGO1 digit-enable bits [7:4] select the dig_seg display bank.
+        // The leftmost display position is the most-significant hexadecimal nibble.
+        if (dig_en !== 8'b10000000 || dig_seg !== 8'b11111100 || dig_seg1 !== 8'b0)
+            $fatal(1, "digit 0 did not display hexadecimal 0 on bank 0");
 
         // With SCAN_COUNTER_BITS=1, two clocks select the next digit.
         repeat (2) @(posedge clk);
         #1;
-        if (dig_en !== 8'b00000010 || dig_seg !== 8'b10111110 || dig_seg1 !== 8'b0)
-            $fatal(1, "digit 1 did not display hexadecimal 6");
+        if (dig_en !== 8'b01000000 || dig_seg !== 8'b01100000 || dig_seg1 !== 8'b0)
+            $fatal(1, "digit 1 did not display hexadecimal 1 on bank 0");
 
         // Four more digit advances reaches digit 5, on the second display bank.
         repeat (8) @(posedge clk);
         #1;
-        if (dig_en !== 8'b00100000 || dig_seg !== 8'b0 || dig_seg1 !== 8'b11011010)
-            $fatal(1, "digit 5 did not display hexadecimal 2 on bank 1");
+        if (dig_en !== 8'b00000100 || dig_seg !== 8'b0 || dig_seg1 !== 8'b10110110)
+            $fatal(1, "digit 5 did not display hexadecimal 5 on bank 1");
 
         $display("PASS: seven_segment_hex display protocol");
         $finish;
