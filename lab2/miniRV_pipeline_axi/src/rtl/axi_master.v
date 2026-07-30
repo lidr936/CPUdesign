@@ -162,7 +162,25 @@ module axi_master(
         end else begin
             case (state)
                 GRANT_D: begin
-                    state <= CHECK_D;
+                    // Cache-on requests are combinational and are withdrawn
+                    // as soon as the ready grant is observed.  Accept them in
+                    // this cycle; Cache-off keeps its registered request for
+                    // CHECK_D below.
+                    if (|dc_cpu_wen) begin
+                        write_addr_r <= dc_cpu_waddr;
+                        write_data_r <= dc_cpu_wdata;
+                        write_strb_r <= dc_cpu_wen;
+                        state        <= W_AW;
+                    end else if (|dc_cpu_ren) begin
+                        read_is_data <= 1'b1;
+                        read_addr_r  <= dc_cpu_raddr;
+                        read_len_r   <= `DC_BLK_LEN - 1;
+                        read_count   <= 2'h0;
+                        dc_read_buf  <= 128'h0;
+                        state        <= R_AR;
+                    end else begin
+                        state <= CHECK_D;
+                    end
                 end
                 CHECK_D: begin
                     if (|dc_cpu_wen) begin
@@ -182,7 +200,18 @@ module axi_master(
                     end
                 end
                 GRANT_I: begin
-                    state <= CHECK_I;
+                    // See GRANT_D: take a Cache-on request while the grant is
+                    // asserted, but retain CHECK_I for the Cache-off path.
+                    if (|ic_cpu_ren) begin
+                        read_is_data <= 1'b0;
+                        read_addr_r  <= ic_cpu_raddr;
+                        read_len_r   <= `IC_BLK_LEN - 1;
+                        read_count   <= 2'h0;
+                        ic_read_buf  <= 128'h0;
+                        state        <= R_AR;
+                    end else begin
+                        state <= CHECK_I;
+                    end
                 end
                 CHECK_I: begin
                     if (|ic_cpu_ren) begin

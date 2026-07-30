@@ -84,6 +84,8 @@ Phase 7：实验二实现与验证（所有新材料位于 `lab2/`）
 - [x] 导入 Windows 侧 Cache-off AXI 外设 RTL，修正时钟/复位、Trace 输出和协议转换器映射
 - [x] 在 Linux 隔离副本回归当前 Cache-off 文件集的 45 个 Trace 程序
 - [x] 在 Windows 以 COE 置换方式完成自建 Cache-off `0_uart_test` 下板验收
+- [x] 在 Windows 以 COE 置换方式完成自建 Cache-off `1_formatIO_test`、`2_sort_test` 下板验收
+- [x] 修正 Cache-on 请求在 AXI 授权窗口被遗漏的问题，并完成主控握手单元回归
 - [ ] 在 Windows 完成其余 Cache-off C_TEST、Cache-on 和性能程序上板验收
 - **Status:** in_progress
 

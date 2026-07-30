@@ -192,3 +192,9 @@
   - 已查阅本地 EGO1 用户手册：当前应使用 USB-JTAG（J22）而非产生 COM9 的 USB-UART；红色 D18 是板卡已上电的物理判据。Vivado 可见 target 但无 devices 时，优先检查 J22、D18 与 6-pin J3 链路，而非工程或 bitstream。
   - 仿真预检发现：当前 `miniRV_SoC` 的非 `RUN_TRACE` 分支仍为 AXI 零响应占位实现，现有 `soc_simple_tb` 不能验收 `bram_axi` 的读写；必须先完成 Crossbar 和主存的实际连接。
   - Cache-off IP 批次已按文件证据核验；下一阶段为编写/导入外设 wrapper，并把 CPU AXI 主机、Crossbar、主存与五个外设接入 `miniRV_SoC`。Vivado 本次发生原生 UI 崩溃，尚未运行工程综合。
+
+### Lab2：Cache-on 首次下板故障修复（2026-07-31）
+- 启用 Cache 且 `blk_mem_gen_1` 已生成后，板上无串口输出；排除 Block RAM 输出寄存器配置后，定位为 `axi_master` 的授权/采样窗口与 Cache-on 组合请求不匹配。
+- `GRANT_D` 和 `GRANT_I` 现会在断言 ready 的当拍锁存 Cache-on 请求，并在当拍没有请求时保留 `CHECK_D`/`CHECK_I`，以兼容 Cache-off 的下一拍寄存器请求。
+- 新增 `lab2/miniRV_pipeline_axi/tests/axi_master_handshake_tb.v`；Verilator 以 Cache-on 宏运行通过，确认两类请求均产生正确的 4-beat AXI 读。
+- 待 Windows 使用修复后的源码重新综合/实现/烧录 Cache-on bitstream，并从 `0_uart_test/main.coe` 复验。
